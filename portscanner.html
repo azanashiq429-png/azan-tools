@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Port Scanner</title>
+    <style>
+        /* Exact Match to Your Original Premium Dashboard UI */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0b111e;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 15px;
+        }
+
+        .scanner-card {
+            background-color: #0f172a;
+            border: 1px solid #00ffcc;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 450px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0, 255, 204, 0.15);
+        }
+
+        .back-link {
+            display: inline-block;
+            color: #8892b0;
+            text-decoration: none;
+            font-size: 15px;
+            margin-bottom: 20px;
+        }
+
+        .back-link:hover {
+            color: #00ffcc;
+        }
+
+        .title-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        h2 {
+            color: #00ffcc;
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        .input-box {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            color: #c9d1d9;
+            font-size: 15px;
+            margin-bottom: 8px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            background-color: #0b111e;
+            border: 1px solid #1e293b;
+            border-radius: 6px;
+            padding: 12px;
+            color: #ffffff;
+            font-size: 15px;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #00ffcc;
+        }
+
+        .scan-btn {
+            width: 100%;
+            background: transparent;
+            border: 1px solid #00ffcc;
+            color: #00ffcc;
+            border-radius: 8px;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 25px;
+        }
+
+        .scan-btn:hover {
+            background-color: #00ffcc;
+            color: #0f172a;
+        }
+
+        .results-label {
+            font-size: 20px;
+            color: #ffffff;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .results-terminal {
+            background-color: #050b14;
+            border-radius: 6px;
+            padding: 15px;
+            min-height: 160px;
+            max-height: 250px;
+            overflow-y: auto;
+            color: #8892b0;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 15px;
+            white-space: pre-wrap;
+            border: 1px solid #1e293b;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="scanner-card">
+        <a href="index.html" class="back-link">&larr; Back to Dashboard</a>
+        
+        <div class="title-container">
+            <h2>Network Port Scanner</h2>
+        </div>
+
+        <div class="input-box">
+            <label for="target-input">Target IP / Domain:</label>
+            <input type="text" id="target-input" placeholder="e.g., 192.168.1.1 or google.com">
+        </div>
+
+        <div class="input-box">
+            <label for="ports-input">Ports to Scan (comma separated):</label>
+            <input type="text" id="ports-input" value="80, 443, 21, 22, 8080">
+        </div>
+
+        <button id="scan-btn" class="scan-btn">Start Security Scan</button>
+
+        <div class="results-label">Scan Results:</div>
+        <div id="results-box" class="results-terminal">Waiting for target input...</div>
+    </div>
+
+<script>
+async function startPortScan() {
+    const targetIp = document.getElementById('target-input').value.trim();
+    const portsList = document.getElementById('ports-input').value.trim();
+    const resultsDisplay = document.getElementById('results-box');
+
+    if (!targetIp) {
+        resultsDisplay.innerHTML = "Please enter a valid Target IP or Domain.";
+        return;
+    }
+
+    resultsDisplay.innerHTML = "Scanning target via Vercel... Please wait...\n";
+    resultsDisplay.style.color = "#00ffcc";
+
+    try {
+        const response = await fetch('/api/scan', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                target: targetIp,
+                ports: portsList
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            resultsDisplay.innerHTML = "=== SCAN RESULTS FOR " + targetIp + " ===\n\n";
+            
+            if (data.results.length > 0) {
+                data.results.forEach(function(res) {
+                    resultsDisplay.innerHTML += "[OPEN] PORT: " + res.port + " | Service: " + res.service + "\n";
+                });
+            } else {
+                resultsDisplay.innerHTML += "INFO: All specified ports are CLOSED or Filtered.\n";
+            }
+            resultsDisplay.innerHTML += "\n[Scan completed for " + data.totalScanned + " ports]";
+        } else {
+            resultsDisplay.innerHTML = "ERROR: " + data.error;
+        }
+
+    } catch (error) {
+        resultsDisplay.innerHTML = "ERROR: Connection failed! Make sure deployment is successful.";
+        resultsDisplay.style.color = "#ff3333";
+    }
+}
+
+document.getElementById('scan-btn').addEventListener('click', startPortScan);
+</script>
+
+</body>
+  </html>
+  
