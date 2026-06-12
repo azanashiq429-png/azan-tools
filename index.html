@@ -1,67 +1,79 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Premium ToolKit</title>
+    <title>AZAN TOOLS - FTGM Styled Premium Dashboard</title>
     <style>
-        /* Base Styling & Background */
-        body {
+        /* Base Styling & Background Theme (FTGM Premium Feel) */
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            background: linear-gradient(145deg, #070b19, #02050a);
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+        }
+
+        body {
+            background-color: #0b0f19;
+            background-image: 
+                radial-gradient(circle at 50% 0%, #17243c 0%, #070c14 65%, #030509 100%);
             color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh;
+            padding: 0 16px 40px 16px;
+            overflow-x: hidden;
         }
 
-        /* Top Header & Logo */
+        /* Top Header & Logo Style */
         .header {
             text-align: center;
-            margin-top: 40px;
-            margin-bottom: 30px;
+            margin-top: 35px;
+            margin-bottom: 20px;
+            width: 100%;
         }
 
         .logo {
             font-size: 2.8rem;
-            font-weight: 800;
-            letter-spacing: 2px;
+            font-weight: 900;
+            letter-spacing: 3px;
             text-transform: uppercase;
-            color: #fff;
-            /* Neon Cyan and Blue Glow Effect */
-            text-shadow: 0 0 10px #00f2fe, 0 0 20px #00f2fe, 0 0 40px #0072ff;
+            color: #ffffff;
+            /* FTGM Style Intense Glow */
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 18px #00f2fe, 0 0 35px #0072ff;
             margin: 0;
         }
 
         .subtitle {
             color: #8fa0dd;
-            font-size: 1rem;
-            margin-top: 10px;
-            letter-spacing: 1px;
+            font-size: 0.9rem;
+            margin-top: 6px;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+            text-transform: uppercase;
+            text-shadow: 0 0 5px rgba(0, 242, 254, 0.3);
         }
 
-        /* Search Bar Setup */
+        /* Search Container */
         .search-container {
-            width: 90%;
-            max-width: 400px;
-            margin-bottom: 30px;
+            width: 100%;
+            max-width: 440px;
+            margin-bottom: 15px;
         }
 
         .search-bar {
             width: 100%;
-            padding: 15px 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(0, 242, 254, 0.2);
-            border-radius: 30px;
-            color: white;
-            font-size: 1rem;
+            padding: 14px 20px;
+            background: #05080f;
+            border: 1.5px solid rgba(0, 242, 254, 0.25);
+            border-radius: 14px;
+            color: #ffffff;
+            font-size: 0.95rem;
             outline: none;
-            box-sizing: border-box;
-            transition: 0.3s;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.6);
+            transition: all 0.3s ease;
         }
 
         .search-bar:focus {
@@ -69,289 +81,462 @@
             box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
         }
 
-        /* Responsive Grid for Cards */
+        /* Notifications Bar */
+        .notifications-panel {
+            width: 100%;
+            max-width: 440px;
+            background: #05080f;
+            border: 1.5px solid rgba(255, 255, 255, 0.05);
+            border-radius: 14px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: border-color 0.3s;
+        }
+
+        .notifications-panel:hover {
+            border-color: rgba(0, 242, 254, 0.3);
+        }
+
+        .notif-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .notif-icon {
+            color: #22c55e;
+            animation: bell-ring 1.5s infinite alternate;
+        }
+
+        .notif-arrow {
+            color: #64748b;
+            font-size: 0.85rem;
+        }
+
+        /* EXACT FTGM 3-COLUMN STRUCTURE & SPACING */
         .tools-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 20px;
-            width: 90%;
-            max-width: 500px;
-            padding-bottom: 50px;
+            grid-template-columns: repeat(3, 1fr); /* Pure 3-Column setup */
+            gap: 12px; /* Perfect spacing between cards */
+            width: 100%;
+            max-width: 440px; /* Standard premium mobile view width */
         }
 
-        /* Modern Neon Glowing Tool Card */
+        /* FTGM Styled Premium Vertical Cards */
         .tool-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1.5px solid rgba(0, 242, 254, 0.3);
-            border-radius: 18px;
-            padding: 20px 10px;
-            text-align: center;
+            background: linear-gradient(180deg, #0e1626 0%, #060a12 100%);
+            border: 1.8px solid var(--border-color, rgba(0, 242, 254, 0.25));
+            border-radius: 20px; /* Smooth rounded corners */
+            padding: 14px 6px 10px 6px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            height: 145px; /* Perfect tall profile ratio */
+            box-sizing: border-box;
             cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.2s;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
         }
 
-        /* Jab User Card par touch/hover kare */
-        .tool-card:hover {
-            transform: translateY(-5px);
-            background: rgba(0, 242, 254, 0.05);
-            border-color: #00f2fe;
-            box-shadow: 0 0 20px rgba(0, 242, 254, 0.5);
+        .tool-card:hover, .tool-card:active {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 0 20px var(--glow-color, rgba(0, 242, 254, 0.5));
+            border-color: var(--border-hover, #00f2fe);
         }
 
-        /* Card Icons (Emoji temporary use kiye hain) */
-        .card-icon {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-            display: inline-block;
+        /* FTGM App Icon Wrapper with Diagonal Glass Reflection (Shine) */
+        .icon-wrapper {
+            width: 62px;
+            height: 62px;
+            background: var(--icon-bg, linear-gradient(135deg, #18233c 0%, #090e18 100%));
+            border: 1.5px solid rgba(255, 255, 255, 0.12);
+            border-radius: 18px; /* Smooth rounded shape icon inside */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                0 6px 12px rgba(0,0,0,0.5), 
+                inset 0 1px 3px rgba(255,255,255,0.15),
+                0 0 8px var(--icon-inner-glow, rgba(0, 242, 254, 0.1));
+            transition: transform 0.2s;
         }
 
+        /* Glossy Highlight Reflection Effect on Icons (FTGM trademark) */
+        .icon-wrapper::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.08) 35%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .tool-card:hover .icon-wrapper {
+            transform: scale(1.06);
+        }
+
+        /* Standardized Emoji / Vector graphics */
+        .emoji-icon {
+            font-size: 2.2rem;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.45));
+            z-index: 2;
+        }
+
+        /* Clean Flat Text Labels at the bottom */
         .card-title {
-            font-size: 0.95rem;
+            font-size: 0.72rem;
             font-weight: 600;
-            color: #e2e8f0;
+            color: #ffffff;
             margin: 0;
+            margin-top: 6px;
+            text-align: center;
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            letter-spacing: 0.3px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+
+        /* Specific card color categories mapping to FTGM style */
+        .cyan-core {
+            --border-color: rgba(0, 242, 254, 0.3);
+            --border-hover: #00f2fe;
+            --glow-color: rgba(0, 242, 254, 0.55);
+            --icon-bg: linear-gradient(135deg, #112d42 0%, #060e14 100%);
+            --icon-inner-glow: rgba(0, 242, 254, 0.25);
+        }
+
+        .green-core {
+            --border-color: rgba(16, 185, 129, 0.3);
+            --border-hover: #10b981;
+            --glow-color: rgba(16, 185, 129, 0.55);
+            --icon-bg: linear-gradient(135deg, #0e3020 0%, #030f0a 100%);
+            --icon-inner-glow: rgba(16, 185, 129, 0.25);
+        }
+
+        .yellow-core {
+            --border-color: rgba(255, 170, 0, 0.3);
+            --border-hover: #ffaa00;
+            --glow-color: rgba(255, 170, 0, 0.55);
+            --icon-bg: linear-gradient(135deg, #382405 0%, #120c02 100%);
+            --icon-inner-glow: rgba(255, 170, 0, 0.25);
+        }
+
+        .purple-core {
+            --border-color: rgba(163, 113, 247, 0.3);
+            --border-hover: #a371f7;
+            --glow-color: rgba(163, 113, 247, 0.55);
+            --icon-bg: linear-gradient(135deg, #251345 0%, #0c051a 100%);
+            --icon-inner-glow: rgba(163, 113, 247, 0.25);
+        }
+
+        .pink-core {
+            --border-color: rgba(255, 0, 127, 0.3);
+            --border-hover: #ff007f;
+            --glow-color: rgba(255, 0, 127, 0.55);
+            --icon-bg: linear-gradient(135deg, #3d0521 0%, #14010a 100%);
+            --icon-inner-glow: rgba(255, 0, 127, 0.25);
+        }
+
+        .orange-core {
+            --border-color: rgba(234, 88, 12, 0.3);
+            --border-hover: #ea580c;
+            --glow-color: rgba(234, 88, 12, 0.55);
+            --icon-bg: linear-gradient(135deg, #3d1405 0%, #140501 100%);
+            --icon-inner-glow: rgba(234, 88, 12, 0.25);
+        }
+
+        .red-core {
+            --border-color: rgba(239, 68, 68, 0.3);
+            --border-hover: #ef4444;
+            --glow-color: rgba(239, 68, 68, 0.55);
+            --icon-bg: linear-gradient(135deg, #3d0a0a 0%, #140202 100%);
+            --icon-inner-glow: rgba(239, 68, 68, 0.25);
+        }
+
+        .blue-core {
+            --border-color: rgba(37, 99, 235, 0.3);
+            --border-hover: #2563eb;
+            --glow-color: rgba(37, 99, 235, 0.55);
+            --icon-bg: linear-gradient(135deg, #0b1c3d 0%, #020714 100%);
+            --icon-inner-glow: rgba(37, 99, 235, 0.25);
+        }
+
+        @keyframes bell-ring {
+            0% { transform: rotate(-8deg); }
+            100% { transform: rotate(8deg); }
         }
     </style>
 </head>
 <body>
 
+    <!-- Header Section -->
     <div class="header">
         <h1 class="logo">AZAN TOOLS</h1>
-        <div class="subtitle">Welcome To Our Toolkit V 1.0</div>
+        <div class="subtitle">Welcome To Our Toolkit V 4.1</div>
     </div>
 
+    <!-- Search Engine Bar -->
     <div class="search-container">
-        <input type="text" placeholder="Search tools..." class="search-bar">
+        <input type="text" id="toolSearch" placeholder="🔍 Search..." class="search-bar">
     </div>
 
+    <!-- System Notifications Panel -->
+    <div class="notifications-panel" onclick="alert('All system modules operational. Dashboard V4.1 is active.')">
+        <div class="notif-left">
+            <span class="notif-icon">🔔</span>
+            <span>Notifications</span>
+        </div>
+        <div class="notif-arrow">&gt;</div>
+    </div>
+
+    <!-- FTGM 3-Column Structured Tools Grid -->
     <div class="tools-grid">
         
-        <div class="tool-card" onclick="location.href='voice.html'">
-    <span class="card-icon">🎙️</span>
-    <h3 class="card-title">AI Voice</h3>
-</div>
+        <!-- Row 1 -->
+        <div class="tool-card cyan-core" onclick="location.href='voice.html'">
+            <div class="icon-wrapper"><span class="emoji-icon">🎙️</span></div>
+            <h3 class="card-title">AI Voice</h3>
+        </div>
 
-
-        <div class="tool-card" onclick="location.href='iptracker.html'"
-            <span class="card-icon">🌐</span>
+        <div class="tool-card cyan-core" onclick="location.href='iptracker.html'">
+            <div class="icon-wrapper"><span class="emoji-icon">🌐</span></div>
             <h3 class="card-title">IP Tracker</h3>
         </div>
 
-        <div class="tool-card" onclick="location.href='password.html'">
-    <span class="card-icon">🔑</span>
-    <h3 class="card-title">Password Gen</h3>
-</div>
+        <div class="tool-card cyan-core" onclick="location.href='password.html'">
+            <div class="icon-wrapper"><span class="emoji-icon">🔑</span></div>
+            <h3 class="card-title">Password Gen</h3>
+        </div>
 
-                       <div class="tool-card" onclick="location.href='bgremover.html'">
-            <span class="card-icon">🖼️</span>
+        <!-- Row 2 -->
+        <div class="tool-card cyan-core" onclick="location.href='bgremover.html'">
+            <div class="icon-wrapper"><span class="emoji-icon">🖼️</span></div>
             <h3 class="card-title">Remove BG</h3>
         </div>
 
-        <div class="tool-card" onclick="location.href='traffic-sim.html'" style="border-color: #10b981; box-shadow: 0 0 10px rgba(16,185,129,0.2);">
-            <span class="card-icon">⚡</span>
-            <h3 class="card-title" style="color: #10b981;">Traffic Sim</h3>
+        <div class="tool-card green-core" onclick="location.href='traffic-sim.html'">
+            <div class="icon-wrapper"><span class="emoji-icon">⚡</span></div>
+            <h3 class="card-title">Traffic Sim</h3>
         </div>
-        <div class="tool-card" onclick="location.href='breach.html'" style="border-color: #ffaa00; box-shadow: 0 0 10px rgba(255,170,0,0.2);">
-            <span class="card-icon">🔍</span>
-            <h3 class="card-title" style="color: #ffaa00;">Breach Check</h3>
+
+        <div class="tool-card yellow-core" onclick="location.href='breach.html'">
+            <div class="icon-wrapper"><span class="emoji-icon">🔍</span></div>
+            <h3 class="card-title">Breach Check</h3>
         </div>
-<div class="tool-card" onclick="location.href='portscanner.html'" style="border-color: #00ffcc; box-shadow: 0 0 10px rgba(0,255,204,0.2);">
-    <span class="card-icon">🌐</span>
-    <h3 class="card-title" style="color: #00ffcc;">Port Scanner</h3>
-</div>
-<div class="tool-card" onclick="location.href='osint.html'" style="border-color: #ff00ff; box-shadow: 0 0 10px rgba(255,0,255,0.2);">
-    <span class="card-icon">🕵️‍♂️</span>
-    <h3 class="card-title" style="color: #ff00ff;">Target Intel</h3>
-</div>
-<div class="tool-card" onclick="location.href='headers.html'" style="border-color: #ffcc00; box-shadow: 0 0 10px rgba(255,204,0,0.2);">
-    <span class="card-icon">🛡️</span>
-    <h3 class="card-title" style="color: #ffcc00;">Header Audit</h3>
-</div>
-<div class="tool-card" onclick="location.href='hash-tool.html'" style="border-color: #a371f7; box-shadow: 0 0 10px rgba(163,113,247,0.2);">
-    <span class="card-icon">🔐</span>
-    <h3 class="card-title" style="color: #a371f7;">Hash Crypto</h3>
-</div>
-<div class="tool-card" onclick="location.href='dns-lookup.html'" style="border-color: #38bdf8; box-shadow: 0 0 10px rgba(56,189,248,0.2);">
-    <span class="card-icon">📡</span>
-    <h3 class="card-title" style="color: #38bdf8;">DNS Lookup</h3>
-</div>
-<div class="tool-card" onclick="location.href='social-scanner.html'" style="border-color: #ee1d52; box-shadow: 0 0 10px rgba(238,29,82,0.2);">
-    <span class="card-icon">🎵</span>
-    <h3 class="card-title" style="color: #ee1d52;">Social Intel</h3>
-</div>
-<div class="tool-card" onclick="location.href='payload-gen.html'" style="border-color: #ff5500; box-shadow: 0 0 10px rgba(255,85,0,0.2);">
-    <span class="card-icon">🪓</span>
-    <h3 class="card-title" style="color: #ff5500;">Payload Gen</h3>
-</div>
-<div class="tool-card" onclick="location.href='password-tool.html'" style="border-color: #10b981; box-shadow: 0 0 10px rgba(16,185,129,0.2);">
-    <span class="card-icon">🔐</span>
-    <h3 class="card-title" style="color: #10b981;">Pass Shield</h3>
-</div>
-<div class="tool-card" onclick="location.href='ai-shell.html'" style="border-color: #39ff14; box-shadow: 0 0 10px rgba(57,255,20,0.2);">
-    <span class="card-icon">⚡</span>
-    <h3 class="card-title" style="color: #39ff14;">AI Core Shell</h3>
-</div>
-<div class="tool-card" onclick="location.href='encoder-decoder.html'" style="border-color: #e11d48; box-shadow: 0 0 10px rgba(225,29,72,0.2);">
-    <span class="card-icon">⚙️</span>
-    <h3 class="card-title" style="color: #e11d48;">Cyber Cipher</h3>
-</div>
-<div class="tool-card" onclick="location.href='ua-inspector.html'" style="border-color: #22d3ee; box-shadow: 0 0 10px rgba(34, 211, 238, 0.2);">
-    <span class="card-icon">🔍</span>
-    <h3 class="card-title" style="color: #22d3ee;">UA Inspector</h3>
-</div>
-<div class="tool-card" onclick="location.href='dictionary.html'" style="border-color: #a855f7; box-shadow: 0 0 10px rgba(168,85,247,0.2);">
-    <span class="card-icon">📚</span>
-    <h3 class="card-title" style="color: #a855f7;">Smart Dict</h3>
-</div>
-<div class="tool-card" onclick="location.href='linguist-tool.html'" style="border-color: #38bdf8; box-shadow: 0 0 10px rgba(56,189,248,0.2);">
-    <span class="card-icon">📝</span>
-    <h3 class="card-title" style="color: #38bdf8;">Lingo Analyze</h3>
-</div>
-<div class="tool-card" onclick="location.href='media-downloader.html'" style="border-color: #00ffcc; box-shadow: 0 0 10px rgba(0,255,210,0.2);">
-    <span class="card-icon">📥</span>
-    <h3 class="card-title" style="color: #00ffcc;">Media Fetch</h3>
-</div>
-<div class="tool-card" onclick="location.href='media-fetcher.html'" style="border-color: #00ffcc; box-shadow: 0 0 10px rgba(0,255,210,0.2);">
-    <span class="card-icon">📥</span>
-    <h3 class="card-title" style="color: #00ffcc;">Media Fetcher</h3>
-</div>
-<div class="tool-card" onclick="location.href='vuln-scanner.html'" style="border-color: #ff3333; box-shadow: 0 0 10px rgba(255,51,51,0.2);">
-    <span class="card-icon">⚠️</span>
-    <h3 class="card-title" style="color: #ff3333;">Vuln Audit</h3>
-</div>
-<div class="tool-card" onclick="location.href='exploit-binder.html'" style="border-color: #ea580c; box-shadow: 0 0 10px rgba(234,88,12,0.2);">
-    <span class="card-icon">💥</span>
-    <h3 class="card-title" style="color: #ea580c;">Exploit Core</h3>
-</div>
-<div class="tool-card" onclick="location.href='editor-gateway.html'" style="border-color: #2563eb; box-shadow: 0 0 10px rgba(37,99,235,0.2);">
-    <span class="card-icon">🎬</span>
-    <h3 class="card-title" style="color: #2563eb;">Editor Hub</h3>
-</div>
-<div class="tool-card" onclick="location.href='reels.html'">
-    <span class="card-icon">⬇️</span>
-    <h3 class="card-title">Reels Downloader</h3>
-</div>
 
-<div class="tool-card" onclick="location.href='fb.html'">
-    <span class="card-icon">📘</span>
-    <h3 class="card-title">FB Downloader</h3>
-</div>
-<div class="tool-card" onclick="location.href='thumbnail-saver.html'">
-    <div class="card-icon" style="width: 55px; height: 38px; background: #ff0000; border-radius: 12px; display: flex; align-items: center; justify-content: center; position: relative; box-shadow: 0 4px 10px rgba(255,0,0,0.3); margin: 0 auto 10px auto;">
-        <div style="width: 0; height: 0; border-top: 10px solid transparent; border-bottom: 10px solid transparent; border-left: 18px solid #ffffff; margin-left: 4px;"></div>
+        <!-- Row 3 -->
+        <div class="tool-card green-core" onclick="location.href='portscanner.html'">
+            <div class="icon-wrapper"><span class="emoji-icon">🌐</span></div>
+            <h3 class="card-title">Port Scanner</h3>
+        </div>
+
+        <div class="tool-card pink-core" onclick="location.href='osint.html'">
+            <div class="icon-wrapper"><span class="emoji-icon">🕵️‍♂️</span></div>
+            <h3 class="card-title">Target Intel</h3>
+        </div>
+
+        <div class="tool-card yellow-core" onclick="location.href='headers.html'">
+            <div class="icon-wrapper"><span class="emoji-icon">🛡️</span></div>
+            <h3 class="card-title">Header Audit</h3>
+        </div>
+
+        <!-- Row 4 -->
+        <div class="tool-card purple-core" onclick="location.href='hash-tool.html'">
+            <div class="icon-wrapper"><span class="emoji-icon">🔐</span></div>
+            <h3 class="card-title">Hash Crypto</h3>
+        </div>
+
+        <div class="tool-card cyan-core" onclick="location.href='dns-lookup.html'">
+            <div class="icon-wrapper"><span class="emoji-icon">📡</span></div>
+            <h3 class="card-title">DNS Lookup</h3>
+        </div>
+
+        <div class="tool-card pink-core" onclick="location.href='social-scanner.html'">
+            <div class="icon-wrapper"><span class="emoji-icon">🎵</span></div>
+            <h3 class="card-title">Social Intel</h3>
+        </div>
+
+        <!-- Row 5 -->
+        <div class="tool-card orange-core" onclick="location.href='payload-gen.html'">
+            <div class="icon-wrapper"><span class="emoji-icon">🪓</span></div>
+            <h3 class="card-title">Payload Gen</h3>
+        </div>
+
+        <div class="tool-card green-core" onclick="location.href='password-tool.html'">
+            <div class="icon-wrapper"><span class="emoji-icon">🔐</span></div>
+            <h3 class="card-title">Pass Shield</h3>
+        </div>
+
+        <div class="tool-card green-core" onclick="location.href='ai-shell.html'">
+            <div class="icon-wrapper"><span class="emoji-icon">⚡</span></div>
+            <h3 class="card-title">AI Core Shell</h3>
+        </div>
+
+        <!-- Row 6 -->
+        <div class="tool-card red-core" onclick="location.href='encoder-decoder.html'">
+            <div class="icon-wrapper"><span class="emoji-icon">⚙️</span></div>
+            <h3 class="card-title">Cyber Cipher</h3>
+        </div>
+
+        <div class="tool-card cyan-core" onclick="location.href='ua-inspector.html'">
+            <div class="icon-wrapper"><span class="emoji-icon">🔍</span></div>
+            <h3 class="card-title">UA Inspector</h3>
+        </div>
+
+        <div class="tool-card purple-core" onclick="location.href='dictionary.html'">
+            <div class="icon-wrapper"><span class="emoji-icon">📚</span></div>
+            <h3 class="card-title">Smart Dict</h3>
+        </div>
+
+        <!-- Row 7 -->
+        <div class="tool-card cyan-core" onclick="location.href='linguist-tool.html'">
+            <div class="icon-wrapper"><span class="emoji-icon">📝</span></div>
+            <h3 class="card-title">Lingo Analyze</h3>
+        </div>
+
+        <div class="tool-card cyan-core" onclick="location.href='media-downloader.html'">
+            <div class="icon-wrapper"><span class="emoji-icon">📥</span></div>
+            <h3 class="card-title">Media Fetch</h3>
+        </div>
+
+        <div class="tool-card cyan-core" onclick="location.href='media-fetcher.html'">
+            <div class="icon-wrapper"><span class="emoji-icon">📥</span></div>
+            <h3 class="card-title">Media Fetcher</h3>
+        </div>
+
+        <!-- Row 8 -->
+        <div class="tool-card red-core" onclick="location.href='vuln-scanner.html'">
+            <div class="icon-wrapper"><span class="emoji-icon">⚠️</span></div>
+            <h3 class="card-title">Vuln Audit</h3>
+        </div>
+
+        <div class="tool-card orange-core" onclick="location.href='exploit-binder.html'">
+            <div class="icon-wrapper"><span class="emoji-icon">💥</span></div>
+            <h3 class="card-title">Exploit Core</h3>
+        </div>
+
+        <div class="tool-card blue-core" onclick="location.href='editor-gateway.html'">
+            <div class="icon-wrapper"><span class="emoji-icon">🎬</span></div>
+            <h3 class="card-title">Editor Hub</h3>
+        </div>
+
+        <!-- Row 9 -->
+        <div class="tool-card cyan-core" onclick="location.href='reels.html'">
+            <div class="icon-wrapper"><span class="emoji-icon">⬇️</span></div>
+            <h3 class="card-title">Reels Down</h3>
+        </div>
+
+        <div class="tool-card cyan-core" onclick="location.href='fb.html'">
+            <div class="icon-wrapper"><span class="emoji-icon">📘</span></div>
+            <h3 class="card-title">FB Downloader</h3>
+        </div>
+
+        <div class="tool-card red-core" onclick="location.href='thumbnail-saver.html'">
+            <div class="icon-wrapper">
+                <div style="width: 44px; height: 30px; background: #ff0000; border-radius: 8px; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 8px rgba(255,0,0,0.35); position: relative; z-index: 2;">
+                    <div style="width: 0; height: 0; border-top: 6px solid transparent; border-bottom: 6px solid transparent; border-left: 10px solid #ffffff; margin-left: 2px;"></div>
+                </div>
+            </div>
+            <h3 class="card-title">Thumb Saver</h3>
+        </div>
+
+        <!-- Row 10 -->
+        <div class="tool-card purple-core" onclick="location.href='post-maker.html'">
+            <div class="icon-wrapper">
+                <div style="width: 42px; height: 42px; background: linear-gradient(45deg, #2196f3, #a55eea, #ff7675); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: sans-serif; font-weight: bold; color: #ffffff; font-size: 15px; box-shadow: 0 3px 8px rgba(0,0,0,0.3); position: relative; z-index: 2;">P</div>
+            </div>
+            <h3 class="card-title">Post Maker</h3>
+        </div>
+
+        <div class="tool-card cyan-core" onclick="location.href='lr-presets.html'">
+            <div class="icon-wrapper">
+                <div style="width: 42px; height: 42px; background: #001e36; border: 1.5px solid #00efff; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: 'Segoe UI', sans-serif; font-weight: 700; color: #00efff; font-size: 14px; position: relative; z-index: 2;">Lr</div>
+            </div>
+            <h3 class="card-title">LR Presets</h3>
+        </div>
+
+        <div class="tool-card pink-core" onclick="location.href='tiktok.html'">
+            <div class="icon-wrapper"><span class="emoji-icon">🎵</span></div>
+            <h3 class="card-title">Tiktok Down</h3>
+        </div>
+
+        <!-- Row 11 -->
+        <div class="tool-card cyan-core" onclick="location.href='capcut-pro.html'">
+            <div class="icon-wrapper"><span class="emoji-icon">⭐</span></div>
+            <h3 class="card-title">CapCut Pro</h3>
+        </div>
+
+        <div class="tool-card cyan-core" onclick="location.href='capcut-saver.html'">
+            <div class="icon-wrapper"><span class="emoji-icon">🎬</span></div>
+            <h3 class="card-title">Capcut Saver</h3>
+        </div>
+
+        <div class="tool-card cyan-core" onclick="location.href='free-hosting.html'">
+            <div class="icon-wrapper">
+                <div style="width: 44px; height: 44px; background: linear-gradient(135deg, #0f172a, #1e293b); border: 1.8px solid #22d3ee; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #22d3ee; position: relative; z-index: 2;">
+                    ☁️
+                    <span style="position: absolute; top: -4px; right: -4px; font-size: 6px; background: #22d3ee; color: #000; font-weight: 900; padding: 0.5px 2px; border-radius: 3px;">HOST</span>
+                </div>
+            </div>
+            <h3 class="card-title">Free Hosting</h3>
+        </div>
+
+        <!-- Row 12 -->
+        <div class="tool-card purple-core" onclick="location.href='os-checker.html'">
+            <div class="icon-wrapper">
+                <div style="width: 44px; height: 44px; background: #111827; border: 1.8px solid #a855f7; border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #22c55e; position: relative; z-index: 2;">
+                    <span style="font-size: 13px; color: #ffffff; text-shadow: 0 0 4px #22c55e;">∞</span>
+                    <span style="font-size: 6px; background: #22c55e; color: #000; padding: 1px 2px; border-radius: 2px; font-weight: 900; margin-top: -1px;">MD-BOT</span>
+                </div>
+            </div>
+            <h3 class="card-title">WA Bot</h3>
+        </div>
+
+        <div class="tool-card cyan-core" onclick="location.href='assignment-maker.html'">
+            <div class="icon-wrapper">
+                <div style="width: 44px; height: 44px; background: linear-gradient(135deg, #ffffff, #f8fafc); border: 1.2px solid #e2e8f0; border-radius: 10px; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 6px rgba(0,0,0,0.15); font-size: 20px; position: relative; z-index: 2;">
+                    📝
+                </div>
+            </div>
+            <h3 class="card-title">Assign Maker</h3>
+        </div>
+
     </div>
-    <h3 class="card-title">Thumbnail Saver</h3>
-</div>
 
-<div class="tool-card" onclick="location.href='post-maker.html'">
-    <div class="card-icon" style="width: 50px; height: 50px; background: linear-gradient(45deg, #2196f3, #a55eea, #ff7675); border-radius: 15px; display: flex; align-items: center; justify-content: center; font-family: sans-serif; font-weight: bold; color: #ffffff; font-size: 20px; box-shadow: 0 4px 12px rgba(165,94,234,0.4); margin: 0 auto 10px auto;">
-        P
-    </div>
-    <h3 class="card-title">Post Maker</h3>
-</div>
+    <!-- Real-time Filter Engine -->
+    <script>
+        const searchInput = document.getElementById('toolSearch');
+        const toolCards = document.querySelectorAll('.tool-card');
 
-<div class="tool-card" onclick="location.href='lr-presets.html'">
-    <div class="card-icon" style="width: 50px; height: 50px; background: #001e36; border: 2px solid #00efff; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-family: 'Segoe UI', sans-serif; font-weight: 700; color: #00efff; font-size: 20px; box-shadow: 0 4px 12px rgba(0,239,255,0.25); margin: 0 auto 10px auto; letter-spacing: -1px;">
-        Lr
-    </div>
-    <h3 class="card-title">1200+ LR Presets</h3>
-</div>
-
-<div class="tool-card" onclick="location.href='tiktok.html'">
-    <span class="card-icon">🎵</span>
-    <h3 class="card-title">Tiktok Downloader</h3>
-</div>
-
-<div class="tool-card" onclick="location.href='capcut-pro.html'">
-    <span class="card-icon">⭐</span>
-    <h3 class="card-title">CapCut Pro</h3>
-</div>
-
-<div class="tool-card" onclick="location.href='capcut-saver.html'">
-    <span class="card-icon">🎬</span>
-    <h3 class="card-title">Capcut Saver</h3>
-</div>
-<div class="tool-card" style="--color: #22d3ee; --glow: rgba(34,211,238,0.4);" onclick="location.href='free-hosting.html'">
-    <div class="card-icon" style="width: 52px; height: 52px; background: linear-gradient(135deg, #0f172a, #1e293b); border: 2px solid #22d3ee; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 26px; color: #22d3ee; box-shadow: 0 0 15px rgba(34, 211, 238, 0.6), inset 0 0 8px rgba(34, 211, 238, 0.3); margin: 0 auto 10px auto; position: relative;">
-        ☁️
-        <span style="position: absolute; top: -4px; right: -4px; font-size: 10px; background: #22d3ee; color: #000; font-weight: 900; padding: 1px 4px; border-radius: 6px; letter-spacing: 0.5px;">HOST</span>
-    </div>
-    <h3 class="card-title">Free Hosting</h3>
-</div>
-
-<div class="tool-card" style="--color: #a855f7; --glow: rgba(168,85,247,0.4);" onclick="location.href='os-checker.html'">
-    <div class="card-icon" style="width: 52px; height: 52px; background: #111827; border: 2px solid #a855f7; border-radius: 15px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 14px #a855f7; margin: 0 auto 10px auto; overflow: hidden; position: relative;">
-        <span style="font-size: 18px; color: #3ddc84; margin-right: 2px; filter: drop-shadow(0 0 4px #3ddc84);">🤖</span>
-        <span style="font-size: 18px; color: #ffffff; margin-left: 2px; filter: drop-shadow(0 0 4px #fff);">🍏</span>
-        <span style="position: absolute; bottom: 1px; font-size: 9px; color: #a855f7; font-weight: bold; font-family: monospace;">SYSTEM</span>
-    </div>
-    <h3 class="card-title">OS Compatibility</h3>
-</div>
-
-<div class="tool-card" style="--color: #10b981; --glow: rgba(16,185,129,0.4);" onclick="location.href='html-source.html'">
-    <div class="card-icon" style="width: 52px; height: 52px; background: #052e16; border: 2px solid #10b981; border-radius: 15px; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 0 15px rgba(16, 185, 129, 0.6); margin: 0 auto 10px auto; font-family: 'Courier New', monospace; font-weight: bold;">
-        <span style="font-size: 16px; color: #10b981; letter-spacing: -1px; margin-bottom: -2px;">&lt;/&gt;</span>
-        <span style="font-size: 9px; background: #10b981; color: #000; padding: 0px 3px; border-radius: 3px; font-weight: 900;">HTML</span>
-    </div>
-    <h3 class="card-title">HTML Template</h3>
-</div>
-<!-- ================= PICTURE 1000133423.jpg KE NEW STYLISH CARDS ================= -->
-
-<!-- 1. Search Image Card (Original Style: 9-Box Premium Photo Album Grid) -->
-<div class="tool-card" onclick="location.href='search-image.html'">
-    <div class="card-icon" style="width: 55px; height: 55px; background: #ffffff; border: 2px solid #00f2fe; border-radius: 16px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; padding: 5px; box-sizing: border-box; box-shadow: 0 0 15px rgba(0,242,254,0.5); margin: 0 auto 12px auto;">
-        <div style="background: linear-gradient(to bottom, #ff7675, #d63031); border-radius: 3px;"></div>
-        <div style="background: linear-gradient(to bottom, #74b9ff, #0984e3); border-radius: 3px;"></div>
-        <div style="background: linear-gradient(to bottom, #55efc4, #00b894); border-radius: 3px;"></div>
-        <div style="background: linear-gradient(to bottom, #ffeaa7, #fdcb6e); border-radius: 3px;"></div>
-        <div style="background: linear-gradient(to bottom, #a29bfe, #6c5ce7); border-radius: 3px;"></div>
-        <div style="background: linear-gradient(to bottom, #fab1a0, #e17055); border-radius: 3px;"></div>
-        <div style="background: linear-gradient(to bottom, #00cec9, #008080); border-radius: 3px;"></div>
-        <div style="background: linear-gradient(to bottom, #636e72, #2d3436); border-radius: 3px;"></div>
-        <div style="background: linear-gradient(to bottom, #fd79a8, #e84393); border-radius: 3px;"></div>
-    </div>
-    <h3 class="card-title">Search Image</h3>
-</div>
-
-<!-- 2. X Calculator Card (Original Style: Cyber Dark Grid with Neon Plus/Minus & Lock) -->
-<div class="tool-card" onclick="location.href='x-calculator.html'">
-    <div class="card-icon" style="width: 55px; height: 55px; background: linear-gradient(145deg, #0b1528, #040814); border: 2px solid #00d2ff; border-radius: 16px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px; padding: 6px; box-sizing: border-box; box-shadow: 0 0 18px rgba(0,210,255,0.6), inset 0 0 8px rgba(0,210,255,0.4); margin: 0 auto 12px auto; color: #00d2ff; font-family: 'Segoe UI', sans-serif; font-weight: 900; font-size: 14px; align-items: center; justify-items: center;">
-        <div style="text-shadow: 0 0 5px #00d2ff;">＋</div>
-        <div style="text-shadow: 0 0 5px #00d2ff;">－</div>
-        <div style="text-shadow: 0 0 5px #00d2ff;">×</div>
-        <div style="font-size: 11px; filter: drop-shadow(0 0 4px #ff0055);">🔒</div>
-    </div>
-    <h3 class="card-title">X Calculator</h3>
-</div>
-
-<!-- 3. Modding Tools Card (Original Style: Deep Blue Microchip System with Glowing Gear) -->
-<div class="tool-card" onclick="location.href='modding-tools.html'">
-    <div class="card-icon" style="width: 55px; height: 55px; background: radial-gradient(circle, #2563eb 0%, #1d4ed8 70%, #1e3a8a 100%); border: 2px solid #60a5fa; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 0 18px rgba(37,99,235,0.7), inset 0 0 10px rgba(255,255,255,0.2); margin: 0 auto 12px auto; color: #ffffff; font-family: sans-serif; font-weight: 800; font-size: 10px; letter-spacing: 0.5px;">
-        <span style="font-size: 16px; color: #93c5fd; text-shadow: 0 0 6px #ffffff; margin-bottom: -1px;">⚙️</span>
-        <span style="font-size: 8px; color: #bfdbfe; font-weight: 900;">MODS</span>
-    </div>
-    <h3 class="card-title">Modding Tools</h3>
-</div>
-
-<!-- 4. Telenor Quiz Card (Original Style: Light Blue 3D Shape with Premium Gift Ribbon) -->
-<div class="tool-card" onclick="location.href='telenor-quiz.html'">
-    <div class="card-icon" style="width: 55px; height: 55px; background: linear-gradient(135deg, #38bdf8, #0284c7); border: 2px solid #e0f2fe; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(2,132,199,0.5), inset 0 -4px 8px rgba(0,0,0,0.2); margin: 0 auto 12px auto; color: white; position: relative;">
-        <span style="font-size: 24px; filter: drop-shadow(0 3px 5px rgba(0,0,0,0.25)); font-weight: bold;">🎁</span>
-        <span style="position: absolute; bottom: 3px; font-size: 7px; font-weight: 900; background: #fff; color: #0284c7; padding: 1px 4px; border-radius: 4px; letter-spacing: 0.3px; box-shadow: 0 2px 4px rgba(0,0,0,0.15);">QUIZ</span>
-    </div>
-    <h3 class="card-title">Telenor Quiz</h3>
-</div>
-
-<!-- 5. Whatsapp BOT Card (Original Style: Black Matrix Hexagon Terminal with Infinity Logo) -->
-<div class="tool-card" onclick="location.href='whatsapp-bot.html'">
-    <div class="card-icon" style="width: 55px; height: 55px; background: linear-gradient(145deg, #052e16, #000000); border: 2px solid #22c55e; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 0 18px #22c55e, inset 0 0 8px rgba(34,197,94,0.4); margin: 0 auto 12px auto; color: #22c55e; font-family: 'Arial Black', sans-serif; font-weight: 900;">
-        <span style="font-size: 15px; color: #ffffff; letter-spacing: -0.5px; text-shadow: 0 0 8px #22c55e;">∞</span>
-        <span style="font-size: 8px; background: #22c55e; color: #000000; padding: 1px 4px; border-radius: 3px; font-weight: 900; margin-top: -2px; letter-spacing: 0.5px;">MD-BOT</span>
-    </div>
-    <h3 class="card-title">Whatsapp BOT</h3>
-</div>
-
-<!-- 6. Assignment Maker Card (Original Style: ScholarCraft White Paper & Blue Book Cover) -->
-<div class="tool-card" onclick="location.href='assignment-maker.html'">
-    <div class="card-icon" style="width: 55px; height: 55px; background: linear-gradient(135deg, #ffffff, #f8fafc); border: 2px solid #e2e8f0; border-radius: 16px; display: flex; flex-direction: column; 
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            
+            toolCards.forEach(card => {
+                const title = card.querySelector('.card-title').innerText.toLowerCase();
+                if (title.includes(query)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>             
