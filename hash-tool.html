@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AZAN TOOLS - Enterprise Hash Decryption Suite</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: #070a13; }
+        ::-webkit-scrollbar-thumb { background: #4f46e5; border-radius: 4px; }
+        .terminal-glow { text-shadow: 0 0 4px rgba(147, 51, 234, 0.4); }
+    </style>
+</head>
+<body class="bg-[#040711] text-gray-100 font-sans min-h-screen p-3 md:p-8 selection:bg-indigo-600 selection:text-white">
+
+    <div class="max-w-7xl mx-auto bg-[#0a0f1d] border border-purple-500/20 rounded-2xl shadow-2xl p-4 md:p-8 relative overflow-hidden">
+        
+        <div class="absolute inset-0 bg-[linear-gradient(to_right,#312e8110_1px,transparent_1px),linear-gradient(to_bottom,#312e8110_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none"></div>
+        <div class="absolute -top-40 -left-40 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-40 -right-40 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="text-center border-b border-gray-800/80 pb-6 mb-8 relative z-10">
+            <div class="inline-flex items-center gap-2 bg-indigo-950/40 border border-indigo-500/40 px-4 py-1.5 rounded-full text-xs text-indigo-400 font-mono mb-3 tracking-wider">
+                <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                <span>SYSTEM STATUS: CORE ACCELERATION MODE</span>
+            </div>
+            <h1 class="text-3xl md:text-6xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-indigo-400 to-cyan-400">
+                ⚡ AZAN HASH DECRYPTION SUITE
+            </h1>
+            <p class="text-gray-400 text-xs mt-2 font-mono tracking-widest uppercase">
+                Next-Gen Multi-Algorithmic Processing Node • Enterprise v4.0 Ultimate
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 relative z-10">
+            
+            <div class="lg:col-span-5 space-y-6">
+                
+                <div class="bg-[#0f162a] p-5 rounded-xl border border-gray-800/80 shadow-xl">
+                    <h3 class="text-xs font-bold text-indigo-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-microchip"></i> Cryptographic Generator Vector
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-[10px] font-mono text-gray-400 mb-1.5">Plaintext Core String Input:</label>
+                            <input type="text" id="textInput" placeholder="e.g., admin@123, khan786" class="w-full bg-[#151f38] border border-gray-700/80 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-indigo-500 font-mono transition">
+                        </div>
+                        <button onclick="generateAllHashes()" class="w-full bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-extrabold py-3 rounded-lg shadow-lg shadow-indigo-900/30 transition transform active:scale-98 text-xs tracking-widest uppercase">
+                            EXECUTE TRANSFORM MATRIX
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-[#0f162a] p-5 rounded-xl border border-gray-800/80 shadow-xl space-y-4">
+                    <h3 class="text-xs font-bold text-purple-400 uppercase tracking-widest flex items-center gap-2">
+                        <i class="fa-solid fa-sliders"></i> Attack Vector Configuration
+                    </h3>
+                    
+                    <div>
+                        <label class="block text-[10px] font-mono text-gray-400 mb-1.5">Dictionary Strategy Mode:</label>
+                        <select id="attackMode" onchange="toggleWordlistSelector()" class="w-full bg-[#151f38] border border-gray-700 rounded-lg px-3 py-2 text-xs font-mono text-white focus:outline-none focus:border-purple-500">
+                            <option value="internal">Enterprise Built-in Array (Super Fast)</option>
+                            <option value="external">External Custom (.txt) Wordlist Vector</option>
+                        </select>
+                    </div>
+
+                    <div id="fileInputContainer" class="hidden border border-dashed border-purple-900/60 p-3 rounded-lg bg-purple-950/10">
+                        <label class="block text-[10px] font-mono text-purple-300 mb-1">Upload Real Dictionary File (.txt):</label>
+                        <input type="file" id="wordlistFile" accept=".txt" class="w-full text-xs font-mono text-gray-400 file:mr-2 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:font-mono file:bg-purple-900 file:text-purple-200 hover:file:bg-purple-800">
+                    </div>
+                </div>
+
+                <div class="bg-[#0f162a] p-5 rounded-xl border border-gray-800/80 shadow-xl font-mono text-xs space-y-2.5">
+                    <h4 class="text-[11px] font-bold text-cyan-400 uppercase tracking-widest mb-2"><i class="fa-solid fa-gauge-high"></i> Performance Telemetry</h4>
+                    <div class="flex justify-between border-b border-gray-800/40 pb-1.5">
+                        <span class="text-gray-500">Keys Loaded:</span>
+                        <span class="text-purple-400 font-bold" id="dbSizeDisplay">...</span>
+                    </div>
+                    <div class="flex justify-between border-b border-gray-800/40 pb-1.5">
+                        <span class="text-gray-500">Processing Node:</span>
+                        <span class="text-cyan-400 font-bold">Asynchronous Web Stack</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-500">Cracking Speed:</span>
+                        <span class="text-green-400 font-bold" id="speedDisplay">0 H/s</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="lg:col-span-7 bg-[#0f162a] p-5 rounded-xl border border-gray-800/80 shadow-xl space-y-4">
+                <h3 class="text-xs font-bold text-cyan-400 uppercase tracking-widest mb-1 flex justify-between items-center">
+                    <span>Active Target Matrices</span>
+                    <span class="text-[9px] bg-cyan-950 text-cyan-400 px-2 py-0.5 rounded border border-cyan-800/40 font-mono">Live Crypto Framework</span>
+                </h3>
+                
+                <div class="bg-[#151f38] p-3 rounded-lg border border-gray-800/60">
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="text-[11px] font-mono font-bold text-gray-400">MD5 Matrix (32 Chars)</span>
+                        <span class="text-[9px] bg-red-950/40 text-red-400 px-1.5 py-0.2 rounded border border-red-900/30">Insecure Legacy</span>
+                    </div>
+                    <div class="flex gap-2 items-center">
+                        <div id="md5Out" class="w-full font-mono text-xs overflow-x-auto whitespace-nowrap text-gray-400 tracking-wider">...</div>
+                        <button onclick="copyHash('md5Out')" class="bg-gray-800 hover:bg-gray-700 p-2 rounded text-xs border border-gray-700"><i class="fa-regular fa-copy"></i></button>
+                    </div>
+                </div>
+
+                <div class="bg-[#151f38] p-3 rounded-lg border border-gray-800/60">
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="text-[11px] font-mono font-bold text-gray-400">SHA-1 Matrix (40 Chars)</span>
+                        <span class="text-[9px] bg-amber-950/40 text-amber-400 px-1.5 py-0.2 rounded border border-amber-900/30">Weak Vector</span>
+                    </div>
+                    <div class="flex gap-2 items-center">
+                        <div id="sha1Out" class="w-full font-mono text-xs overflow-x-auto whitespace-nowrap text-gray-400 tracking-wider">...</div>
+                        <button onclick="copyHash('sha1Out')" class="bg-gray-800 hover:bg-gray-700 p-2 rounded text-xs border border-gray-700"><i class="fa-regular fa-copy"></i></button>
+                    </div>
+                </div>
+
+                <div class="bg-[#151f38] p-3 rounded-lg border border-gray-800/60">
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="text-[11px] font-mono font-bold text-gray-400">SHA-256 Matrix (64 Chars)</span>
+                        <span class="text-[9px] bg-green-950/40 text-green-400 px-1.5 py-0.2 rounded border border-green-800/30">Secure Industry Standard</span>
+                    </div>
+                    <div class="flex gap-2 items-center">
+                        <div id="sha256Out" class="w-full font-mono text-xs overflow-x-auto whitespace-nowrap text-gray-400 tracking-wider">...</div>
+                        <button onclick="copyHash('sha256Out')" class="bg-gray-800 hover:bg-gray-700 p-2 rounded text-xs border border-gray-700"><i class="fa-regular fa-copy"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-[#0f162a] p-5 rounded-xl border border-gray-800/80 shadow-xl space-y-4 mt-6">
+            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 border-b border-gray-800/60 pb-3">
+                <h3 class="text-base font-extrabold text-gray-200 flex items-center gap-2">
+                    <i class="fa-solid fa-terminal text-purple-400"></i> High-Velocity Execution Console
+                </h3>
+                
+                <div class="w-full sm:w-64 bg-gray-950 rounded-full h-2.5 border border-gray-800 overflow-hidden relative">
+                    <div id="progressBar" class="bg-gradient-to-r from-green-500 to-emerald-400 h-full w-0 transition-all duration-75"></div>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-gray-400 mb-1.5">Target Signature String Array Payload:</label>
+                <input type="text" id="targetHash" placeholder="Paste structural hash string signature here..." class="w-full bg-[#151f38] border border-gray-700 rounded-lg px-4 py-3.5 text-xs font-mono text-purple-300 tracking-wider focus:outline-none focus:border-purple-500">
+            </div>
+
+            <button onclick="launchUltimateAttack()" class="w-full bg-gradient-to-r from-purple-950 via-indigo-950 to-purple-950 hover:from-purple-900 hover:to-indigo-900 border border-purple-500/30 text-purple-200 font-black py-4 rounded-xl transition tracking-widest text-xs flex justify-center items-center gap-2 shadow-inner">
+                <i class="fa-solid fa-bolt animate-bounce text-yellow-400"></i> EXECUTE MASSIVE COMPILATION ATTACK VECTORS
+            </button>
+
+            <div class="bg-black/95 rounded-xl p-4 font-mono text-[11px] border border-purple-950/40 h-72 overflow-y-auto space-y-1.5 shadow-2xl tracking-wide terminal-glow" id="terminalConsole">
+                <div class="text-purple-500/60">[SYSTEM MODULE READY]: AZAN TOOLS Core Interface Initialized. Awaiting token data maps...</div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Professional Core Local Wordlist Array
+        const enterpriseWordlist = [
+            "123456", "password", "123456789", "12345678", "12345", "password123", "admin", "admin123", "Admin", "Admin123", 
+            "root", "root123", "administrator", "qwerty", "1234567", "hello", "test", "login", "user", "pass", "khan123", 
+            "khan786", "pakistan", "pakistan123", "Pakistan", "Pakistan123", "pakistan786", "bismillah", "ali123", "ali786", 
+            "google", "youtube", "facebook", "football", "shadow", "welcome", "secret", "superadmin", "access", "main123", 
+            "testing", "database", "system", "123123", "112233", "786786", "malik123", "zain123", "hamza123", "love123", 
+            "freedom", "android", "iphone", "gaming", "hacker", "cyber", "security", "token", "dashboard", "goku123",
+            "Admin@123", "Khan@123", "Ali@123", "Pakistan@786", "Admin786", "1234567890", "letmein", "pussycat"
+        ];
+
+        document.getElementById('dbSizeDisplay').innerText = enterpriseWordlist.length + " Internal Records";
+
+        function toggleWordlistSelector() {
+            const mode = document.getElementById('attackMode').value;
+            const container = document.getElementById('fileInputContainer');
+            if(mode === 'external') {
+                container.classList.remove('hidden');
+                document.getElementById('dbSizeDisplay').innerText = "Pending File Selection...";
+            } else {
+                container.classList.add('hidden');
+                document.getElementById('dbSizeDisplay').innerText = enterpriseWordlist.length + " Internal Records";
+            }
+        }
+
+        // MD5 Core Algorithm Architecture
+        function md5(string) {
+            function k(q,r){string[q>>5]|=128<<q%32;string[14+(q+64>>>9<<4)]=q;var a=1732584193,b=-271733879,c=-1732584194,d=271733878;for(q=0;q<string.length;q+=16){var e=a,f=b,g=c,h=d;a=md5_ff(a,b,c,d,string[q+0],7,-680876936);d=md5_ff(d,a,b,c,string[q+1],12,-389564586);c=md5_ff(c,d,a,b,string[q+2],17,606105819);b=md5_ff(b,c,d,a,string[q+3],22,-1044525330);a=md5_ff(a,b,c,d,string[q+4],7,-176418897);d=md5_ff(d,a,b,c,string[q+5],12,1200080426);c=md5_ff(c,d,a,b,string[q+6],17,-1473231341);b=md5_ff(b,c,d,a,string[q+7],22,-45705983);a=md5_ff(a,b,c,d,string[q+8],7,1770035416);d=md5_ff(d,a,b,c,string[q+9],12,-1958414417);c=md5_ff(c,d,a,b,string[q+10],17,-42063);b=md5_ff(b,c,d,a,string[q+11],22,-1990404162);a=md5_ff(a,b,c,d,string[q+12],7,1804603682);d=md5_ff(d,a,b,c,string[q+13],12,-40341101);c=md5_ff(c,d,a,b,string[q+14],17,-1502002290);b=md5_ff(b,c,d,a,string[q+15],22,1236535329);a=md5_gg(a,b,c,d,string[q+1],5,-165796510);d=md5_gg(d,a,b,c,string[q+6],9,-1069501632);c=md5_gg(c,d,a,b,string[q+11],14,643717713);b=md5_gg(b,c,d,a,string[q+0],20,-373897302);a=md5_gg(a,b,c,d,string[q+5],5,-701558691);d=md5_gg(d,a,b,c,string[q+10],12,38016083);c=md5_gg(c,d,a,b,string[q+15],14,-660478335);b=md5_gg(b,c,d,a,string[q+4],20,-405537848);a=md5_gg(a,b,c,d,string[q+9],5,568446438);d=md5_gg(d,a,b,c,string[q+14],12,-1019803690);c=md5_gg(c,d,a,b,string[q+3],14,-187363961);b=md5_gg(b,c,d,a,string[q+8],20,1163531501);a=md5_gg(a,b,c,d,string[q+13],5,-1444681467);d=md5_gg(d,a,b,c,string[q+2],12,-51403784);c=md5_gg(c,d,a,b,string[q+7],14,1735328473);b=md5_gg(b,c,d,a,string[q+12],20,-1926607734);a=md5_hh(a,b,c,d,string[q+5],4,-378558);d=md5_hh(d,a,b,c,string[q+8],11,-2022574463);c=md5_hh(c,d,a,b,string[q+11],16,1839030562);b=md5_hh(b,c,d,a,string[q+14],23,-35309556);a=md5_hh(a,b,c,d,string[q+1],4,-1530992060);d=md5_hh(d,a,b,c,string[q+4],11,1272893353);c=md5_hh(c,d,a,b,string[q+7],16,-155497632);b=md5_hh(b,c,d,a,string[q+10],23,-1094730640);a=md5_hh(a,b,c,d,string[q+13],4,681279174);d=md5_hh(d,a,b,c,string[q+0],11,-358537222);c=md5_hh(c,d,a,b,string[q+3],16,-722521979);b=md5_hh(b,c,d,a,string[q+6],23,76029189);a=md5_hh(a,b,c,d,string[q+9],4,-640364487);d=md5_hh(d,a,b,c,string[q+12],11,-421815835);c=md5_hh(c,d,a,b,string[q+15],16,530742520);b=md5_hh(b,c,d,a,string[q+2],23,-995338651);a=md5_ii(a,b,c,d,string[q+0],6,-198630844);d=md5_ii(d,a,b,c,string[q+7],10,1126891415);c=md5_ii(c,d,a,b,string[q+14],15,-1416354905);b=md5_ii(b,c,d,a,string[q+5],21,-57434055);a=md5_ii(a,b,c,d,string[q+12],6,1700485571);d=md5_ii(d,a,b,c,string[q+3],10,-1894986606);c=md5_ii(c,d,a,b,string[q+10],15,-1051523);b=md5_ii(b,c,d,a,string[q+1],21,-2054922799);a=md5_ii(a,b,c,d,string[q+8],6,1873313359);d=md5_ii(d,a,b,c,string[q+15],10,-30611744);c=md5_ii(c,d,a,b,string[q+6],15,-1560198380);b=md5_ii(b,c,d,a,string[q+13],21,1309151649);a=md5_ii(a,b,c,d,string[q+4],6,-145523070);d=md5_ii(d,a,b,c,string[q+11],10,-1120210379);c=md5_ii(c,d,a,b,string[q+2],15,718787281);b=md5_ii(b,c,d,a,string[q+9],21,-343485551);a=safe_add(a,e);b=safe_add(b,f);c=safe_add(c,g);d=safe_add(d,h)}return Array(a,b,c,d)}
+            function md5_cmn(q,a,b,x,s,t){return safe_add(bit_rol(safe_add(safe_add(a,q),safe_add(x,t)),s),b)}
+            function md5_ff(a,b,c,d,x,s,t){return md5_cmn((b&c)|((~b)&d),a,b,x,s,t)}
+            function md5_gg(a,b,c,d,x,s,t){return md5_cmn((b&d)|(c&(~d)),a,b,x,s,t)}
+            function md5_hh(a,b,c,d,x,s,t){return md5_cmn(b^c^d,a,b,x,s,t)}
+            function md5_ii(a,b,c,d,x,s,t){return md5_cmn(c^(b|(~d)),a,b,x,s,t)}
+            function safe_add(x,y){var a=(x&65535)+(y&65535),b=(x>>16)+(y>>16)+(a>>16);return(b<<16)|(a&65535)}
+            function bit_rol(num,cnt){return(num<<cnt)|(num>>>32-cnt)}
+            function str2binl(str){var bin=Array(),mask=(1<<8)-1;for(var i=0;i<str.length*8;i+=8)bin[i>>5]|=(str.charCodeAt(i/8)&mask)<<i%32;return bin}
+            function binl2hex(binarray){var hex_tab="0123456789abcdef",str="";for(var i=0;i<binarray.length*4;i++)str+=hex_tab.charAt((binarray[i>>2]>>((i%4)*8+4))&15)+hex_tab.charAt((binarray[i>>2]>>((i%4)*8))&15);return str}
+            return binl2hex(k(str2binl(string),string.length*8));
+        }
+
+        // Async Native Multi-Crypto Broker Sub-System
+        async function cryptoHash(algo, text) {
+            const buffer = new TextEncoder().encode(text);
+            const hashBuffer = await crypto.subtle.digest(algo, buffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        async function generateAllHashes() {
+            const val = document.getElementById('textInput').value.trim();
+            if(!val) { alert("Matrix Vector Error: Input is empty."); return; }
+            document.getElementById('md5Out').innerText = md5(val);
+            document.getElementById('sha1Out').innerText = await cryptoHash('SHA-1', val);
+            document.getElementById('sha256Out').innerText = await cryptoHash('SHA-256', val);
+        }
+
+        function copyHash(elementId) {
+            const text = document.getElementById(elementId).innerText;
+            if (text === "...") return;
+            navigator.clipboard.writeText(text);
+            alert("Signature Token Stored in System Clipboard!");
+        }
+
+        function logToTerminal(text, scheme = 'neutral') {
+            const consoleEl = document.getElementById('terminalConsole');
+            const row = document.createElement('div');
+            if (scheme === 'success') row.className = 'text-emerald-400 font-extrabold tracking-widest bg-emerald-950/20 p-1.5 border border-emerald-900/30 rounded';
+            else if (scheme === 'error') row.className = 'text-rose-500 font-bold';
+            else if (scheme === 'alert') row.className = 'text-cyan-400 font-bold';
+            else row.className = 'text-purple-400/70';
+            
+            row.innerText = text;
+            consoleEl.appendChild(row);
+            consoleEl.scrollTop = consoleEl.scrollHeight;
+        }
+
+        // MAIN REVERSING ACCELERATOR FUNCTION
+        async function launchUltimateAttack() {
+            const targetHash = document.getElementById('targetHash').value.trim().toLowerCase();
+            if(!targetHash) { alert("Execution Aborted: Missing target signature registry."); return; }
+
+            const consoleEl = document.getElementById('terminalConsole');
+            consoleEl.innerHTML = ''; // Reset pipeline viewlogToTerminal(`[+] LOADER: Initializing High-Velocity Collision Vectors...`, 'neutral');
+            logToTerminal(`[+] TARGET IDENTIFIER: ${targetHash}`, 'alert');
+
+            let algo = "Unknown";
+            if (targetHash.length === 32) algo = "MD5";
+            else if (targetHash.length === 40) algo = "SHA-1";
+            else if (targetHash.length === 64) algo = "SHA-256";
+
+            logToTerminal(`[+] IDENTIFICATION: Structural analysis detected algorithm format => [${algo}]`, 'alert');
+            if(algo === "Unknown") {
+                logToTerminal(`[-] TERMINAL FATAL: Structural string evaluation broken. Standard format not matching.`, 'error');
+                return;
+            }
+
+            let wordlist = null;
+            const strategyMode = document.getElementById('attackMode').value;
+
+            if (strategyMode === 'external') {
+                const fileInput = document.getElementById('wordlistFile');
+                if(fileInput.files.length === 0) {
+                    alert("Configuration Error: Please upload a .txt dictionary file first.");
+                    return;
+                }
+                logToTerminal(`[~] PARSING: Mapping uploaded text matrix array...`, 'neutral');
+                const file = fileInput.files[0];
+                const fileText = await file.text();
+                wordlist = fileText.split(/\r?\n/).map(line => line.trim()).filter(line => line.length > 0);
+            }
+
+            document.getElementById('stopBtn').classList.remove('hidden');
+            document.getElementById('stopBtn').disabled = false;
+
+            // Instantiate Isolated Thread Broker Vector
+            if(cryptoWorker) cryptoWorker.terminate();
+            cryptoWorker = new Worker('worker.js');
+
+            // Dispatch payload metrics directly to multi-thread node
+            cryptoWorker.postMessage({ targetHash, algo, wordlist });
+
+            // Listen to sub-thread runtime processes
+            cryptoWorker.onmessage = function(e) {
+                const { type, text, scheme, progress, hps } = e.data;
+
+                if(type === 'log') {
+                    logToTerminal(text, scheme);
+                } else if(type === 'status') {
+                    document.getElementById('progressBar').style.width = `${progress}%`;
+                    document.getElementById('speedDisplay').innerText = parseInt(hps).toLocaleString() + " H/s";
+                } else if(type === 'dbSize') {
+                    document.getElementById('dbSizeDisplay').innerText = text;
+                } else if(type === 'done') {
+                    stopAttack();
+                }
+            };
+        }
+
+        function stopAttack() {
+            if(cryptoWorker) {
+                cryptoWorker.terminate();
+                cryptoWorker = null;
+                logToTerminal(`[!] SYSTEM DISENGAGED: Sub-thread allocation pool terminated.`, 'neutral');
+            }
+            document.getElementById('stopBtn').classList.add('hidden');
+            document.getElementById('stopBtn').disabled = true;
+        }
+    </script>
+</body>
+</html>
+  
+            
