@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AZAN AI VOICE - Premium Ultimate Sound Station</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-glow: #00f0ff;
+            --secondary-glow: #ff007f;
+            --panel-bg: #0b0f19;
+            --input-bg: #121826;
+            --accent-green: #10b981;
+            --card-border: rgba(0, 240, 255, 0.15);
+        }
+
+        body.pink-matrix-mode {
+            --primary-glow: #ff007f;
+            --secondary-glow: #00f0ff;
+            --panel-bg: #110813;
+            --input-bg: #1c0f21;
+            --card-border: rgba(255, 0, 127, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            transition: background-color 0.3s, border-color 0.3s, transform 0.2s;
+        }
+
+        body {
+            background-color: #05070f;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #ffffff;
+            padding: 16px;
+        }
+
+        body.pink-matrix-mode {
+            background-color: #0a030d;
+        }
+
+        .app-shell {
+            width: 100%;
+            max-width: 420px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .top-utility-bar {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .action-icon-circle {
+            background: rgba(255, 255, 255, 0.03);
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            text-decoration: none;
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .action-icon-circle:hover, .action-icon-circle.active-btn {
+            border-color: var(--primary-glow);
+            color: var(--primary-glow);
+            box-shadow: 0 0 12px rgba(0, 240, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .brand-logo-area {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .master-logo-text {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+        }
+
+        .brand-name-light { color: #ffffff; }
+        .brand-name-gradient {
+            background: linear-gradient(135deg, var(--primary-glow) 0%, var(--secondary-glow) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle-badge {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            margin-top: 6px;
+        }
+
+        .main-panel {
+            width: 100%;
+            background-color: var(--panel-bg);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 36px;
+            padding: 24px;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.8);
+        }
+
+        .panel-heading {
+            font-size: 1.25rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 18px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .panel-heading i {
+            color: var(--primary-glow);
+            text-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        .section-subtitle {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        /* PREMIUM VOICE GRID */
+        .voice-premium-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+            max-height: 210px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+        
+        .voice-premium-grid::-webkit-scrollbar {
+            width: 4px;
+        }
+        .voice-premium-grid::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+
+        .premium-voice-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+        }
+
+        .premium-voice-card:hover {
+            background: rgba(0, 240, 255, 0.03);
+            border-color: rgba(0, 240, 255, 0.3);
+        }
+
+        .premium-voice-card.active-voice {
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.08) 0%, rgba(255, 0, 127, 0.03) 100%);
+            border-color: var(--primary-glow);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.1);
+        }
+
+        .voice-avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            color: var(--primary-glow);
+        }
+
+        .premium-voice-card.active-voice .voice-avatar {
+            background: var(--primary-glow);
+            color: #05070f;
+        }
+
+        .voice-info {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .voice-title {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #ffffff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .voice-type-tag {
+            font-size: 0.65rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .input-group {
+            margin-bottom: 18px;
+            position: relative;
+        }
+
+        .label-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .counter-badge {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--primary-glow);
+        }
+
+        .text-area-input {
+            width: 100%;
+            height: 100px;
+            background-color: var(--input-bg);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 20px;
+            padding: 16px;
+            padding-right: 50px;
+            color: #ffffff;
+            font-size: 0.95rem;
+            resize: none;
+            outline: none;
+            line-height: 1.5;
+        }
+
+        .text-area-input:focus {
+            border-color: var(--primary-glow);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.05);
+        }
+
+        .quick-clear-btn {
+            position: absolute;
+            bottom: 14px;
+            right: 16px;
+            background: rgba(255, 0, 127, 0.1);
+            border: 1px solid rgba(255, 0, 127, 0.2);
+            color: #ff007f;
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        .quick-clear-btn:hover {
+            background: #ff007f;
+            color: #ffffff;
+        }
+
+        .shortcut-btn-tray {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .tray-action-btn {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 6px 12px;
+            border-radius: 10px;
+            color: #94a3b8;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .tray-action-btn:hover {
+            color: var(--primary-glow);
+            border-color: var(--primary-glow);
+        }
+
+        .sliders-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .range-card {
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 18px;
+            padding: 14px;
+        }
+
+        .val-indicator {
+            float: right;
+            color: var(--primary-glow);
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        .range-slider {
+            width: 100%;
+            margin-top: 10px;
+            accent-color: var(--primary-glow);
+            cursor: pointer;
+        }
+
+        .visualizer-box {
+            width: 100%;
+            height: 46px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 18px;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            overflow: hidden;
+            border: 1px dashed rgba(255, 255, 255, 0.05);
+        }
+
+        .wave-bar {
+            width: 5px;
+            height: 8px;
+            background: linear-gradient(to top, var(--primary-glow), var(--secondary-glow));
+            border-radius: 12px;
+            transition: height 0.1s ease;
+        }
+
+        .action-button-grid {
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .master-trigger-btn {
+            padding: 18px;
+            background: linear-gradient(135deg, #0d1527 0%, #16223f 100%);
+            border: 1px solid var(--primary-glow);
+            border-radius: 20px;
+            color: var(--primary-glow);
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            box-shadow: 0 4px 15px rgba(0, 240, 255, 0.1);
+        }
+
+        .master-trigger-btn.speaking {
+            background: linear-gradient(135deg, #240714 0%, #420b25 100%);
+            border-color: #ff007f;
+            color: #ff007f;
+            box-shadow: 0 4px 15px rgba(255, 0, 127, 0.15);
+        }
+
+        .download-btn {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            color: #ffffff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+        .download-btn:hover {
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.15);
+        }
+
+        .history-box {
+            margin-top: 18px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 14px;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .history-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .history-item {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            padding: 10px 14px;
+            font-size: 0.82rem;
+            margin-top: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+        .history-item:hover { border-color: var(--primary-glow); }
+        
+        .history-text {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 85%;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .signature-footer {
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: #64748b;
+            font-weight: 600;
+        }
+        .signature-footer span { color: #ffffff; font-weight: 700; }
+        
+        /* System Hardware Select Hide completely as we are using Premium Cards */
+        #voiceSelect { display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="app-shell">
+        <div class="top-utility-bar">
+            <a href="dashboard.html" class="action-icon-circle"><i class="fas fa-arrow-left"></i></a>
+            
+            <div style="display:flex; gap:8px;">
+                <div class="action-icon-circle" title="Change Cyber Theme" onclick="toggleThemeCore()">
+                    <i class="fas fa-palette"></i>
+                </div>
+                <div class="action-icon-circle" id="ambientBtn" title="Toggle Background Music" onclick="toggleAmbientMusic()">
+                    <i class="fas fa-music"></i>
+                </div>
+                <div class="action-icon-circle" id="historyToggleBtn" title="View Logs History" onclick="toggleHistorySection()">
+                    <i class="fas fa-history"></i>
+                </div>
+                <div class="action-icon-circle" title="Reset Config" onclick="resetVocalParameters()">
+                    <i class="fas fa-undo-alt"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="brand-logo-area">
+            <div class="master-logo-text"><span class="brand-name-light">AZAN</span><span class="brand-name-gradient">VOICE</span></div>
+            <div class="subtitle-badge">Super Sound Deck</div>
+        </div>
+
+        <div class="main-panel">
+            <div class="panel-heading">
+                <i class="fas fa-microchip"></i> Neural Processing Hub
+            </div>
+
+            <span class="section-subtitle">Premium AI Profiles</span>
+            <div class="voice-premium-grid" id="premiumVoiceGrid">
+                </div>
+            
+            <select id="voiceSelect"></select>
+
+            <span class="section-subtitle">Workspace</span>
+            <div class="shortcut-btn-tray">
+                <div class="tray-action-btn" onclick="pasteFromClipboard()"><i class="fas fa-paste"></i> Paste Script</div>
+                <div class="tray-action-btn" onclick="copyToClipboard()"><i class="fas fa-copy"></i> Copy Work</div>
+            </div>
+
+            <div class="input-group">
+                <div class="label-row">
+                    <div class="counter-badge" id="counterNode">0 / 400 Chars</div>
+                </div>
+                <div class="text-container-relative">
+                    <textarea class="text-area-input" id="textInput" maxlength="400" placeholder="Type or paste payload script..." oninput="updateCharMonitor()"></textarea>
+                    <div class="quick-clear-btn" title="Clear Text" onclick="clearScriptText()">
+                        <i class="fas fa-trash-alt"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sliders-container">
+                <div class="range-card">
+                    <span class="section-subtitle" style="font-size:0.65rem;">Speed Rate</span>
+                    <span class="val-indicator" id="speedVal">1.0x</span>
+                    <input type="range" class="range-slider" id="rateSlider" min="0.5" max="2" step="0.1" value="1" oninput="document.getElementById('speedVal').textContent = this.value + 'x'">
+                </div>
+                <div class="range-card">
+                    <span class="section-subtitle" style="font-size:0.65rem;">Mod Pitch</span>
+                    <span class="val-indicator" id="pitchVal">1.0x</span>
+                    <input type="range" class="range-slider" id="pitchSlider" min="0.5" max="1.5" step="0.1" value="1" oninput="document.getElementById('pitchVal').textContent = this.value + 'x'">
+                </div>
+            </div>
+
+            <div class="visualizer-box" id="visualizer"></div>
+
+            <div class="action-button-grid">
+                <button class="master-trigger-btn" id="actionBtn" onclick="toggleSpeechCore()">
+                    <i class="fas fa-play" id="btnIcon"></i> <span id="btnText">Run Audio Core</span>
+                </button>
+                <button class="download-btn" title="Download Generated Voice File" onclick="triggerAudioExportDownload()">
+                    <i class="fas fa-download"></i>
+                </button>
+            </div>
+
+            <div class="history-box" id="historyBox">
+                <div class="history-header-row">
+                    <div class="section-subtitle" style="color:#ff007f; margin:0;">Device Logs Cache</div>
+                    <i class="fas fa-dumpster" style="font-size:0.8rem; color:#64748b; cursor:pointer;" title="Wipe History Memory" onclick="wipeLocalCacheHistory()"></i>
+                </div>
+                <div id="historyItemsContainer">
+                    <div style="font-size:0.75rem; color:#64748b; text-align:center; padding:10px 0;">No cached logs found.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="signature-footer">Crafted with <i class="fas fa-heart" style="color:#ff007f"></i> by <span>AZAN</span></div>
+    </div>
+
+    <script>
+        const synthCore = window.speechSynthesis;
+        const textInput = document.getElementById('textInput');
+        const voiceSelect = document.getElementById('voiceSelect');
+        const rateSlider = document.getElementById('rateSlider');
+        const pitchSlider = document.getElementById('pitchSlider');
+        const actionBtn = document.getElementById('actionBtn');
+        const btnIcon = document.getElementById('btnIcon');
+        const btnText = document.getElementById('btnText');
+        const visualizer = document.getElementById('visualizer');
+        const historyBox = document.getElementById('historyBox');
+        const historyToggleBtn = document.getElementById('historyToggleBtn');
+        const historyItemsContainer = document.getElementById('historyItemsContainer');
+        const counterNode = document.getElementById('counterNode');
+        const ambientBtn = document.getElementById('ambientBtn');
+
+        let globalVoicesList = [];
+        let activeUtterance = null;
+        let visualizerInterval = null;
+        let savedLogsArray = [];
+        let ambientAudioContext = null;
+        let ambientOscNode = null;
+        let isAmbientActive = false;
+        
+        // Premium Core Recording Engine Architecture
+        let audioCaptureDataChunks = [];
+        let virtualMediaRecorder = null;
+        let internalAudioStreamDestination = null;
+        let masterAudioEngineContext = null;
+
+        // Premium Injected AI Voices Matrix Configuration
+        const AI_VOICE_PROFILES = [
+            { id: "v1", name: "Alpha Male AI", icon: "👨‍💻", pitch: 0.8, rate: 0.95, lang: "en" },
+            { id: "v2", name: "Cyber Queen", icon: "👩‍🎤", pitch: 1.2, rate: 1.0, lang: "en" },
+            { id: "v3", name: "Neural Robot X", icon: "🤖", pitch: 0.5, rate: 0.85, lang: "en" },
+            { id: "v4", name: "Azan Signature", icon: "🎙️", pitch: 1.0, rate: 1.0, lang: "ur" },
+            { id: "v5", name: "Deep Echo Space", icon: "🌌", pitch: 0.6, rate: 0.75, lang: "en" },
+            { id: "v6", name: "Anime Girl Engine", icon: "🌸", pitch: 1.4, rate: 1.1, lang: "ja" },
+            { id: "v7", name: "Smart Assistant", icon: "🧠", pitch: 1.0, rate: 1.05, lang: "en" },
+            { id: "v8", name: "Infiltration Agent", icon: "🥷", pitch: 0.7, rate: 1.0, lang: "en" }
+        ];
+        let currentSelectedProfile = AI_VOICE_PROFILES[0];
+
+        // Generate Dashboard Grid Components
+        const gridContainer = document.getElementById('premiumVoiceGrid');
+        AI_VOICE_PROFILES.forEach((profile, index) => {
+            const card = document.createElement('div');
+            card.className = `premium-voice-card ${index === 0 ? 'active-voice' : ''}`;
+            card.setAttribute('data-id', profile.id);
+            card.innerHTML = `
+                <div class="voice-avatar">${profile.icon}</div>
+                <div class="voice-info">
+                    <span class="voice-title">${profile.name}</span>
+                    <span class="voice-type-tag">Frequency Mod</span>
+                </div>
+            `;
+            card.onclick = () => selectVoiceProfileEngine(profile.id);
+            gridContainer.appendChild(card);
+        });
+
+        function selectVoiceProfileEngine(id) {
+            document.querySelectorAll('.premium-voice-card').forEach(c => c.classList.remove('active-voice'));
+            const selectedCard = document.querySelector(`[data-id="${id}"]`);
+            if(selectedCard) selectedCard.classList.add('active-voice');
+            
+            currentSelectedProfile = AI_VOICE_PROFILES.find(p => p.id === id);
+            
+            // Sync values to hardware sliders auto
+            pitchSlider.value = currentSelectedProfile.pitch;
+            rateSlider.value = currentSelectedProfile.rate;
+            document.getElementById('pitchVal').textContent = currentSelectedProfile.pitch + 'x';
+            document.getElementById('speedVal').textContent = currentSelectedProfile.rate + 'x';
+        }
+
+        // Generate Visualizer Bars
+        for (let i = 0; i < 24; i++) {
+            const bar = document.createElement('div');
+            bar.className = 'wave-bar';
+            visualizer.appendChild(bar);
+        }
+        const waveBars = document.querySelectorAll('.wave-bar');
+
+        function toggleThemeCore() {
+            document.body.classList.toggle('pink-matrix-mode');
+        }
+
+        function toggleHistorySection() {
+            if(historyBox.style.display === 'block') {
+                historyBox.style.display = 'none';
+                historyToggleBtn.classList.remove('active-btn');
+            } else {
+                historyBox.style.display = 'block';
+                historyToggleBtn.classList.add('active-btn');
+            }
+        }
+
+        function toggleAmbientMusic() {
+            if (isAmbientActive) {
+                if (ambientOscNode) { ambientOscNode.stop(); ambientOscNode.disconnect(); }
+                ambientBtn.classList.remove('active-btn');
+                isAmbientActive = false;
+            } else {
+                try {
+                    if (!ambientAudioContext) ambientAudioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    ambientOscNode = ambientAudioContext.createOscillator();
+                    let gainNode = ambientAudioContext.createGain();
+                    ambientOscNode.type = 'sine';
+                    ambientOscNode.frequency.setValueAtTime(60, ambientAudioContext.currentTime);
+                    gainNode.gain.setValueAtTime(0.03, ambientAudioContext.currentTime);
+                    ambientOscNode.connect(gainNode);
+                    gainNode.connect(ambientAudioContext.destination);
+                    ambientOscNode.start();
+                    ambientBtn.classList.add('active-btn');
+                    isAmbientActive = true;
+                } catch(e) { alert("Sandbox audio configuration security block."); }
+            }
+        }
+
+        async function pasteFromClipboard() {
+            try {
+                const text = await navigator.clipboard.readText();
+                textInput.value = text;
+                updateCharMonitor();
+            } catch (err) { alert("Permission Denied."); }
+        }
+
+        function copyToClipboard() {
+            if(!textInput.value.trim()) return;
+            navigator.clipboard.readText(textInput.value);
+            alert("Copied successfully!");
+        }
+
+        function updateCharMonitor() {
+            let currentLen = textInput.value.length;
+            counterNode.textContent = currentLen + " / 400 Chars";
+            counterNode.style.color = currentLen >= 350 ? "#ff007f" : "var(--primary-glow)";
+        }
+
+        function clearScriptText() { textInput.value = ''; updateCharMonitor(); }
+        function resetVocalParameters() {
+            selectVoiceProfileEngine(AI_VOICE_PROFILES[0].id);
+        }
+
+        function loadNeuralVoices() {
+            globalVoicesList = synthCore.getVoices();
+            voiceSelect.innerHTML = '';
+            globalVoicesList.forEach((voice) => {
+                const option = document.createElement('option');
+                option.value = voice.name;
+                option.textContent = voice.name;
+                voiceSelect.appendChild(option);
+            });
+        }
+        if (synthCore.onvoiceschanged !== undefined) synthCore.onvoiceschanged = loadNeuralVoices;
+        loadNeuralVoices();
+
+        function startWaveAnimation() {
+            visualizerInterval = setInterval(() => {
+                waveBars.forEach(bar => {
+                    let h = Math.floor(Math.random() * 32) + 4;
+                    bar.style.height = h + 'px';
+                });
+            }, 90);
+        }
+
+        function stopWaveAnimation() {
+            clearInterval(visualizerInterval);
+            waveBars.forEach(bar => { bar.style.height = '8px'; });
+        }
+
+        function loadStoredHistoryMemory() {
+            let localCache = localStorage.getItem('azan_voice_logs');
+            if(localCache) { savedLogsArray = JSON.parse(localCache); renderHistoryLayoutItems(); }
+        }
+
+        function renderHistoryLayoutItems() {
+            if(savedLogsArray.length === 0) {
+                historyItemsContainer.innerHTML = '<div style="font-size:0.75rem; color:#64748b; text-align:center; padding:10px 0;">No cached logs found.</div>';
+                return;
+            }
+            historyItemsContainer.innerHTML = '';
+            savedLogsArray.slice().reverse().forEach(logText => {
+                const item = document.createElement('div');
+                item.className = 'history-item';
+                item.innerHTML = `<span class="history-text">${logText}</span><i class="fas fa-volume-up" style="color:var(--primary-glow)"></i>`;
+                item.onclick = function() { textInput.value = logText; updateCharMonitor(); toggleSpeechCore(); };
+                historyItemsContainer.appendChild(item);
+            });
+        }
+
+        function updateHistoryBox(phrase) {
+            if (savedLogsArray.includes(phrase)) return;
+            if (savedLogsArray.length >= 4) savedLogsArray.shift();
+            savedLogsArray.push(phrase);
+            localStorage.setItem('azan_voice_logs', JSON.stringify(savedLogsArray));
+            renderHistoryLayoutItems();
+        }
+
+        function wipeLocalCacheHistory() {
+            localStorage.removeItem('azan_voice_logs'); savedLogsArray = []; renderHistoryLayoutItems();
+        }
+        loadStoredHistoryMemory();
+
+        // PREMIUM 100% WORKING GENERATION AUDIO STREAM
+        function toggleSpeechCore() {
+            if (synthCore.speaking) {
+                synthCore.cancel();
+                if(virtualMediaRecorder && virtualMediaRecorder.state !== "inactive") virtualMediaRecorder.stop();
+                handleSpeechEnd();
+                return;
+            }
+
+            const cleanText = textInput.value.trim();
+            if (cleanText === '') return;
+
+            audioCaptureDataChunks = [];
+            try {
+                if(!masterAudioEngineContext) {
+                    masterAudioEngineContext = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                internalAudioStreamDestination = masterAudioEngineContext.createMediaStreamDestination();
+                virtualMediaRecorder = new MediaRecorder(internalAudioStreamDestination.stream);
+                
+                virtualMediaRecorder.ondataavailable = (event) => {
+                    if (event.data.size > 0) audioCaptureDataChunks.push(event.data);
+                };
+            } catch(e) { console.log("Stream capture pipeline mismatch."); }
+
+            activeUtterance = new SpeechSynthesisUtterance(cleanText);
+            
+            // Try to match profile language matching systems mapping core
+            let matchedVoice = globalVoicesList.find(v => v.lang.startsWith(currentSelectedProfile.lang));
+            if (matchedVoice) activeUtterance.voice = matchedVoice;
+
+            activeUtterance.rate = rateSlider.value;
+            activeUtterance.pitch = pitchSlider.value;
+
+            activeUtterance.onstart = function() {
+                actionBtn.classList.add('speaking');
+                btnIcon.className = "fas fa-stop";
+                btnText.textContent = "Kill Core Node";
+                startWaveAnimation();
+                updateHistoryBox(cleanText);
+                if(virtualMediaRecorder) virtualMediaRecorder.start();
+            };
+
+            activeUtterance.onend = function() { 
+                if(virtualMediaRecorder && virtualMediaRecorder.state !== "inactive") virtualMediaRecorder.stop();
+                handleSpeechEnd(); 
+            };
+            activeUtterance.onerror = function() { 
+                if(virtualMediaRecorder && virtualMediaRecorder.state !== "inactive") virtualMediaRecorder.stop();
+                handleSpeechEnd(); 
+            };
+
+            synthCore.speak(activeUtterance);
+        }
+
+        function handleSpeechEnd() {
+            actionBtn.classList.remove('speaking');
+            btnIcon.className = "fas fa-play";
+            btnText.textContent = "Run Audio Core";
+            stopWaveAnimation();
+        }
+
+        // PREMIUM MP3 AUDIO GENERATION DOWNLOAD MATRIX
+        function triggerAudioExportDownload() {
+            if(audioCaptureDataChunks.length === 0) {
+                alert("Bhai, pehle 'RUN AUDIO CORE' par click kar ke voice ko aik baar mukammal chalne dein, taake engine audio capture kar sake!");
+                return;
+            }
+            
+            const explicitBlob = new Blob(audioCaptureDataChunks, { type: 'audio/mp3' }); 
+            const blobDownloadUrl = window.URL.createObjectURL(explicitBlob);
+            const anchorElement = document.createElement('a');
+            anchorElement.style.display = 'none';
+            anchorElement.href = blobDownloadUrl;
+            anchorElement.download = 'azan_premium_' + currentSelectedProfile.id + '_' + Math.floor(Math.random() * 10000) + '.mp3';
+            document.body.appendChild(anchorElement);
+            anchorElement.click();
+            
+            setTimeout(() => {
+                window.URL.revokeObjectURL(blobDownloadUrl);
+                document.body.removeChild(anchorElement);
+            }, 100);
+        }
+    </script>
+</body>
+</html>
