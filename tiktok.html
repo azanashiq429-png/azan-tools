@@ -233,7 +233,42 @@
     .btn-secondary:hover { background: #282f3d; }
     .btn-primary { background: #ffffff; color: #000000; }
     .btn-primary:hover { background: #f3f4f6; }
+/* --- Full Screen Mobile Layout Fix --- */
 
+/* 1. Pure page ko hand-zoom se rokne aur fix karne ke liye */
+html, body {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow-x: hidden !important; /* Horizontal scroll khatam karne ke liye */
+    background-color: #000000;
+}
+
+/* 2. Main content block jo aapke buttons ko wrap karta hai */
+.dash-container, .downloader-wrapper, main {
+    width: 100% !important;
+    max-width: 480px !important; /* Mobile standard width */
+    margin: 0 auto !important;   /* Screen ke center me lane ke liye */
+    padding: 15px !important;    /* Sides se halki spacing */
+    box-sizing: border-box !important;
+}
+
+/* 3. Saare buttons ko auto full width (bada) karne ke liye */
+.dash-btn-submit, .action-btn, .static-btn, button {
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+    margin-bottom: 12px !important; /* Buttons ke beech ka gap */
+}
+
+/* Input text field ko full width karne ke liye */
+input[type="text"] {
+    width: 100% !important;
+    box-sizing: border-box !important;
+                    }
+                 
     /* Navigation CTA footers */
     .dash-footer-links { margin-top: 35px; display: flex; flex-direction: column; gap: 12px; }
     .static-btn { display: flex; align-items: center; justify-content: center; width: 100%; padding: 14px; font-size: 14px; font-weight: 600; border-radius: 30px; text-decoration: none; box-sizing: border-box; }
