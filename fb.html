@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook Video Downloader</title>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #f0f4f9;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #eef2f7;
+            --input-bg: #f8fafc;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --input-bg: #0f172a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* --- Main Dashboard Container --- */
+        .downloader-card {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 460px;
+            border-radius: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            text-align: center;
+            position: relative;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #1877f2, #1565c0);
+            padding: 30px 20px;
+            color: white;
+            font-size: 26px;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+        }
+
+        .card-body {
+            padding: 25px 20px;
+        }
+
+        .input-wrapper {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .input-group {
+            position: relative;
+            flex: 1;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #1877f2;
+            font-size: 18px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            border: 2px solid var(--border-color);
+            background-color: var(--input-bg);
+            color: var(--text-color);
+            border-radius: 15px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .input-group input:focus {
+            border-color: #1877f2;
+        }
+
+        .paste-btn {
+            background: #eef2f7;
+            border: none;
+            color: #475569;
+            padding: 0 15px;
+            border-radius: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        [data-theme="dark"] .paste-btn {
+            background: #334155;
+            color: #f8fafc;
+        }
+
+        .extract-btn {
+            width: 100%;
+            background: #1877f2;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 15px;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(24, 119, 242, 0.2);
+        }
+
+        .extract-btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+        /* --- Result & Preview Section --- */
+        .result-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px dashed var(--border-color);
+            display: none;
+        }
+
+        .video-preview-box {
+            width: 100%;
+            border-radius: 15px;
+            overflow: hidden;
+            background: #000;
+            margin-bottom: 15px;
+        }
+
+        .video-preview-box video {
+            width: 100%;
+            max-height: 220px;
+            display: block;
+        }
+
+        .video-title {
+            font-size: 14px;
+            color: var(--text-color);
+            margin-bottom: 15px;
+            font-weight: 600;
+            text-align: left;
+        }
+
+        .download-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .dl-link {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            padding: 14px;
+            border-radius: 12px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        .dl-hd { background: #22c55e; }
+        .dl-sd { background: #eab308; }
+
+        /* --- History Section --- */
+        .history-section {
+            margin-top: 20px;
+            text-align: left;
+            border-top: 1px solid var(--border-color);
+            padding-top: 15px;
+        }
+
+        .history-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        .history-list {
+            list-style: none;
+            max-height: 120px;
+            overflow-y: auto;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--input-bg);
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 6px;
+            font-size: 13px;
+        }
+
+        .history-item a {
+            color: #1877f2;
+            text-decoration: none;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 80%;
+        }
+
+        .card-footer {
+            background-color: var(--input-bg);
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .developer-tag {
+            font-weight: bold;
+            color: var(--text-color);
+            margin-top: 5px;
+            font-size: 15px;
+        }
+
+        /* --- Updated WhatsApp Modal Styling --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-box {
+            background: var(--card-bg);
+            color: var(--text-color);
+            width: 90%; max-width: 400px;
+            border-radius: 30px; padding: 35px 25px; text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .modal-icon { font-size: 75px; color: #25D366; margin-bottom: 20px; }
+        .modal-title { font-size: 24px; font-weight: 800; margin-bottom: 10px; }
+        .modal-desc { font-size: 15px; color: var(--text-muted); line-height: 1.5; margin-bottom: 25px; }
+        
+        .join-btn { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 10px; 
+            width: 100%; 
+            background: #25D366; 
+            color: white; 
+            text-decoration: none; 
+            padding: 15px; 
+            border-radius: 15px; 
+            font-size: 16px; 
+            font-weight: bold; 
+            margin-bottom: 12px;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+        }
+        .join-btn:hover { background: #20ba5a; }
+        
+        .skip-btn { width: 100%; background: var(--input-bg); color: var(--text-muted); border: none; padding: 15px; border-radius: 15px; font-size: 16px; font-weight: 600; cursor: pointer; }
+        .skip-btn:hover { background: var(--border-color); }
+    </style>
+</head>
+<body>
+
+    <!-- WhatsApp Channel Join Modal -->
+    <div class="modal-overlay" id="joinModal">
+        <div class="modal-box">
+            <div class="modal-icon"><i class="fab fa-whatsapp"></i></div>
+            <div class="modal-title">Join Official Channel</div>
+            <div class="modal-desc">
+                Get premium tools and daily updates directly on our WhatsApp Channel.
+                <br><strong>Follow us for more!</strong>
+            </div>
+            <!-- Apna Real WhatsApp Channel Link href me paste karein -->
+            <a href="https://whatsapp.com/channel/your-real-channel-link-here" target="_blank" class="join-btn">
+                <i class="fab fa-whatsapp"></i> Follow on WhatsApp
+            </a>
+            <button class="skip-btn" onclick="closeModal()">Skip for now</button>
+        </div>
+    </div>
+
+    <!-- Main Downloader Dashboard -->
+    <div class="downloader-card">
+        <div class="card-header">
+            <i class="fab fa-facebook"></i> Downloader
+            <button class="theme-toggle" onclick="toggleTheme()"><i class="fas fa-moon" id="themeIcon"></i></button>
+        </div>
+        <div class="card-body">
+            <div class="input-wrapper">
+                <div class="input-group">
+                    <i class="fas fa-link"></i>
+                    <input type="text" id="videoUrl" placeholder="Paste Facebook video URL here...">
+                </div>
+                <button class="paste-btn" onclick="pasteLink()"><i class="fa-regular fa-clipboard"></i> Paste</button>
+            </div>
+            
+            <button class="extract-btn" id="btnText" onclick="extractVideo()">Extract Video Info</button>
+
+            <!-- Result Dashboard with Player/Preview -->
+            <div class="result-section" id="resultSec">
+                <div class="video-preview-box">
+                    <video id="videoPlayer" controls></video>
+                </div>
+                <div class="video-title" id="vidTitle"><i class="fa-solid fa-video"></i> Video Ready!</div>
+                <div class="download-buttons">
+                    <a href="#" id="hdLink" target="_blank" class="dl-link dl-hd"><i class="fa-solid fa-download"></i> Download HD Quality</a>
+                    <a href="#" id="sdLink" target="_blank" class="dl-link dl-sd"><i class="fa-solid fa-download"></i> Download Normal Quality</a>
+                </div>
+            </div>
+
+            <!-- History Log Setup -->
+            <div class="history-section" id="historySec" style="display:none;">
+                <div class="history-title"><i class="fa-solid fa-clock-rotate-left"></i> Recent Downloads</div>
+                <ul class="history-list" id="historyList"></ul>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div>Powered by AZAN TOOLS</div>
+            <div class="developer-tag">Developed by AZAN ASHIQ</div>
+        </div>
+    </div>
+
+    <script>
+        // On Load History Fetch
+        document.addEventListener("DOMContentLoaded", loadHistory);
+
+        // Modal close handles directly without saving state so it triggers every refresh
+        function closeModal() {
+            document.getElementById('joinModal').style.display = 'none';
+        }
+
+        // Dark/Light Theme Feature
+        function toggleTheme() {
+            const body = document.body;
+            const icon = document.getElementById('themeIcon');
+            if(body.getAttribute('data-theme') === 'dark') {
+                body.removeAttribute('data-theme');
+                icon.className = 'fas fa-moon';
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                icon.className = 'fas fa-sun';
+            }
+        }
+
+        // Clipboard Auto-Paste Feature
+        async function pasteLink() {
+            try {
+                const text = await navigator.clipboard.readText();
+                document.getElementById('videoUrl').value = text;
+            } catch (err) {
+                alert('Browser ne clipboard access allow nahi kiya. Aap manually paste kar lein.');
+            }
+        }
+
+        // Main Link Extraction Engine
+        async function extractVideo() {
+            const urlInput = document.getElementById('videoUrl').value.trim();
+            const btn = document.getElementById('btnText');
+            const resultSec = document.getElementById('resultSec');
+            const hdLink = document.getElementById('hdLink');
+            const sdLink = document.getElementById('sdLink');
+            const videoPlayer = document.getElementById('videoPlayer');
+
+            if(!urlInput) {
+                alert('Bhai, pehle Facebook video ka link paste karein!');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerText = "Extracting... Please wait...";
+            resultSec.style.display = "none";
+
+            try {
+                const apiUrl = `https://api.ryzendazu.my.id/api/downloader/fbdl?url=${encodeURIComponent(urlInput)}`;
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+
+                if (data.status && data.result) {
+                    const hdVideo = data.result.hd || data.result.sd; 
+                    const sdVideo = data.result.sd || data.result.hd;
+
+                    if(hdVideo) {
+                        hdLink.href = hdVideo;
+                        sdLink.href = sdVideo;
+                        videoPlayer.src = sdVideo; // Preview video using low stream for stability
+                        resultSec.style.display = "block";
+                        
+                        saveToHistory(urlInput);
+                    } else {
+                        alert("Bhai, is video ka download link nahi mila.");
+                    }
+                } else {
+                    alert("API Response error! Invalid URL.");
+                }
+            } catch (error) {
+                alert("Server Error ya copy kiya link sahi nahi hai.");
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "Extract Video Info";
+            }
+        }
+
+        // LocalStorage History Log Feature
+        function saveToHistory(url) {
+            let history = JSON.parse(localStorage.getItem("azan_fb_history")) || [];
+            if(!history.includes(url)){
+                history.unshift(url);
+                if(history.length > 3) history.pop(); // Keep last 3 items
+                localStorage.setItem("azan_fb_history", JSON.stringify(history));
+                loadHistory();
+            }
+        }
+
+        // Display logs dynamically
+        function loadHistory() {
+            const history = JSON.parse(localStorage.getItem("azan_fb_history")) || [];
+            const sec = document.getElementById("historySec");
+            const list = document.getElementById("historyList");
+            
+            if(history.length > 0) {
+                sec.style.display = "block";
+                list.innerHTML = history.map(url => `
+                    <li class="history-item">
+                        <a href="#" onclick="document.getElementById('videoUrl').value='${url}'; return false;">${url}</a>
+                        <i class="fa-solid fa-arrow-right-to-bracket" style="color:#1877f2;"></i>
+                    </li>
+                `).join('');
+            }
+        }
+    </script>
+</body>
+  </html>
+  
