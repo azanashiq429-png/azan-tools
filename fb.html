@@ -251,22 +251,7 @@
             max-width: 80%;
         }
 
-        .card-footer {
-            background-color: var(--input-bg);
-            padding: 20px;
-            border-top: 1px solid var(--border-color);
-            font-size: 13px;
-            color: var(--text-muted);
-        }
-
-        .developer-tag {
-            font-weight: bold;
-            color: var(--text-color);
-            margin-top: 5px;
-            font-size: 15px;
-        }
-
-        /* --- Updated WhatsApp Modal Styling --- */
+        /* --- WhatsApp Modal Styling --- */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -308,6 +293,21 @@
         
         .skip-btn { width: 100%; background: var(--input-bg); color: var(--text-muted); border: none; padding: 15px; border-radius: 15px; font-size: 16px; font-weight: 600; cursor: pointer; }
         .skip-btn:hover { background: var(--border-color); }
+
+        .card-footer {
+            background-color: var(--input-bg);
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .developer-tag {
+            font-weight: bold;
+            color: var(--text-color);
+            margin-top: 5px;
+            font-size: 15px;
+        }
     </style>
 </head>
 <body>
@@ -321,8 +321,8 @@
                 Get premium tools and daily updates directly on our WhatsApp Channel.
                 <br><strong>Follow us for more!</strong>
             </div>
-            <!-- Apna Real WhatsApp Channel Link href me paste karein -->
-            <a href="https://whatsapp.com/channel/your-real-channel-link-here" target="_blank" class="join-btn">
+            <!-- Apna WhatsApp Channel Link href me lagayein -->
+            <a href="https://whatsapp.com/channel/your-channel-link" target="_blank" class="join-btn">
                 <i class="fab fa-whatsapp"></i> Follow on WhatsApp
             </a>
             <button class="skip-btn" onclick="closeModal()">Skip for now</button>
@@ -371,15 +371,12 @@
     </div>
 
     <script>
-        // On Load History Fetch
         document.addEventListener("DOMContentLoaded", loadHistory);
 
-        // Modal close handles directly without saving state so it triggers every refresh
         function closeModal() {
             document.getElementById('joinModal').style.display = 'none';
         }
 
-        // Dark/Light Theme Feature
         function toggleTheme() {
             const body = document.body;
             const icon = document.getElementById('themeIcon');
@@ -392,7 +389,6 @@
             }
         }
 
-        // Clipboard Auto-Paste Feature
         async function pasteLink() {
             try {
                 const text = await navigator.clipboard.readText();
@@ -402,7 +398,6 @@
             }
         }
 
-        // Main Link Extraction Engine
         async function extractVideo() {
             const urlInput = document.getElementById('videoUrl').value.trim();
             const btn = document.getElementById('btnText');
@@ -420,6 +415,7 @@
             btn.innerText = "Extracting... Please wait...";
             resultSec.style.display = "none";
 
+            // --- FIRST API TRY (Secure HTTPS) ---
             try {
                 const apiUrl = `https://api.ryzendazu.my.id/api/downloader/fbdl?url=${encodeURIComponent(urlInput)}`;
                 const response = await fetch(apiUrl);
@@ -432,36 +428,55 @@
                     if(hdVideo) {
                         hdLink.href = hdVideo;
                         sdLink.href = sdVideo;
-                        videoPlayer.src = sdVideo; // Preview video using low stream for stability
+                        videoPlayer.src = sdVideo; 
                         resultSec.style.display = "block";
-                        
                         saveToHistory(urlInput);
-                    } else {
-                        alert("Bhai, is video ka download link nahi mila.");
+                        return; 
                     }
-                } else {
-                    alert("API Response error! Invalid URL.");
                 }
+                throw new Error("Pehli API fail hui"); 
             } catch (error) {
-                alert("Server Error ya copy kiya link sahi nahi hai.");
+                console.log("Pehli API me masla aaya, Backup API try kar rahe hain...");
+                
+                // --- BACKUP API TRY ---
+                try {
+                    const backupUrl = `https://api.vreden.web.id/api/fbdl?url=${encodeURIComponent(urlInput)}`;
+                    const response = await fetch(backupUrl);
+                    const data = await response.json();
+
+                    if (data.status === 200 && data.result) {
+                        const hdVideo = data.result.hd || data.result.sd;
+                        const sdVideo = data.result.sd || data.result.hd;
+
+                        if(hdVideo) {
+                            hdLink.href = hdVideo;
+                            sdLink.href = sdVideo;
+                            videoPlayer.src = sdVideo;
+                            resultSec.style.display = "block";
+                            saveToHistory(urlInput);
+                            return;
+                        }
+                    }
+                    alert("Bhai, is video ka link nahi mil saka. Check karein video public hai ya nahi.");
+                } catch (backupError) {
+                    alert("Dono Servers busy hain ya link me koi masla hai. Kisi aur public video ka link check karein.");
+                }
             } finally {
                 btn.disabled = false;
                 btn.innerText = "Extract Video Info";
             }
         }
 
-        // LocalStorage History Log Feature
         function saveToHistory(url) {
             let history = JSON.parse(localStorage.getItem("azan_fb_history")) || [];
             if(!history.includes(url)){
                 history.unshift(url);
-                if(history.length > 3) history.pop(); // Keep last 3 items
+                if(history.length > 3) history.pop(); 
                 localStorage.setItem("azan_fb_history", JSON.stringify(history));
                 loadHistory();
             }
         }
 
-        // Display logs dynamically
         function loadHistory() {
             const history = JSON.parse(localStorage.getItem("azan_fb_history")) || [];
             const sec = document.getElementById("historySec");
@@ -479,5 +494,5 @@
         }
     </script>
 </body>
-  </html>
-  
+    </html>
+    
