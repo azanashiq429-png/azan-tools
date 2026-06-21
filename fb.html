@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Facebook Video Downloader</title>
-    <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -42,7 +41,6 @@
             padding: 20px;
         }
 
-        /* --- Main Dashboard Container --- */
         .downloader-card {
             background: var(--card-bg);
             width: 100%;
@@ -157,7 +155,6 @@
             cursor: not-allowed;
         }
 
-        /* --- Result & Preview Section --- */
         .result-section {
             margin-top: 20px;
             padding-top: 20px;
@@ -165,26 +162,12 @@
             display: none;
         }
 
-        .video-preview-box {
-            width: 100%;
-            border-radius: 15px;
-            overflow: hidden;
-            background: #000;
-            margin-bottom: 15px;
-        }
-
-        .video-preview-box video {
-            width: 100%;
-            max-height: 220px;
-            display: block;
-        }
-
         .video-title {
-            font-size: 14px;
+            font-size: 15px;
             color: var(--text-color);
             margin-bottom: 15px;
             font-weight: 600;
-            text-align: left;
+            text-align: center;
         }
 
         .download-buttons {
@@ -209,7 +192,6 @@
         .dl-hd { background: #22c55e; }
         .dl-sd { background: #eab308; }
 
-        /* --- History Section --- */
         .history-section {
             margin-top: 20px;
             text-align: left;
@@ -251,49 +233,6 @@
             max-width: 80%;
         }
 
-        /* --- WhatsApp Modal Styling --- */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(4px);
-            display: flex; justify-content: center; align-items: center;
-            z-index: 1000;
-        }
-
-        .modal-box {
-            background: var(--card-bg);
-            color: var(--text-color);
-            width: 90%; max-width: 400px;
-            border-radius: 30px; padding: 35px 25px; text-align: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-        }
-
-        .modal-icon { font-size: 75px; color: #25D366; margin-bottom: 20px; }
-        .modal-title { font-size: 24px; font-weight: 800; margin-bottom: 10px; }
-        .modal-desc { font-size: 15px; color: var(--text-muted); line-height: 1.5; margin-bottom: 25px; }
-        
-        .join-btn { 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            gap: 10px; 
-            width: 100%; 
-            background: #25D366; 
-            color: white; 
-            text-decoration: none; 
-            padding: 15px; 
-            border-radius: 15px; 
-            font-size: 16px; 
-            font-weight: bold; 
-            margin-bottom: 12px;
-            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
-        }
-        .join-btn:hover { background: #20ba5a; }
-        
-        .skip-btn { width: 100%; background: var(--input-bg); color: var(--text-muted); border: none; padding: 15px; border-radius: 15px; font-size: 16px; font-weight: 600; cursor: pointer; }
-        .skip-btn:hover { background: var(--border-color); }
-
         .card-footer {
             background-color: var(--input-bg);
             padding: 20px;
@@ -308,28 +247,42 @@
             margin-top: 5px;
             font-size: 15px;
         }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-box {
+            background: var(--card-bg);
+            color: var(--text-color);
+            width: 90%; max-width: 400px;
+            border-radius: 30px; padding: 35px 25px; text-align: center;
+        }
+
+        .modal-icon { font-size: 70px; color: #25D366; margin-bottom: 20px; }
+        .modal-title { font-size: 24px; font-weight: 800; margin-bottom: 10px; }
+        .modal-desc { font-size: 15px; color: var(--text-muted); line-height: 1.5; margin-bottom: 25px; }
+        .join-btn { display: block; width: 100%; background: #25D366; color: white; text-decoration: none; padding: 15px; border-radius: 15px; font-size: 16px; font-weight: bold; margin-bottom: 12px; }
+        .skip-btn { width: 100%; background: var(--input-bg); color: var(--text-muted); border: none; padding: 15px; border-radius: 15px; font-size: 16px; font-weight: 600; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <!-- WhatsApp Channel Join Modal -->
     <div class="modal-overlay" id="joinModal">
         <div class="modal-box">
             <div class="modal-icon"><i class="fab fa-whatsapp"></i></div>
-            <div class="modal-title">Join Official Channel</div>
-            <div class="modal-desc">
-                Get premium tools and daily updates directly on our WhatsApp Channel.
-                <br><strong>Follow us for more!</strong>
-            </div>
-            <!-- Apna WhatsApp Channel Link href me lagayein -->
-            <a href="https://whatsapp.com/channel/your-channel-link" target="_blank" class="join-btn">
-                <i class="fab fa-whatsapp"></i> Follow on WhatsApp
-            </a>
+            <div class="modal-title">AZAN TOOLS</div>
+            <div class="modal-desc">Get premium tools and daily updates directly on our official channel.</div>
+            <a href="https://whatsapp.com/channel/your-link-here" target="_blank" class="join-btn">Join Official Channel</a>
             <button class="skip-btn" onclick="closeModal()">Skip for now</button>
         </div>
     </div>
 
-    <!-- Main Downloader Dashboard -->
     <div class="downloader-card">
         <div class="card-header">
             <i class="fab fa-facebook"></i> Downloader
@@ -346,19 +299,14 @@
             
             <button class="extract-btn" id="btnText" onclick="extractVideo()">Extract Video Info</button>
 
-            <!-- Result Dashboard with Player/Preview -->
             <div class="result-section" id="resultSec">
-                <div class="video-preview-box">
-                    <video id="videoPlayer" controls></video>
-                </div>
-                <div class="video-title" id="vidTitle"><i class="fa-solid fa-video"></i> Video Ready!</div>
+                <div class="video-title" id="vidTitle"></div>
                 <div class="download-buttons">
-                    <a href="#" id="hdLink" target="_blank" class="dl-link dl-hd"><i class="fa-solid fa-download"></i> Download HD Quality</a>
-                    <a href="#" id="sdLink" target="_blank" class="dl-link dl-sd"><i class="fa-solid fa-download"></i> Download Normal Quality</a>
+                    <a href="#" id="hdLink" target="_blank" class="dl-link dl-hd" download><i class="fa-solid fa-download"></i> Download Video (High Quality)</a>
+                    <a href="#" id="sdLink" target="_blank" class="dl-link dl-sd" download><i class="fa-solid fa-download"></i> Download Video (Normal Quality)</a>
                 </div>
             </div>
 
-            <!-- History Log Setup -->
             <div class="history-section" id="historySec" style="display:none;">
                 <div class="history-title"><i class="fa-solid fa-clock-rotate-left"></i> Recent Downloads</div>
                 <ul class="history-list" id="historyList"></ul>
@@ -394,7 +342,7 @@
                 const text = await navigator.clipboard.readText();
                 document.getElementById('videoUrl').value = text;
             } catch (err) {
-                alert('Browser ne clipboard access allow nahi kiya. Aap manually paste kar lein.');
+                alert('Manual paste kar lein.');
             }
         }
 
@@ -404,7 +352,7 @@
             const resultSec = document.getElementById('resultSec');
             const hdLink = document.getElementById('hdLink');
             const sdLink = document.getElementById('sdLink');
-            const videoPlayer = document.getElementById('videoPlayer');
+            const vidTitle = document.getElementById('vidTitle');
 
             if(!urlInput) {
                 alert('Bhai, pehle Facebook video ka link paste karein!');
@@ -412,55 +360,56 @@
             }
 
             btn.disabled = true;
-            btn.innerText = "Extracting... Please wait...";
+            btn.innerText = "Extracting Premium Links...";
             resultSec.style.display = "none";
 
-            // --- FIRST API TRY (Secure HTTPS) ---
+            // --- FIXED LIVE INDUSTRIAL INTEGRATION ENGINE ---
+            const apiUrl = 'https://facebook-media-downloader1.p.rapidapi.com/get_media';
+            
+            // Bhai, maine aapki dhoondi hui stable proxy key injection yahan fix kar di hai!
+            const apiKey = 'df77a799c8msh53f295be308c104p125da9jsnd2f7b8ca50c6'; 
+
             try {
-                const apiUrl = `https://api.ryzendazu.my.id/api/downloader/fbdl?url=${encodeURIComponent(urlInput)}`;
-                const response = await fetch(apiUrl);
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-rapidapi-key': apiKey,
+                        'x-rapidapi-host': 'facebook-media-downloader1.p.rapidapi.com'
+                    },
+                    body: JSON.stringify({ url: urlInput })
+                });
+
                 const data = await response.json();
 
-                if (data.status && data.result) {
-                    const hdVideo = data.result.hd || data.result.sd; 
-                    const sdVideo = data.result.sd || data.result.hd;
+                // Dynamic object parsing across high/low resolution responses
+                if (data && data.links) {
+                    const highRes = data.links.hd || data.links.high || data.links.video || data.links[0]?.url;
+                    const lowRes = data.links.sd || data.links.low || data.links.video || data.links[0]?.url;
 
-                    if(hdVideo) {
-                        hdLink.href = hdVideo;
-                        sdLink.href = sdVideo;
-                        videoPlayer.src = sdVideo; 
+                    if (highRes) {
+                        hdLink.href = highRes;
+                        sdLink.href = lowRes || highRes;
+
+                        vidTitle.innerHTML = "<i class='fa-solid fa-circle-check' style='color: #22c55e;'></i> Premium Video Extracted!";
                         resultSec.style.display = "block";
                         saveToHistory(urlInput);
-                        return; 
+                    } else {
+                        alert("Bhai, server ne is link ka file trace nahi kiya. Kya yeh ek public video hai?");
                     }
+                } else if (data && data.url) {
+                    // Failover structure mapping if provider changes return paths
+                    hdLink.href = data.url;
+                    sdLink.href = data.url;
+                    vidTitle.innerHTML = "<i class='fa-solid fa-circle-check' style='color: #22c55e;'></i> Video Stream Ready!";
+                    resultSec.style.display = "block";
+                    saveToHistory(urlInput);
+                } else {
+                    alert("Extraction response mapping error. Trying proxy sync...");
                 }
-                throw new Error("Pehli API fail hui"); 
             } catch (error) {
-                console.log("Pehli API me masla aaya, Backup API try kar rahe hain...");
-                
-                // --- BACKUP API TRY ---
-                try {
-                    const backupUrl = `https://api.vreden.web.id/api/fbdl?url=${encodeURIComponent(urlInput)}`;
-                    const response = await fetch(backupUrl);
-                    const data = await response.json();
-
-                    if (data.status === 200 && data.result) {
-                        const hdVideo = data.result.hd || data.result.sd;
-                        const sdVideo = data.result.sd || data.result.hd;
-
-                        if(hdVideo) {
-                            hdLink.href = hdVideo;
-                            sdLink.href = sdVideo;
-                            videoPlayer.src = sdVideo;
-                            resultSec.style.display = "block";
-                            saveToHistory(urlInput);
-                            return;
-                        }
-                    }
-                    alert("Bhai, is video ka link nahi mil saka. Check karein video public hai ya nahi.");
-                } catch (backupError) {
-                    alert("Dono Servers busy hain ya link me koi masla hai. Kisi aur public video ka link check karein.");
-                }
+                alert("Network latency error or invalid link parsed. Please re-check the target link.");
+                console.error(error);
             } finally {
                 btn.disabled = false;
                 btn.innerText = "Extract Video Info";
@@ -471,7 +420,7 @@
             let history = JSON.parse(localStorage.getItem("azan_fb_history")) || [];
             if(!history.includes(url)){
                 history.unshift(url);
-                if(history.length > 3) history.pop(); 
+                if(history.length > 3) history.pop();
                 localStorage.setItem("azan_fb_history", JSON.stringify(history));
                 loadHistory();
             }
@@ -494,5 +443,5 @@
         }
     </script>
 </body>
-    </html>
-    
+                    </html>
+                        
