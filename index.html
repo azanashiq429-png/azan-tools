@@ -297,7 +297,7 @@
         .whatsapp-floating:hover {
             transform: scale(1.1) rotate(8deg);
             box-shadow: 0 6px 20px rgba(37, 211, 102, 0.7), 0 0 0 6px rgba(37, 211, 102, 0.25);
-    }
+        }
     
         @keyframes bell-ring {
             0% { transform: rotate(-8deg); }
@@ -539,20 +539,22 @@
             <h3 class="card-title">Assign Maker</h3>
         </div>
 
-  <div class="tool-card cyan-core" onclick="location.href='x-calculator.html'">
+        <div class="tool-card cyan-core" onclick="location.href='x-calculator.html'">
             <div class="icon-wrapper">
                 <div style="width: 44px; height: 44px; background: linear-gradient(145deg, #0b1528, #040814); border: 1.8px solid #00d2ff; border-radius: 10px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; padding: 4px; box-sizing: border-box; color: #00d2ff; font-weight: 900; font-size: 9px; align-items: center; justify-items: center; font-family: sans-serif; position: relative; z-index: 2;">
                     <div>＋</div><div>－</div><div>×</div><div style="font-size: 8px;">🔒</div>
                 </div>
             </div>
             <h3 class="card-title">X Calc</h3>
-  </div>
+        </div>
+    </div>
         
-    <!-- Real-time Filter Engine -->
+    <!-- Real-time Filter Engine & Automated Secure Connector -->
     <script>
-          const searchInput = document.getElementById('toolSearch');
+        const searchInput = document.getElementById('toolSearch');
         const toolCards = document.querySelectorAll('.tool-card');
 
+        // Search engine mechanism
         searchInput.addEventListener('input', (e) => {
             const query = e.target.value.toLowerCase().trim();
             
@@ -565,6 +567,37 @@
                 }
             });
         });
+
+        // 🔗 AUTOMATED SECURE CONNECTOR INTEGRATION
+        const AZAN_TOOLS_SERVER = "https://azan-universal-controller.vercel.app";
+        const MY_SECRET_TOKEN = "AZAN_SECURE_NODE_99X"; // Unique tracking token
+
+        async function connectToAzanDashboard() {
+            try {
+                const response = await fetch(`${AZAN_TOOLS_SERVER}/api/connect`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        websiteUrl: window.location.origin, // Yeh is client website ka origin automatically track karega
+                        connectorToken: MY_SECRET_TOKEN
+                    })
+                });
+
+                const resData = await response.json();
+                if(resData.success) {
+                    console.log("[+] Handshake Successful with Azan Tools Control Center!");
+                } else {
+                    console.log("[-] Central handshake rejected: " + resData.message);
+                }
+            } catch (error) {
+                console.error("[-] Automatic handshake pipeline failed:", error);
+            }
+        }
+
+        // Fire connection immediately upon loading node dashboard
+        window.addEventListener('DOMContentLoaded', connectToAzanDashboard);
     </script>
 </body>
-</html>             
+        </html>
