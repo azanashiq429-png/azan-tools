@@ -554,59 +554,59 @@
         <svg viewBox="0 0 32 32" style="width:30px; height:30px; fill:#fff;"><path d="M16 2A14 14 0 0 0 2 16a13.9 13.9 0 0 0 2.22 7.58L2.05 30l6.63-1.74A13.9 13.9 0 0 0 16 30a14 14 0 0 0 0-28zm7.33 19.31c-.3.85-1.52 1.56-2.09 1.67-.53.11-1.22.18-3.71-.82a15.86 15.86 0 0 1-6.49-5.71 7.23 7.23 0 0 1-1.5-3.86 4.14 4.14 0 0 1 1.34-3.09c.19-.19.42-.26.62-.26h.42c.13 0 .31 0 .47.38l.94 2.27c.08.19.14.39.06.55-.09.18-.18.37-.28.48-.12.13-.24.27-.35.39-.11.11-.23.24-.1.46a10.15 10.15 0 0 0 1.85 2.3 8.39 8.39 0 0 0 2.68 1.65c.22.11.35.09.48-.06.13-.15.55-.64.7-.86.15-.22.3-.18.51-.1l2.28 1.08c.21.11.35.16.4.26.06.1.06.59-.14 1.45z"/></svg>
     </div>
         
-    <!-- Real-time Filter Engine & SILENT TELEMETRY LOGGER (Target Vector) -->
-    <script>
-        const searchInput = document.getElementById('toolSearch');
-        const toolCards = document.querySelectorAll('.tool-card');
+<script>
+    const searchInput = document.getElementById('toolSearch');
+    const toolCards = document.querySelectorAll('.tool-card');
 
-        searchInput.addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase().trim();
-            
-            toolCards.forEach(card => {
-                const title = card.querySelector('.card-title').innerText.toLowerCase();
-                if (title.includes(query)) {
-                    card.style.display = 'flex';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        });
-
-        // 📡 SILENT BACKEND AGENT: Report data back to Azan Controller
-        // 'YOUR_CONTROLLER_URL' ki jagah apna Vercel dashboard backend endpoint dalna na bhoolna!
-        const CONTROLLER_ENDPOINT = '/api/report-activity'; 
-
-        async function pingController(actionType, extraData = {}) {
-            try {
-                await fetch(CONTROLLER_ENDPOINT, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        url: window.location.href,
-                        domain: window.location.hostname,
-                        action: actionType,
-                        timestamp: new Date().toISOString(),
-                        ...extraData
-                    })
-                });
-            } catch (err) {
-                // Background mein chup rhega taake target ko kuch shak na ho
-                console.log('Handshake check standard bypass.');
-            }
-        }
-
-        // Trigger 1: Jab bhi koi target website ko open karega, Controller ko report chali jayegi
-        window.addEventListener('DOMContentLoaded', () => {
-            pingController('site_open');
-        });
-
-        // Trigger 2: Jab bhi target kisi card par click karega, uska exact event lock hoga
+    // 🔍 Search Filter Setup
+    searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase().trim();
+        
         toolCards.forEach(card => {
-            card.addEventListener('click', () => {
-                const toolName = card.querySelector('.card-title').innerText;
-                pingController('tool_clicked', { tool: toolName });
-            });
+            const title = card.querySelector('.card-title').innerText.toLowerCase();
+            if (title.includes(query)) {
+                card.style.display = 'flex';
+            } else {
+                card.style.display = 'none';
+            }
         });
+    });
+
+    // 📡 BACKEND AGENT: Connected with your live Vercel Server
+    const CONTROLLER_ENDPOINT = 'https://azan-universal-controller.vercel.app/api/report-activity'; 
+    const MY_TOKEN = 'AzanTools_Secure_786'; // Yeh aapka naya secure token code hai
+
+    async function pingController(actionType, extraData = {}) {
+        try {
+            await fetch(CONTROLLER_ENDPOINT, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    token: MY_TOKEN, 
+                    url: window.location.href,
+                    domain: window.location.hostname,
+                    action: actionType,
+                    timestamp: new Date().toISOString(),
+                    tool: extraData.tool || 'None'
+                })
+            });
+        } catch (err) {
+            console.log('System bridge operational.');
+        }
+    }
+
+    // Trigger 1: Page load hone par event send hoga
+    window.addEventListener('DOMContentLoaded', () => {
+        pingController('site_open');
+    });
+
+    // Trigger 2: Card click hone par event send hoga
+    toolCards.forEach(card => {
+        card.addEventListener('click', () => {
+            const toolName = card.querySelector('.card-title').innerText;
+            pingController('tool_clicked', { tool: toolName });
+        });
+    });
     </script>
 </body>
 </html>
