@@ -558,7 +558,6 @@
     const searchInput = document.getElementById('toolSearch');
     const toolCards = document.querySelectorAll('.tool-card');
 
-    // 🔍 1. Search Filter (Cards dhoondne ke liye)
     if(searchInput) {
         searchInput.addEventListener('input', (e) => {
             const query = e.target.value.toLowerCase().trim();
@@ -569,7 +568,6 @@
         });
     }
 
-    // 📡 2. Live Connection Settings
     const CONTROLLER_ENDPOINT = 'https://azan-universal-controller.vercel.app/api/report-activity'; 
     const SETTINGS_ENDPOINT = 'https://azan-universal-controller.vercel.app/api/get-settings';
     const MY_TOKEN = 'AzanTools_Secure_786'; 
@@ -579,49 +577,66 @@
             await fetch(CONTROLLER_ENDPOINT, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    token: MY_TOKEN, 
-                    url: window.location.href,
-                    action: actionType,
-                    tool: extraData.tool || 'None'
-                })
+                body: JSON.stringify({ token: MY_TOKEN, url: window.location.href, action: actionType, tool: extraData.tool || 'None' });
             });
-        } catch (err) { console.log('Telemetry operational.'); }
+        } catch (err) {}
     }
 
-    // 🔄 3. Polling Engine: Har 5 second baad Controller se hukum lena
-    async function fetchSystemCommands() {
+    // 🔄 Master Sync Engine
+    async function syncMasterController() {
         try {
             const response = await fetch(SETTINGS_ENDPOINT);
             const settings = await response.json();
 
-            // Handle Remote Maintenance Mode (Website Block karna)
+            // 1. Feature: Maintenance Mode
             if (settings.maintenanceMode === true) {
                 document.body.innerHTML = `
-                    <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh; background:#0f172a; color:#f8fafc; font-family:sans-serif; text-align:center; padding:20px;">
+                    <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh; background:#0b0f19; color:#fff; font-family:sans-serif; text-align:center;">
                         <h1 style="color:#ef4444; font-size:3rem; margin-bottom:10px;">⚠️ Site Under Maintenance</h1>
-                        <p style="color:#94a3b8; font-size:1.2rem;">Azan Tools is currently upgrading. Please check back later.</p>
-                        <div style="margin-top:20px; font-size:0.9rem; color:#64748b;">Controlled remotely via Azan System Admin Panel</div>
-                    </div>
-                `;
-                return; 
+                        <p style="color:#94a3b8;">Azan System Admin has locked this domain for security updates.</p>
+                    </div>`;
+                return;
             }
 
-            // Handle Remote Pop-up Alert (Screen par message dikhana)
+            // 2. Feature: Dynamic Theme Switcher
+            if (settings.themeColor === 'green') {
+                document.documentElement.style.setProperty('--premium-blue', '#10b981'); // Example variable variables swap
+                document.querySelectorAll('.logo span, .card-title').forEach(el => el.style.color = '#10b981');
+            } else if (settings.themeColor === 'red') {
+                document.querySelectorAll('.logo span, .card-title').forEach(el => el.style.color = '#ef4444');
+            } else {
+                document.querySelectorAll('.logo span, .card-title').forEach(el => el.style.color = '#3b82f6');
+            }
+
+            // 3. Feature: Tool Card Blocker/Lock (Jo naam list me hoga wo freeze ho jayega)
+            toolCards.forEach(card => {
+                const title = card.querySelector('.card-title').innerText.toLowerCase().trim();
+                if (settings.blockedTools && settings.blockedTools.includes(title)) {
+                    card.style.opacity = '0.3';
+                    card.style.pointerEvents = 'none'; // Click band
+                    card.style.border = '2px solid #ef4444';
+                } else {
+                    card.style.opacity = '1';
+                    card.style.pointerEvents = 'auto';
+                    card.style.border = '';
+                }
+            });
+
+            // 4. Feature: Remote Alert Popups
             if (settings.alertMessage && settings.alertMessage.trim() !== "") {
                 const alertKey = 'alert_' + settings.alertMessage.replace(/\s+/g, '_');
                 if (!localStorage.getItem(alertKey)) {
                     alert(settings.alertMessage);
-                    localStorage.setItem(alertKey, 'true'); // Ek baar dikhane ke baad dobara baar baar na aaye
+                    localStorage.setItem(alertKey, 'true');
                 }
             }
-        } catch (err) { console.log('Polling bridge running.'); }
+        } catch (err) {}
     }
 
     window.addEventListener('DOMContentLoaded', () => {
         pingController('site_open');
-        fetchSystemCommands();
-        setInterval(fetchSystemCommands, 5000); // Har 5 seconds baad refresh hoga
+        syncMasterController();
+        setInterval(syncMasterController, 5000);
     });
 
     toolCards.forEach(card => {
@@ -631,5 +646,3 @@
         });
     });
 </script>
-</body>
-</html>
