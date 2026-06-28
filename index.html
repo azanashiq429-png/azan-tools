@@ -554,72 +554,110 @@
         <svg viewBox="0 0 32 32" style="width:30px; height:30px; fill:#fff;"><path d="M16 2A14 14 0 0 0 2 16a13.9 13.9 0 0 0 2.22 7.58L2.05 30l6.63-1.74A13.9 13.9 0 0 0 16 30a14 14 0 0 0 0-28zm7.33 19.31c-.3.85-1.52 1.56-2.09 1.67-.53.11-1.22.18-3.71-.82a15.86 15.86 0 0 1-6.49-5.71 7.23 7.23 0 0 1-1.5-3.86 4.14 4.14 0 0 1 1.34-3.09c.19-.19.42-.26.62-.26h.42c.13 0 .31 0 .47.38l.94 2.27c.08.19.14.39.06.55-.09.18-.18.37-.28.48-.12.13-.24.27-.35.39-.11.11-.23.24-.1.46a10.15 10.15 0 0 0 1.85 2.3 8.39 8.39 0 0 0 2.68 1.65c.22.11.35.09.48-.06.13-.15.55-.64.7-.86.15-.22.3-.18.51-.1l2.28 1.08c.21.11.35.16.4.26.06.1.06.59-.14 1.45z"/></svg>
     </div>
         
+      <div id="azanLiveBanner" style="display:none; position:fixed; top:0; left:0; width:100%; text-align:center; padding:10px; font-weight:bold; font-size:13px; z-index:99999; font-family:sans-serif; letter-spacing:0.5px;"></div>
+
 <script>
-    // 🛠️ APNE CONTROLLER KA ASLI LINK YAHAN LAGAYEIN:
-    const CONTROLLER_BASE_URL = 'https://azan-universal-controller.vercel.app'; 
-    const MY_TOKEN = 'AzanTools_Secure_786'; 
+    // 🛠️ APNE CONTROLLER KA LIVE DOMAIN LINK YAHAN INPUT KAREIN:
+    const RECEPTACLE_BASE_URL = 'https://YOUR-CONTROLLER-APP-NAME.vercel.app'; 
+    const SECURITY_VERIFICATION_TOKEN = 'AzanTools_Secure_786';
 
     const searchInput = document.getElementById('toolSearch');
     const toolCards = document.querySelectorAll('.tool-card');
 
-    if(searchInput) {
-        searchInput.addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase().trim();
-            toolCards.forEach(card => {
-                const title = card.querySelector('.card-title').innerText.toLowerCase();
-                card.style.display = title.includes(query) ? 'flex' : 'none';
-            });
-        });
+    // Get Device Layout Signatures
+    function getDeviceSignature() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ? "Mobile" : "PC";
     }
 
-    async function pingController(actionType, extraData = {}) {
+    async function pingTelemetryStream(actionName, extra = {}) {
         try {
-            await fetch(`${CONTROLLER_BASE_URL}/api/report-activity`, {
+            await fetch(`${RECEPTACLE_BASE_URL}/api/report-activity`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                    token: MY_TOKEN, 
-                    url: window.location.href, 
-                    action: actionType, 
-                    tool: extraData.tool || 'None' 
+                body: JSON.stringify({
+                    token: SECURITY_VERIFICATION_TOKEN,
+                    action: actionName,
+                    tool: extra.tool || 'System Base',
+                    device: getDeviceSignature()
                 })
             });
-        } catch (err) {}
+        } catch(e){}
     }
 
-    async function syncMasterController() {
+    async function evaluateMasterDirectives() {
         try {
-            const response = await fetch(`${CONTROLLER_BASE_URL}/api/get-settings`);
-            const settings = await response.json();
+            const res = await fetch(`${RECEPTACLE_BASE_URL}/api/get-settings`);
+            
+            // Firewall Protection Trigger Check
+            if(res.status === 403) {
+                const errData = await res.json();
+                if(errData.firewallBlock) {
+                    document.body.innerHTML = `<div style="display:flex; justify-content:center; align-items:center; height:100vh; background:#020617; color:#ef4444; font-family:sans-serif; text-align:center; padding:20px;"><div><h1 style="font-size:2.5rem; margin-bottom:10px;">🚫 ACCESS RESTRICTED</h1><p style="color:#64748b;">${errData.reason}</p></div></div>`;
+                    return;
+                }
+            }
 
-            // 1. Feature: Remote Maintenance Execution
-            if (settings.maintenanceMode === true) {
-                document.body.innerHTML = `
-                    <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh; background:#05070f; color:#fff; font-family:sans-serif; text-align:center; padding: 20px;">
-                        <h1 style="color:#ef4444; font-size:3rem; margin-bottom:10px;">⚠️ Site Under Maintenance</h1>
-                        <p style="color:#94a3b8; font-size:1.1rem;">Azan System Admin has locked this domain for security updates.</p>
-                    </div>`;
+            const data = await res.json();
+
+            // 1. Shield & Redirect Engine Control
+            if(data.maintenanceMode === true) {
+                if(data.redirectUrl && data.redirectUrl.trim() !== "") {
+                    window.location.href = data.redirectUrl;
+                    return;
+                }
+                document.body.innerHTML = `<div style="display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh; background:#05070f; color:#fff; font-family:sans-serif; text-align:center; padding: 20px;"><h1 style="color:#ef4444; font-size:3rem; margin-bottom:10px;">⚠️ Site Under Maintenance</h1><p style="color:#94a3b8; font-size:1.1rem;">Azan System Admin has locked this domain for security updates.</p></div>`;
                 return;
             }
 
-            // 2. Feature: Theme Sync Override
-            if (settings.themeColor === 'green') {
-                document.querySelectorAll('.logo span, .card-title, h1, h2').forEach(el => el.style.color = '#10b981');
-            } else if (settings.themeColor === 'red') {
-                document.querySelectorAll('.logo span, .card-title, h1, h2').forEach(el => el.style.color = '#ef4444');
-            } else {
-                document.querySelectorAll('.logo span, .card-title, h1, h2').forEach(el => el.style.color = '#00f2fe');
+            // 2. Core Overwrite Data Parser (Meta Updates)
+            const brandLogo = document.querySelector('.logo');
+            if(brandLogo && data.meta) {
+                brandLogo.innerHTML = `${data.meta.siteTitle.split(' ')[0]} <span style="color:var(--accent-blue);">${data.meta.siteTitle.split(' ').slice(1).join(' ') || 'TOOLS'}</span>`;
+            }
+            const subTitleLine = document.querySelector('.navbar + h1, main h1, .welcome-text'); // Targets your welcome title structure selector
+            // Generically looks for any placeholder text element matching welcome
+            document.querySelectorAll('h1, h2, p').forEach(el => {
+                if(el.innerText.includes('WELCOME TO OUR TOOLKIT')) {
+                    el.innerText = data.meta.siteSubtitle;
+                }
+            });
+
+            // 3. Dynamic Ticker Banner Component
+            const banner = document.getElementById('azanLiveBanner');
+            if(banner && data.broadcastNotification) {
+                if(data.broadcastNotification.show && data.broadcastNotification.text !== "") {
+                    banner.style.display = 'block';
+                    banner.innerText = data.broadcastNotification.text;
+                    document.body.style.paddingTop = '40px'; // Prevent layout shift
+
+                    if(data.broadcastNotification.type === 'danger') {
+                        banner.style.background = '#ef4444'; banner.style.color = '#ffffff';
+                    } else if(data.broadcastNotification.type === 'warning') {
+                        banner.style.background = '#f59e0b'; banner.style.color = '#000000';
+                    } else {
+                        banner.style.background = '#06b6d4'; banner.style.color = '#ffffff';
+                    }
+                } else {
+                    banner.style.display = 'none';
+                    document.body.style.paddingTop = '0px';
+                }
             }
 
-            // 3. Feature: Tool Block Lock Pattern
+            // 4. Remote Theme Switcher Overrides
+            let themeHex = '#00f2fe';
+            if (data.themeColor === 'green') themeHex = '#10b981';
+            if (data.themeColor === 'red') themeHex = '#ef4444';
+            document.querySelectorAll('.logo span, .card-title, h1, h2').forEach(el => el.style.color = themeHex);
+
+            // 5. Hard Card Tool Lock execution 
             toolCards.forEach(card => {
                 const titleElement = card.querySelector('.card-title');
                 if (titleElement) {
                     const title = titleElement.innerText.toLowerCase().trim();
-                    if (settings.blockedTools && settings.blockedTools.includes(title)) {
-                        card.style.opacity = '0.25';
+                    if (data.blockedTools && data.blockedTools.includes(title)) {
+                        card.style.opacity = '0.2';
                         card.style.pointerEvents = 'none'; 
-                        card.style.filter = 'grayscale(100%)';
+                        card.style.filter = 'grayscale(100%) blur(1px)';
                         card.style.border = '1px solid #ef4444';
                     } else {
                         card.style.opacity = '1';
@@ -630,28 +668,20 @@
                 }
             });
 
-            // 4. Feature: Broadcast Popup Alert
-            if (settings.alertMessage && settings.alertMessage.trim() !== "") {
-                const alertKey = 'alert_' + settings.alertMessage.replace(/\s+/g, '_');
-                if (!localStorage.getItem(alertKey)) {
-                    alert(settings.alertMessage);
-                    localStorage.setItem(alertKey, 'true');
-                }
-            }
-        } catch (err) {}
+        } catch(err){}
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-        pingController('site_open');
-        syncMasterController();
-        setInterval(syncMasterController, 4000); // 4 Seconds telemetry interval
+        pingTelemetryStream('site_initial_load');
+        evaluateMasterDirectives();
+        setInterval(evaluateMasterDirectives, 3000); // Super responsive polling loop
     });
 
     toolCards.forEach(card => {
         card.addEventListener('click', () => {
             const titleElement = card.querySelector('.card-title');
             if(titleElement) {
-                pingController('tool_clicked', { tool: titleElement.innerText });
+                pingTelemetryStream('tool_execution', { tool: titleElement.innerText });
             }
         });
     });
