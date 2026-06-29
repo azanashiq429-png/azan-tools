@@ -554,21 +554,21 @@
         <svg viewBox="0 0 32 32" style="width:30px; height:30px; fill:#fff;"><path d="M16 2A14 14 0 0 0 2 16a13.9 13.9 0 0 0 2.22 7.58L2.05 30l6.63-1.74A13.9 13.9 0 0 0 16 30a14 14 0 0 0 0-28zm7.33 19.31c-.3.85-1.52 1.56-2.09 1.67-.53.11-1.22.18-3.71-.82a15.86 15.86 0 0 1-6.49-5.71 7.23 7.23 0 0 1-1.5-3.86 4.14 4.14 0 0 1 1.34-3.09c.19-.19.42-.26.62-.26h.42c.13 0 .31 0 .47.38l.94 2.27c.08.19.14.39.06.55-.09.18-.18.37-.28.48-.12.13-.24.27-.35.39-.11.11-.23.24-.1.46a10.15 10.15 0 0 0 1.85 2.3 8.39 8.39 0 0 0 2.68 1.65c.22.11.35.09.48-.06.13-.15.55-.64.7-.86.15-.22.3-.18.51-.1l2.28 1.08c.21.11.35.16.4.26.06.1.06.59-.14 1.45z"/></svg>
     </div>
         
-                <div id="azanLiveBanner" style="display:none; position:fixed; top:0; left:0; width:100%; text-align:center; padding:10px; font-weight:bold; font-size:13px; z-index:99999; font-family:sans-serif; letter-spacing:0.5px;"></div>
+                                <div id="azanLiveBanner" style="display:none; position:fixed; top:0; left:0; width:100%; text-align:center; padding:10px; font-weight:bold; font-size:13px; z-index:99999; font-family:sans-serif; letter-spacing:0.5px;"></div>
 
 <script>
-    // 🛠️ CORRECTED CONTROLLER LIVE LINK (Aapke screenshot ke mutabik)
+    // 🛠️ UNIVERSAL CONTROLLER DEPLOYMENT LINK
     const RECEPTACLE_BASE_URL = 'https://universal-controller.vercel.app'; 
     const SECURITY_VERIFICATION_TOKEN = 'AzanTools_Secure_786';
 
-    const searchInput = document.getElementById('toolSearch');
     const toolCards = document.querySelectorAll('.tool-card');
 
-    // Get Device Layout Signatures
+    // Get Device Layout Signatures Safely
     function getDeviceSignature() {
         return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ? "Mobile" : "PC";
     }
 
+    // 🛰️ Telemetry Ping Stream Engine
     async function pingTelemetryStream(actionName, extra = {}) {
         try {
             await fetch(`${RECEPTACLE_BASE_URL}/api/report-activity`, {
@@ -584,25 +584,24 @@
         } catch(e){}
     }
 
+    // 🧠 Evaluate Master Directives Engine
     async function evaluateMasterDirectives() {
         try {
             const res = await fetch(`${RECEPTACLE_BASE_URL}/api/get-settings`);
             
-            // Firewall Protection Trigger Check
+            // ✨ FIX 1: Safe Firewall Verification Check & Early Return
             if(res.status === 403) {
                 const errData = await res.json();
                 if(errData.firewallBlock) {
                     document.body.innerHTML = `<div style="display:flex; justify-content:center; align-items:center; height:100vh; background:#020617; color:#ef4444; font-family:sans-serif; text-align:center; padding:20px;"><div><h1 style="font-size:2.5rem; margin-bottom:10px;">🚫 ACCESS RESTRICTED</h1><p style="color:#64748b;">${errData.reason}</p></div></div>`;
-                    return;
+                    return; // Stops execution immediately
                 }
             }
 
-            // Agar response sahi nahi aayi toh aage na barhein
             if (!res.ok) return;
-
             const data = await res.json();
 
-            // 1. Shield & Redirect Engine Control
+            // 1. Shield & Redirect Engine Control (Maintenance)
             if(data.maintenanceMode === true) {
                 if(data.redirectUrl && data.redirectUrl.trim() !== "") {
                     window.location.href = data.redirectUrl;
@@ -615,12 +614,16 @@
             // 2. Core Overwrite Data Parser (Meta Updates)
             const brandLogo = document.querySelector('.logo');
             if(brandLogo && data.meta && data.meta.siteTitle) {
-                brandLogo.innerHTML = `${data.meta.siteTitle.split(' ')[0]} <span style="color:var(--accent-blue);">${data.meta.siteTitle.split(' ').slice(1).join(' ') || 'TOOLS'}</span>`;
+                // ✨ FIX 2: Dynamic Multi-word Title Protection
+                const words = data.meta.siteTitle.split(' ');
+                const firstWord = words[0];
+                const restOfTitle = words.slice(1).join(' ') || 'TOOLS';
+                brandLogo.innerHTML = `${firstWord} <span style="color:var(--accent-blue);">${restOfTitle}</span>`;
             }
             
             if (data.meta && data.meta.siteSubtitle) {
-                document.querySelectorAll('h1, h2, p').forEach(el => {
-                    if(el.innerText.includes('WELCOME TO OUR TOOLKIT')) {
+                document.querySelectorAll('h1, h2, p, .subtitle').forEach(el => {
+                    if(el.innerText && el.innerText.includes('WELCOME TO OUR TOOLKIT')) {
                         el.innerText = data.meta.siteSubtitle;
                     }
                 });
@@ -629,7 +632,7 @@
             // 3. Dynamic Ticker Banner Component
             const banner = document.getElementById('azanLiveBanner');
             if(banner && data.broadcastNotification) {
-                if(data.broadcastNotification.show && data.broadcastNotification.text !== "") {
+                if(data.broadcastNotification.show && data.broadcastNotification.text.trim() !== "") {
                     banner.style.display = 'block';
                     banner.innerText = data.broadcastNotification.text;
                     document.body.style.paddingTop = '40px'; 
@@ -651,42 +654,54 @@
             let themeHex = '#00f2fe';
             if (data.themeColor === 'green') themeHex = '#10b981';
             if (data.themeColor === 'red') themeHex = '#ef4444';
-            document.querySelectorAll('.logo span, .card-title, h1, h2').forEach(el => el.style.color = themeHex);
-
-            // 5. Hard Card Tool Lock execution 
-            toolCards.forEach(card => {
-                const titleElement = card.querySelector('.card-title');
-                if (titleElement) {
-                    const title = titleElement.innerText.toLowerCase().trim();
-                    if (data.blockedTools && data.blockedTools.includes(title)) {
-                        card.style.opacity = '0.2';
-                        card.style.pointerEvents = 'none'; 
-                        card.style.filter = 'grayscale(100%) blur(1px)';
-                        card.style.border = '1px solid #ef4444';
-                    } else {
-                        card.style.opacity = '1';
-                        card.style.pointerEvents = 'auto';
-                        card.style.filter = 'none';
-                        card.style.border = '';
-                    }
+            document.querySelectorAll('.logo span, .card-title, h1, h2').forEach(el => {
+                if(!el.closest('#azanLiveBanner')) { // Ticker banner text color protect karne k liye
+                    el.style.color = themeHex;
                 }
             });
 
-        } catch(err){}
+            // 5. Hard Card Tool Lock execution 
+            if (toolCards && toolCards.length > 0) {
+                toolCards.forEach(card => {
+                    const titleElement = card.querySelector('.card-title');
+                    if (titleElement) {
+                        const title = titleElement.innerText.toLowerCase().trim();
+                        // Array checking pattern verification
+                        if (data.blockedTools && Array.isArray(data.blockedTools) && data.blockedTools.includes(title)) {
+                            card.style.opacity = '0.15';
+                            card.style.pointerEvents = 'none'; 
+                            card.style.filter = 'grayscale(100%) blur(1px)';
+                            card.style.border = '1px solid #ef4444';
+                        } else {
+                            card.style.opacity = '1';
+                            card.style.pointerEvents = 'auto';
+                            card.style.filter = 'none';
+                            card.style.border = '';
+                        }
+                    }
+                });
+            }
+
+        } catch(err){ console.error("Directive Evaluation Stream Interrupted."); }
     }
 
+    // Event Triggers & Initialization Loops
     window.addEventListener('DOMContentLoaded', () => {
         pingTelemetryStream('site_initial_load');
         evaluateMasterDirectives();
-        setInterval(evaluateMasterDirectives, 3000); 
+        setInterval(evaluateMasterDirectives, 3000); // 3 seconds real-time configuration sync
     });
 
-    toolCards.forEach(card => {
-        card.addEventListener('click', () => {
-            const titleElement = card.querySelector('.card-title');
-            if(titleElement) {
-                pingTelemetryStream('tool_execution', { tool: titleElement.innerText });
-            }
+    if (toolCards && toolCards.length > 0) {
+        toolCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const titleElement = card.querySelector('.card-title');
+                if(titleElement) {
+                    pingTelemetryStream('tool_execution', { tool: titleElement.innerText });
+                }
+            });
         });
-    });
+    }
 </script>
+</body>
+</html>
