@@ -554,26 +554,28 @@
         <svg viewBox="0 0 32 32" style="width:30px; height:30px; fill:#fff;"><path d="M16 2A14 14 0 0 0 2 16a13.9 13.9 0 0 0 2.22 7.58L2.05 30l6.63-1.74A13.9 13.9 0 0 0 16 30a14 14 0 0 0 0-28zm7.33 19.31c-.3.85-1.52 1.56-2.09 1.67-.53.11-1.22.18-3.71-.82a15.86 15.86 0 0 1-6.49-5.71 7.23 7.23 0 0 1-1.5-3.86 4.14 4.14 0 0 1 1.34-3.09c.19-.19.42-.26.62-.26h.42c.13 0 .31 0 .47.38l.94 2.27c.08.19.14.39.06.55-.09.18-.18.37-.28.48-.12.13-.24.27-.35.39-.11.11-.23.24-.1.46a10.15 10.15 0 0 0 1.85 2.3 8.39 8.39 0 0 0 2.68 1.65c.22.11.35.09.48-.06.13-.15.55-.64.7-.86.15-.22.3-.18.51-.1l2.28 1.08c.21.11.35.16.4.26.06.1.06.59-.14 1.45z"/></svg>
     </div>
         
-                                <div id="azanLiveBanner" style="display:none; position:fixed; top:0; left:0; width:100%; text-align:center; padding:10px; font-weight:bold; font-size:13px; z-index:99999; font-family:sans-serif; letter-spacing:0.5px;"></div>
+                                                    <div id="azanLiveBanner" style="display:none; position:fixed; top:0; left:0; width:100%; text-align:center; padding:10px; font-weight:bold; font-size:13px; z-index:99999; font-family:sans-serif; letter-spacing:0.5px;"></div>
 
 <script>
-    // 🛠️ UNIVERSAL CONTROLLER DEPLOYMENT LINK
     const RECEPTACLE_BASE_URL = 'https://universal-controller.vercel.app'; 
     const SECURITY_VERIFICATION_TOKEN = 'AzanTools_Secure_786';
 
     const toolCards = document.querySelectorAll('.tool-card');
 
-    // Get Device Layout Signatures Safely
     function getDeviceSignature() {
         return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ? "Mobile" : "PC";
     }
 
-    // 🛰️ Telemetry Ping Stream Engine
+    // 🛰️ Telemetry Ping Stream Engine (With Proper Headers)
     async function pingTelemetryStream(actionName, extra = {}) {
         try {
             await fetch(`${RECEPTACLE_BASE_URL}/api/report-activity`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                mode: 'cors', // ✨ CORRECTION: Explicitly bypass browser restrictions
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
                 body: JSON.stringify({
                     token: SECURITY_VERIFICATION_TOKEN,
                     action: actionName,
@@ -587,21 +589,24 @@
     // 🧠 Evaluate Master Directives Engine
     async function evaluateMasterDirectives() {
         try {
-            const res = await fetch(`${RECEPTACLE_BASE_URL}/api/get-settings`);
+            const res = await fetch(`${RECEPTACLE_BASE_URL}/api/get-settings`, {
+                method: 'GET',
+                mode: 'cors', // ✨ CORRECTION: Force cross-domain handshake
+                headers: { 'Accept': 'application/json' }
+            });
             
-            // ✨ FIX 1: Safe Firewall Verification Check & Early Return
             if(res.status === 403) {
                 const errData = await res.json();
                 if(errData.firewallBlock) {
                     document.body.innerHTML = `<div style="display:flex; justify-content:center; align-items:center; height:100vh; background:#020617; color:#ef4444; font-family:sans-serif; text-align:center; padding:20px;"><div><h1 style="font-size:2.5rem; margin-bottom:10px;">🚫 ACCESS RESTRICTED</h1><p style="color:#64748b;">${errData.reason}</p></div></div>`;
-                    return; // Stops execution immediately
+                    return;
                 }
             }
 
             if (!res.ok) return;
             const data = await res.json();
 
-            // 1. Shield & Redirect Engine Control (Maintenance)
+            // 1. Maintenance Mode
             if(data.maintenanceMode === true) {
                 if(data.redirectUrl && data.redirectUrl.trim() !== "") {
                     window.location.href = data.redirectUrl;
@@ -611,10 +616,9 @@
                 return;
             }
 
-            // 2. Core Overwrite Data Parser (Meta Updates)
+            // 2. Meta Updates
             const brandLogo = document.querySelector('.logo');
             if(brandLogo && data.meta && data.meta.siteTitle) {
-                // ✨ FIX 2: Dynamic Multi-word Title Protection
                 const words = data.meta.siteTitle.split(' ');
                 const firstWord = words[0];
                 const restOfTitle = words.slice(1).join(' ') || 'TOOLS';
@@ -623,13 +627,13 @@
             
             if (data.meta && data.meta.siteSubtitle) {
                 document.querySelectorAll('h1, h2, p, .subtitle').forEach(el => {
-                    if(el.innerText && el.innerText.includes('WELCOME TO OUR TOOLKIT')) {
+                    if(el.innerText && el.innerText.toUpperCase().includes('WELCOME TO OUR TOOLKIT')) {
                         el.innerText = data.meta.siteSubtitle;
                     }
                 });
             }
 
-            // 3. Dynamic Ticker Banner Component
+            // 3. Live Notification Ticker
             const banner = document.getElementById('azanLiveBanner');
             if(banner && data.broadcastNotification) {
                 if(data.broadcastNotification.show && data.broadcastNotification.text.trim() !== "") {
@@ -650,23 +654,22 @@
                 }
             }
 
-            // 4. Remote Theme Switcher Overrides
+            // 4. Remote Theme Overrides
             let themeHex = '#00f2fe';
-            if (data.themeColor === 'green') themeHex = '#10b981';
-            if (data.themeColor === 'red') themeHex = '#ef4444';
+            if (data.themeColor === 'red' || data.themeColor === 'danger') themeHex = '#ef4444';
+            if (data.themeColor === 'green' || data.themeColor === 'success') themeHex = '#10b981';
             document.querySelectorAll('.logo span, .card-title, h1, h2').forEach(el => {
-                if(!el.closest('#azanLiveBanner')) { // Ticker banner text color protect karne k liye
+                if(!el.closest('#azanLiveBanner')) {
                     el.style.color = themeHex;
                 }
             });
 
-            // 5. Hard Card Tool Lock execution 
+            // 5. Card Blocker Implementation
             if (toolCards && toolCards.length > 0) {
                 toolCards.forEach(card => {
                     const titleElement = card.querySelector('.card-title');
                     if (titleElement) {
                         const title = titleElement.innerText.toLowerCase().trim();
-                        // Array checking pattern verification
                         if (data.blockedTools && Array.isArray(data.blockedTools) && data.blockedTools.includes(title)) {
                             card.style.opacity = '0.15';
                             card.style.pointerEvents = 'none'; 
@@ -682,14 +685,13 @@
                 });
             }
 
-        } catch(err){ console.error("Directive Evaluation Stream Interrupted."); }
+        } catch(err){}
     }
 
-    // Event Triggers & Initialization Loops
     window.addEventListener('DOMContentLoaded', () => {
         pingTelemetryStream('site_initial_load');
         evaluateMasterDirectives();
-        setInterval(evaluateMasterDirectives, 3000); // 3 seconds real-time configuration sync
+        setInterval(evaluateMasterDirectives, 3500); // Poll tracking data safely
     });
 
     if (toolCards && toolCards.length > 0) {
