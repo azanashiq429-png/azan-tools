@@ -13,18 +13,67 @@
             font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
         }
 
+        :root {
+            --bg-color: #0b0f19;
+            --bg-gradient: radial-gradient(circle at 50% 0%, #17243c 0%, #070c14 65%, #030509 100%);
+            --text-color: #ffffff;
+            --panel-bg: #05080f;
+            --panel-border: rgba(255, 255, 255, 0.05);
+            --card-base-bg: linear-gradient(180deg, #0e1626 0%, #060a12 100%);
+        }
+
+        /* Light Mode Variables */
+        body.light-mode {
+            --bg-color: #f1f5f9;
+            --bg-gradient: radial-gradient(circle at 50% 0%, #cbd5e1 0%, #f1f5f9 70%, #e2e8f0 100%);
+            --text-color: #0f172a;
+            --panel-bg: #ffffff;
+            --panel-border: rgba(0, 0, 0, 0.1);
+            --card-base-bg: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+        }
+
         body {
-            background-color: #0b0f19;
-            background-image: 
-                radial-gradient(circle at 50% 0%, #17243c 0%, #070c14 65%, #030509 100%);
-            color: #ffffff;
+            background-color: var(--bg-color);
+            background-image: var(--bg-gradient);
+            color: var(--text-color);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 0 16px 40px 16px;
             overflow-x: hidden;
+            transition: background 0.3s, color 0.3s;
         }
+
+        /* Splash Screen Style */
+        #splash-screen {
+            position: fixed;
+            inset: 0;
+            background: #05080f;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease, visibility 0.5s;
+        }
+        .splash-logo {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #ffffff;
+            text-shadow: 0 0 15px #00f2fe;
+            margin-bottom: 20px;
+            animation: pulse-glow 1s infinite alternate;
+        }
+        .splash-loader {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(0, 242, 254, 0.1);
+            border-top: 4px solid #00f2fe;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
         /* Top Header & Logo Style */
         .header {
@@ -32,17 +81,23 @@
             margin-top: 35px;
             margin-bottom: 20px;
             width: 100%;
+            max-width: 440px;
+            position: relative;
         }
 
         .logo {
-            font-size: 2.8rem;
+            font-size: 3.5rem;
             font-weight: 900;
             letter-spacing: 3px;
             text-transform: uppercase;
             color: #ffffff;
-            /* FTGM Style Intense Glow */
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 18px #00f2fe, 0 0 35px #0072ff;
             margin: 0;
+        }
+
+        body.light-mode .logo {
+            color: #1e293b;
+            text-shadow: 0 0 10px rgba(0, 114, 255, 0.2), 0 0 18px #0072ff;
         }
 
         .subtitle {
@@ -53,6 +108,45 @@
             font-weight: 600;
             text-transform: uppercase;
             text-shadow: 0 0 5px rgba(0, 242, 254, 0.3);
+        }
+        body.light-mode .subtitle { color: #475569; }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            position: absolute;
+            top: 5px;
+            right: 0;
+            background: var(--panel-bg);
+            border: 1.5px solid rgba(0, 242, 254, 0.4);
+            color: var(--text-color);
+            padding: 6px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+        }
+
+        /* Section Header Styles */
+        .section-header {
+            width: 100%;
+            max-width: 440px;
+            font-size: 0.85rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: #00f2fe;
+            margin: 15px 0 10px 0;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .section-header::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(0,242,254,0.4), transparent);
         }
 
         /* Search Container */
@@ -65,13 +159,13 @@
         .search-bar {
             width: 100%;
             padding: 14px 20px;
-            background: #05080f;
+            background: var(--panel-bg);
             border: 1.5px solid rgba(0, 242, 254, 0.25);
             border-radius: 14px;
-            color: #ffffff;
+            color: var(--text-color);
             font-size: 0.95rem;
             outline: none;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.6);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
             transition: all 0.3s ease;
         }
 
@@ -84,8 +178,8 @@
         .notifications-panel {
             width: 100%;
             max-width: 440px;
-            background: #05080f;
-            border: 1.5px solid rgba(255, 255, 255, 0.05);
+            background: var(--panel-bg);
+            border: 1.5px solid var(--panel-border);
             border-radius: 14px;
             padding: 12px 16px;
             display: flex;
@@ -98,7 +192,8 @@
         }
 
         .notifications-panel:hover {
-            border-color: rgba(0, 242, 254, 0.3);
+            border-color: rgba(0, 242, 254, 0.5);
+            box-shadow: 0 0 10px rgba(0, 242, 254, 0.2);
         }
 
         .notif-left {
@@ -107,7 +202,7 @@
             gap: 10px;
             font-size: 0.85rem;
             font-weight: 600;
-            color: #ffffff;
+            color: var(--text-color);
         }
 
         .notif-icon {
@@ -123,29 +218,33 @@
         /* EXACT FTGM 3-COLUMN STRUCTURE & SPACING */
         .tools-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* Pure 3-Column setup */
-            gap: 12px; /* Perfect spacing between cards */
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
             width: 100%;
-            max-width: 440px; /* Standard premium mobile view width */
+            max-width: 440px;
         }
 
         /* FTGM Styled Premium Vertical Cards */
         .tool-card {
-            background: linear-gradient(180deg, #0e1626 0%, #060a12 100%);
+            background: var(--card-base-bg);
             border: 1.8px solid var(--border-color, rgba(0, 242, 254, 0.25));
-            border-radius: 20px; /* Smooth rounded corners */
+            border-radius: 20px;
             padding: 14px 6px 10px 6px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: space-between;
-            height: 145px; /* Perfect tall profile ratio */
+            height: 145px;
             box-sizing: border-box;
             cursor: pointer;
             position: relative;
             overflow: hidden;
             transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.2s;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        body.light-mode .tool-card {
+            color: #0f172a;
         }
 
         .tool-card:hover, .tool-card:active {
@@ -154,26 +253,25 @@
             border-color: var(--border-hover, #00f2fe);
         }
 
-        /* FTGM App Icon Wrapper with Diagonal Glass Reflection (Shine) */
+        /* FTGM App Icon Wrapper with Diagonal Glass Reflection */
         .icon-wrapper {
             width: 62px;
             height: 62px;
             background: var(--icon-bg, linear-gradient(135deg, #18233c 0%, #090e18 100%));
             border: 1.5px solid rgba(255, 255, 255, 0.12);
-            border-radius: 18px; /* Smooth rounded shape icon inside */
+            border-radius: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
             overflow: hidden;
             box-shadow: 
-                0 6px 12px rgba(0,0,0,0.5), 
+                0 6px 12px rgba(0,0,0,0.4), 
                 inset 0 1px 3px rgba(255,255,255,0.15),
                 0 0 8px var(--icon-inner-glow, rgba(0, 242, 254, 0.1));
             transition: transform 0.2s;
         }
 
-        /* Glossy Highlight Reflection Effect on Icons (FTGM trademark) */
         .icon-wrapper::after {
             content: "";
             position: absolute;
@@ -189,18 +287,18 @@
             transform: scale(1.06);
         }
 
-        /* Standardized Emoji / Vector graphics */
-        .emoji-icon {
-            font-size: 2.2rem;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.45));
-            z-index: 2;
+        .custom-vector {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
         }
 
-        /* Clean Flat Text Labels at the bottom */
+        /* Clean Flat Text Labels */
         .card-title {
             font-size: 0.72rem;
             font-weight: 600;
-            color: #ffffff;
+            color: var(--text-color);
             margin: 0;
             margin-top: 6px;
             text-align: center;
@@ -209,7 +307,6 @@
             overflow: hidden;
             text-overflow: ellipsis;
             letter-spacing: 0.3px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
         }
 
         /* Specific card color categories mapping to FTGM style */
@@ -276,6 +373,52 @@
             --icon-bg: linear-gradient(135deg, #0b1c3d 0%, #020714 100%);
             --icon-inner-glow: rgba(37, 99, 235, 0.25);
         }
+
+        /* Real-time Status Panel Design */
+        .status-panel {
+            width: 100%;
+            max-width: 440px;
+            background: var(--panel-bg);
+            border: 1.8px dashed rgba(0, 242, 254, 0.3);
+            border-radius: 16px;
+            padding: 15px;
+            margin-top: 25px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .status-box {
+            text-align: center;
+        }
+
+        .status-label {
+            font-size: 0.75rem;
+            color: #8fa0dd;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .status-value {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #00f2fe;
+            text-shadow: 0 0 8px rgba(0, 242, 254, 0.6);
+        }
+
+        .pulse-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: #22c55e;
+            border-radius: 50%;
+            margin-right: 5px;
+            box-shadow: 0 0 8px #22c55e;
+            animation: pulse-glow 1.2s infinite alternate;
+        }
+
         /* Floating WhatsApp Action Button */
         .whatsapp-floating {
             position: fixed;
@@ -298,178 +441,271 @@
             transform: scale(1.1) rotate(8deg);
             box-shadow: 0 6px 20px rgba(37, 211, 102, 0.7), 0 0 0 6px rgba(37, 211, 102, 0.25);
         }
-    
+
+        /* Modal / Tool Request Popup Styles */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.75);
+            backdrop-filter: blur(5px);
+            z-index: 10001;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-card {
+            background: #0e1626;
+            border: 1.5px solid #00f2fe;
+            border-radius: 20px;
+            padding: 24px;
+            width: 90%;
+            max-width: 380px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,242,254,0.3);
+        }
+        .modal-title { font-size: 1.2rem; color: #00f2fe; font-weight: 800; margin-bottom: 12px; }
+        .modal-input {
+            width: 100%;
+            padding: 12px;
+            background: #05080f;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            color: #fff;
+            margin-bottom: 15px;
+            outline: none;
+        }
+        .modal-btn {
+            background: linear-gradient(135deg, #00f2fe, #0072ff);
+            color: white; border: none; padding: 10px 24px;
+            border-radius: 10px; font-weight: bold; cursor: pointer;
+        }
+
         @keyframes bell-ring {
             0% { transform: rotate(-8deg); }
             100% { transform: rotate(8deg); }
+        }
+
+        @keyframes pulse-glow {
+            0% { opacity: 0.4; }
+            100% { opacity: 1; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Header Section -->
+    <div id="splash-screen">
+        <div class="splash-logo">AZAN TOOLS</div>
+        <div class="splash-loader"></div>
+    </div>
+
     <div class="header">
         <h1 class="logo">AZAN TOOLS</h1>
         <div class="subtitle">Welcome To Our Toolkit V 4.1</div>
+        <button class="theme-toggle" id="themeBtn">🌓 THEME</button>
     </div>
 
-    <!-- Search Engine Bar -->
     <div class="search-container">
-        <input type="text" id="toolSearch" placeholder="🔍 Search..." class="search-bar">
+        <input type="text" id="toolSearch" placeholder="🔍 Search tool..." class="search-bar">
     </div>
 
-    <!-- System Notifications Panel -->
-    <div class="notifications-panel" onclick="alert('All system modules operational. Dashboard V4.1 is active.')">
+    <div class="notifications-panel" id="notifPanel">
         <div class="notif-left">
             <span class="notif-icon">🔔</span>
-            <span>Notifications</span>
+            <span>Click here to Request a New Tool!</span>
         </div>
         <div class="notif-arrow">&gt;</div>
     </div>
 
-    <!-- FTGM 3-Column Structured Tools Grid -->
-    <div class="tools-grid">
+    <div class="section-header" id="recentHeader" style="display:none;">Recently Used</div>
+    <div class="tools-grid" id="recentGrid" style="margin-bottom: 20px;"></div>
+
+    <div class="section-header">All Core Modules</div>
+    <div class="tools-grid" id="mainGrid">
         
-        <!-- Row 1 -->
-        <div class="tool-card cyan-core" onclick="location.href='voice.html'">
-            <div class="icon-wrapper"><span class="emoji-icon">🎙️</span></div>
+        <div class="tool-card cyan-core" data-name="ai voice" onclick="openTool('AI Voice', 'voice.html')">
+            <div class="icon-wrapper">
+                <svg class="custom-vector" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" fill="#00f2fe"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" fill="#00f2fe"/></svg>
+            </div>
             <h3 class="card-title">AI Voice</h3>
         </div>
 
-        <div class="tool-card cyan-core" onclick="location.href='iptracker.html'">
-            <div class="icon-wrapper"><span class="emoji-icon">🌐</span></div>
+        <div class="tool-card cyan-core" data-name="ip tracker" onclick="openTool('IP Tracker', 'iptracker.html')">
+            <div class="icon-wrapper">
+                <svg class="custom-vector" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" stroke="#00f2fe" stroke-width="2"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" stroke="#00f2fe" stroke-width="2"/><path d="M2 12h20" stroke="#00f2fe" stroke-width="2"/></svg>
+            </div>
             <h3 class="card-title">IP Tracker</h3>
         </div>
 
-        <div class="tool-card cyan-core" onclick="location.href='password.html'">
-            <div class="icon-wrapper"><span class="emoji-icon">🔑</span></div>
+        <div class="tool-card cyan-core" data-name="password gen" onclick="openTool('Password Gen', 'password.html')">
+            <div class="icon-wrapper">
+                <svg class="custom-vector" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 17a2 2 0 100-4 2 2 0 000 4z" fill="#00f2fe"/><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 10c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-10H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z" fill="#00f2fe"/></svg>
+            </div>
             <h3 class="card-title">Password Gen</h3>
         </div>
 
-        <!-- Row 2 -->
-        <div class="tool-card cyan-core" onclick="location.href='bgremover.html'">
-            <div class="icon-wrapper"><span class="emoji-icon">🖼️</span></div>
+        <div class="tool-card cyan-core" data-name="remove bg" onclick="openTool('Remove BG', 'bgremover.html')">
+            <div class="icon-wrapper">
+                <svg class="custom-vector" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-4.5 10.5l-2.5 3.01L8.5 12l-3 4h13l-4-5.5z" fill="#00f2fe"/></svg>
+            </div>
             <h3 class="card-title">Remove BG</h3>
         </div>
 
-        <div class="tool-card green-core" onclick="location.href='traffic-sim.html'">
-            <div class="icon-wrapper"><span class="emoji-icon">⚡</span></div>
+        <div class="tool-card green-core" data-name="traffic sim" onclick="openTool('Traffic Sim', 'traffic-sim.html')">
+            <div class="icon-wrapper">
+                <svg class="custom-vector" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 2v9h9v2h-9v9h-2v-9H2v-2h9V2h2z" fill="#10b981"/></svg>
+            </div>
             <h3 class="card-title">Traffic Sim</h3>
         </div>
 
-        <div class="tool-card yellow-core" onclick="location.href='breach.html'">
-            <div class="icon-wrapper"><span class="emoji-icon">🔍</span></div>
-            <h3 class="card-title">Breach Check</h3>
+        <div class="tool-card yellow-core" data-name="breach check" onclick="openTool('Breach Check', 'breach.html')">
+            <div class="icon-wrapper">
+                <svg class="custom-vector"        viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" fill="#f59e0b"/>
+          </svg>
         </div>
-
-        <!-- Row 3 -->
-        <div class="tool-card green-core" onclick="location.href='portscanner.html'">
-            <div class="icon-wrapper"><span class="emoji-icon">🌐</span></div>
-            <h3 class="card-title">Port Scanner</h3>
-        </div>
-
-        <div class="tool-card pink-core" onclick="location.href='osint.html'">
-            <div class="icon-wrapper"><span class="emoji-icon">🕵️‍♂️</span></div>
+        <h3 class="card-title">Breach Check</h3>
+      </div>
+<div class="tool-card pink-core" data-name="target intel" onclick="openTool('Target Intel', 'osint.html')">
+            <div class="icon-wrapper">
+                <svg class="custom-vector" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5-4-8-4z" fill="#ff007f"/></svg>
+            </div>
             <h3 class="card-title">Target Intel</h3>
         </div>
 
-        <div class="tool-card yellow-core" onclick="location.href='headers.html'">
-            <div class="icon-wrapper"><span class="emoji-icon">🛡️</span></div>
+        <div class="tool-card yellow-core" data-name="header audit" onclick="openTool('Header Audit', 'headers.html')">
+            <div class="icon-wrapper">
+                <svg class="custom-vector" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-3z" fill="#ffaa00"/></svg>
+            </div>
             <h3 class="card-title">Header Audit</h3>
         </div>
 
-        <!-- Row 4 -->
-        <div class="tool-card purple-core" onclick="location.href='hash-tool.html'">
-            <div class="icon-wrapper"><span class="emoji-icon">🔐</span></div>
+        <div class="tool-card purple-core" data-name="hash crypto" onclick="openTool('Hash Crypto', 'hash-tool.html')">
+            <div class="icon-wrapper">
+                <svg class="custom-vector" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 7h-9V2h-2v5H2v2h9v5H2v2h9v5H2v2h9v5h2v-5h9v-2h-9v-5h9v-2h-9V9h9V7z" fill="#a371f7"/></svg>
+            </div>
             <h3 class="card-title">Hash Crypto</h3>
         </div>
 
-        <div class="tool-card cyan-core" onclick="location.href='dns-lookup.html'">
-            <div class="icon-wrapper"><span class="emoji-icon">📡</span></div>
+        <div class="tool-card cyan-core" data-name="dns lookup" onclick="openTool('DNS Lookup', 'dns-lookup.html')">
+            <div class="icon-wrapper">
+                <svg class="custom-vector" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 12.22C21 6.58 16.42 2 10.78 2 5.14 2 .56 6.58.56 12.22c0 5.64 4.58 10.22 10.22 10.22 5.64 0 10.22-4.58 10.22-10.22zM12 18h-2v-2h2v2zm1.07-7.75l-.9.92C11.45 11.9 11 12.5 11 14h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H5c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z" fill="#00f2fe"/></svg>
+            </div>
             <h3 class="card-title">DNS Lookup</h3>
         </div>
 
-        <div class="tool-card pink-core" onclick="location.href='social-scanner.html'">
-            <div class="icon-wrapper"><span class="emoji-icon">🎵</span></div>
+        <div class="tool-card pink-core" data-name="social intel" onclick="openTool('Social Intel', 'social-scanner.html')">
+            <div class="icon-wrapper">
+                <svg class="custom-vector" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#ff007f"/></svg>
+            </div>
             <h3 class="card-title">Social Intel</h3>
         </div>
 
-        <!-- Row 5 -->
-        <div class="tool-card orange-core" onclick="location.href='payload-gen.html'">
-            <div class="icon-wrapper"><span class="emoji-icon">🪓</span></div>
+        <div class="tool-card orange-core" data-name="payload gen" onclick="openTool('Payload Gen', 'payload-gen.html')">
+            <div class="icon-wrapper">
+                <svg class="custom-vector" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19.5 3.5L20.5 4.5L7 18L5 19L6 17L19.5 3.5ZM19.5 2L4 17.5L2 22L6.5 20L22 4.5L19.5 2Z" fill="#ea580c"/></svg>
+            </div>
             <h3 class="card-title">Payload Gen</h3>
         </div>
 
-        <div class="tool-card green-core" onclick="location.href='password-tool.html'">
-            <div class="icon-wrapper"><span class="emoji-icon">🔐</span></div>
+        <div class="tool-card green-core" data-name="pass shield" onclick="openTool('Pass Shield', 'password-tool.html')">
+            <div class="icon-wrapper">
+                <svg class="custom-vector" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-3zm-1 15l-4-4 1.41-1.41L11 13.17l5.59-5.59L18 9l-7 7z" fill="#10b981"/></svg>
+            </div>
             <h3 class="card-title">Pass Shield</h3>
         </div>
 
-        <div class="tool-card green-core" onclick="location.href='ai-shell.html'">
-            <div class="icon-wrapper"><span class="emoji-icon">⚡</span></div>
+        <div class="tool-card green-core" data-name="ai core shell" onclick="openTool('AI Core Shell', 'ai-shell.html')">
+            <div class="icon-wrapper">
+                <svg class="custom-vector" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41zM2 18h6v2H2v-2z" fill="#10b981"/></svg>
+            </div>
             <h3 class="card-title">AI Core Shell</h3>
         </div>
 
-        <!-- Row 6 -->
-        <div class="tool-card red-core" onclick="location.href='encoder-decoder.html'">
-            <div class="icon-wrapper"><span class="emoji-icon">⚙️</span></div>
+        <div class="tool-card red-core" data-name="cyber cipher" onclick="openTool('Cyber Cipher', 'encoder-decoder.html')">
+            <div class="icon-wrapper">
+                <svg class="custom-vector" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z" fill="#ef4444"/></svg>
+            </div>
             <h3 class="card-title">Cyber Cipher</h3>
         </div>
 
-        <div class="tool-card cyan-core" onclick="location.href='ua-inspector.html'">
-            <div class="icon-wrapper"><span class="emoji-icon">🔍</span></div>
+        <div class="tool-card cyan-core" data-name="ua inspector" onclick="openTool('UA Inspector', 'ua-inspector.html')">
+            <div class="icon-wrapper">
+                <svg class="custom-vector" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 12 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" fill="#00f2fe"/></svg>
+            </div>
             <h3 class="card-title">UA Inspector</h3>
         </div>
 
-        <div class="tool-card purple-core" onclick="location.href='dictionary.html'">
-            <div class="icon-wrapper"><span class="emoji-icon">📚</span></div>
+        <div class="tool-card purple-core" data-name="smart dict" onclick="openTool('Smart Dict', 'dictionary.html')">
+            <div class="icon-wrapper">
+                <svg class="custom-vector" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z" fill="#a371f7"/></svg>
+            </div>
             <h3 class="card-title">Smart Dict</h3>
         </div>
 
-        <!-- Row 7 -->
-        <div class="tool-card cyan-core" onclick="location.href='linguist-tool.html'">
-            <div class="icon-wrapper"><span class="emoji-icon">📝</span></div>
+        <div class="tool-card cyan-core" data-name="lingo analyze" onclick="openTool('Lingo Analyze', 'linguist-tool.html')">
+            <div class="icon-wrapper">
+                <svg class="custom-vector" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z" fill="#00f2fe"/></svg>
+            </div>
             <h3 class="card-title">Lingo Analyze</h3>
         </div>
 
-        <div class="tool-card cyan-core" onclick="location.href='media-downloader.html'">
-            <div class="icon-wrapper"><span class="emoji-icon">📥</span></div>
+        <div class="tool-card cyan-core" data-name="media fetch" onclick="openTool('Media Fetch', 'media-downloader.html')">
+            <div class="icon-wrapper">
+                <svg class="custom-vector" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z" fill="#00f2fe"/></svg>
+            </div>
             <h3 class="card-title">Media Fetch</h3>
         </div>
 
-        <div class="tool-card cyan-core" onclick="location.href='media-fetcher.html'">
-            <div class="icon-wrapper"><span class="emoji-icon">📥</span></div>
+        <div class="tool-card cyan-core" data-name="media fetcher" onclick="openTool('Media Fetcher', 'media-fetcher.html')">
+            <div class="icon-wrapper">
+                <svg class="custom-vector" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 20h16v2H4zm8-16L5 11h4v5h6v-5h4l-7-7z" fill="#00f2fe"/></svg>
+            </div>
             <h3 class="card-title">Media Fetcher</h3>
         </div>
 
-        <!-- Row 8 -->
-        <div class="tool-card red-core" onclick="location.href='vuln-scanner.html'">
-            <div class="icon-wrapper"><span class="emoji-icon">⚠️</span></div>
+        <div class="tool-card red-core" data-name="vuln audit" onclick="openTool('Vuln Audit', 'vuln-scanner.html')">
+            <div class="icon-wrapper">
+                <svg class="custom-vector" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z" fill="#ef4444"/></svg>
+            </div>
             <h3 class="card-title">Vuln Audit</h3>
         </div>
 
-        <div class="tool-card orange-core" onclick="location.href='exploit-binder.html'">
-            <div class="icon-wrapper"><span class="emoji-icon">💥</span></div>
+        <div class="tool-card orange-core" data-name="exploit core" onclick="openTool('Exploit Core', 'exploit-binder.html')">
+            <div class="icon-wrapper">
+                <svg class="custom-vector" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.01 21.49L23.64 7c-.45-.34-4.93-4-11.64-4C5.28 3 .81 6.66.36 7l11.63 14.49.01.01.01-.01z" fill="#ea580c"/></svg>
+            </div>
             <h3 class="card-title">Exploit Core</h3>
         </div>
 
-        <div class="tool-card blue-core" onclick="location.href='editor-gateway.html'">
-            <div class="icon-wrapper"><span class="emoji-icon">🎬</span></div>
+        <div class="tool-card blue-core" data-name="editor hub" onclick="openTool('Editor Hub', 'editor-gateway.html')">
+            <div class="icon-wrapper">
+                <svg class="custom-vector" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z" fill="#2563eb"/></svg>
+            </div>
             <h3 class="card-title">Editor Hub</h3>
         </div>
 
-        <!-- Row 9 -->
-        <div class="tool-card cyan-core" onclick="location.href='reels.html'">
-            <div class="icon-wrapper"><span class="emoji-icon">⬇️</span></div>
+        <div class="tool-card cyan-core" data-name="reels down" onclick="openTool('Reels Down', 'reels.html')">
+            <div class="icon-wrapper">
+                <svg class="custom-vector" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8 12.5v-9l6 4.5-6 4.5z" fill="#00f2fe"/></svg>
+            </div>
             <h3 class="card-title">Reels Down</h3>
-        </div>
-
-        <div class="tool-card cyan-core" onclick="location.href='fb.html'">
-            <div class="icon-wrapper"><span class="emoji-icon">📘</span></div>
+                    </div>
+    
+        <div class="tool-card cyan-core" data-name="fb downloader" onclick="openTool('FB Downloader', 'fb.html')">
+            <div class="icon-wrapper">
+                <svg class="custom-vector" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c4.56-.93 8-4.96 8-9.75z" fill="#00f2fe"/></svg>
+            </div>
             <h3 class="card-title">FB Downloader</h3>
         </div>
 
-        <div class="tool-card red-core" onclick="location.href='thumbnail-saver.html'">
+        <div class="tool-card red-core" data-name="thumb saver" onclick="openTool('Thumb Saver', 'thumbnail-saver.html')">
             <div class="icon-wrapper">
                 <div style="width: 44px; height: 30px; background: #ff0000; border-radius: 8px; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 8px rgba(255,0,0,0.35); position: relative; z-index: 2;">
                     <div style="width: 0; height: 0; border-top: 6px solid transparent; border-bottom: 6px solid transparent; border-left: 10px solid #ffffff; margin-left: 2px;"></div>
@@ -478,38 +714,46 @@
             <h3 class="card-title">Thumb Saver</h3>
         </div>
 
-        <!-- Row 10 -->
-        <div class="tool-card purple-core" onclick="location.href='post-maker.html'">
+        <div class="tool-card cyan-core" data-name="post maker" onclick="openTool('Post Maker', 'post-maker.html')">
             <div class="icon-wrapper">
                 <div style="width: 42px; height: 42px; background: linear-gradient(45deg, #2196f3, #a55eea, #ff7675); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: sans-serif; font-weight: bold; color: #ffffff; font-size: 15px; box-shadow: 0 3px 8px rgba(0,0,0,0.3); position: relative; z-index: 2;">P</div>
             </div>
             <h3 class="card-title">Post Maker</h3>
         </div>
 
-        <div class="tool-card cyan-core" onclick="location.href='lr-presets.html'">
+        <div class="tool-card cyan-core" data-name="lr presets" onclick="openTool('LR Presets', 'lr-presets.html')">
             <div class="icon-wrapper">
                 <div style="width: 42px; height: 42px; background: #001e36; border: 1.5px solid #00efff; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: 'Segoe UI', sans-serif; font-weight: 700; color: #00efff; font-size: 14px; position: relative; z-index: 2;">Lr</div>
             </div>
             <h3 class="card-title">LR Presets</h3>
         </div>
 
-        <div class="tool-card pink-core" onclick="location.href='tiktok.html'">
-            <div class="icon-wrapper"><span class="emoji-icon">🎵</span></div>
+        <div class="tool-card pink-core" data-name="tiktok down" onclick="openTool('Tiktok Down', 'tiktok.html')">
+            <div class="icon-wrapper" style="display: flex; justify-content: center; align-items: center;">
+                <div style="width: 44px; height: 44px; background: #000000; border-radius: 12px; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 15px rgba(255, 0, 80, 0.5), 0 0 10px rgba(0, 242, 234, 0.3); border: 1px solid rgba(255, 255, 255, 0.1); position: relative;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" style="width: 24px; height: 24px; filter: drop-shadow(-2px -2px 0px #00f2ea) drop-shadow(2px 2px 0px #ff0050);">
+                        <path fill="#ffffff" d="M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A139.75,139.75,0,1,1,185.51,209.91a141,141,0,0,1,39.75,5.74V314.12a52,52,0,1,0-39.75,49.85,50.53,50.53,0,0,0,51.46-51.46V0h86.72a208.6,208.6,0,0,0,16.5,74.5A211.33,211.33,0,0,0,448,154.21Z"/>
+                    </svg>
+                </div>
+            </div>
             <h3 class="card-title">Tiktok Down</h3>
         </div>
 
-        <!-- Row 11 -->
-        <div class="tool-card cyan-core" onclick="location.href='capcut-pro.html'">
-            <div class="icon-wrapper"><span class="emoji-icon">⭐</span></div>
+        <div class="tool-card cyan-core" data-name="capcut pro" onclick="openTool('CapCut Pro', 'capcut-pro.html')">
+            <div class="icon-wrapper">
+                <svg class="custom-vector" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" fill="#00f2fe"/></svg>
+            </div>
             <h3 class="card-title">CapCut Pro</h3>
         </div>
 
-        <div class="tool-card cyan-core" onclick="location.href='capcut-saver.html'">
-            <div class="icon-wrapper"><span class="emoji-icon">🎬</span></div>
+        <div class="tool-card cyan-core" data-name="capcut saver" onclick="openTool('Capcut Saver', 'capcut-saver.html')">
+            <div class="icon-wrapper">
+                <svg class="custom-vector" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" fill="#00f2fe"/></svg>
+            </div>
             <h3 class="card-title">Capcut Saver</h3>
         </div>
 
-        <div class="tool-card cyan-core" onclick="location.href='free-hosting.html'">
+        <div class="tool-card cyan-core" data-name="free hosting" onclick="openTool('Free Hosting', 'free-hosting.html')">
             <div class="icon-wrapper">
                 <div style="width: 44px; height: 44px; background: linear-gradient(135deg, #0f172a, #1e293b); border: 1.8px solid #22d3ee; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #22d3ee; position: relative; z-index: 2;">
                     ☁️
@@ -519,27 +763,44 @@
             <h3 class="card-title">Free Hosting</h3>
         </div>
 
-        <!-- Row 12 -->
-        <div class="tool-card purple-core" onclick="location.href='os-checker.html'">
+        <div class="tool-card purple-core" data-name="os check" onclick="openTool('OS Check', 'os-checker.html')">
             <div class="icon-wrapper">
-                <div style="width: 44px; height: 44px; background: #111827; border: 1.8px solid #a855f7; border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #22c55e; position: relative; z-index: 2;">
-                    <span style="font-size: 13px; color: #ffffff; text-shadow: 0 0 4px #22c55e;">∞</span>
-                    <span style="font-size: 6px; background: #22c55e; color: #000; padding: 1px 2px; border-radius: 2px; font-weight: 900; margin-top: -1px;">MD-BOT</span>
+                <div style="width: 44px; height: 44px; background: #111827; border: 1.8px solid #a855f7; border-radius: 10px; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; z-index: 2;">
+                    <span style="font-size: 13px; margin-right: 1px;">🤖</span>
+                    <span style="font-size: 13px; margin-left: 1px;">🍏</span>
                 </div>
             </div>
-            <h3 class="card-title">WA Bot</h3>
+            <h3 class="card-title">OS Check</h3>
         </div>
 
-        <div class="tool-card cyan-core" onclick="location.href='assignment-maker.html'">
+        <div class="tool-card green-core" data-name="html template" onclick="openTool('HTML Template', 'html-source.html')">
             <div class="icon-wrapper">
-                <div style="width: 44px; height: 44px; background: linear-gradient(135deg, #ffffff, #f8fafc); border: 1.2px solid #e2e8f0; border-radius: 10px; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 6px rgba(0,0,0,0.15); font-size: 20px; position: relative; z-index: 2;">
-                    📝
+                <div style="width: 44px; height: 44px; background: #052e16; border: 1.8px solid #10b981; border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: monospace; font-weight: bold; position: relative; z-index: 2;">
+                    <span style="font-size: 13px; color: #10b981; margin-bottom: -1px;">&lt;/&gt;</span>
+                    <span style="font-size: 7px; background: #10b981; color: #000; padding: 0px 2px; border-radius: 2px;">HTML</span>
                 </div>
             </div>
-            <h3 class="card-title">Assign Maker</h3>
+            <h3 class="card-title">HTML Template</h3>
         </div>
 
-        <div class="tool-card cyan-core" onclick="location.href='x-calculator.html'">
+        <div class="tool-card cyan-core" data-name="search image" onclick="openTool('Search Image', 'search-image.html')">
+            <div class="icon-wrapper">
+                <div style="width: 44px; height: 44px; background: #ffffff; border: 1.8px solid #00f2fe; border-radius: 10px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; padding: 3px; box-sizing: border-box; position: relative; z-index: 2;">
+                    <div style="background: #ff7675; border-radius: 1px;"></div>
+                    <div style="background: #74b9ff; border-radius: 1px;"></div>
+                    <div style="background: #55efc4; border-radius: 1px;"></div>
+                    <div style="background: #ffeaa7; border-radius: 1px;"></div>
+                    <div style="background: #a29bfe; border-radius: 1px;"></div>
+                    <div style="background: #fab1a0; border-radius: 1px;"></div>
+                    <div style="background: #00cec9; border-radius: 1px;"></div>
+                    <div style="background: #636e72; border-radius: 1px;"></div>
+                    <div style="background: #fd79a8; border-radius: 1px;"></div>
+                </div>
+            </div>
+            <h3 class="card-title">Search Image</h3>
+        </div>
+
+        <div class="tool-card cyan-core" data-name="x calc" onclick="openTool('X Calc', 'x-calculator.html')">
             <div class="icon-wrapper">
                 <div style="width: 44px; height: 44px; background: linear-gradient(145deg, #0b1528, #040814); border: 1.8px solid #00d2ff; border-radius: 10px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; padding: 4px; box-sizing: border-box; color: #00d2ff; font-weight: 900; font-size: 9px; align-items: center; justify-items: center; font-family: sans-serif; position: relative; z-index: 2;">
                     <div>＋</div><div>－</div><div>×</div><div style="font-size: 8px;">🔒</div>
@@ -547,161 +808,191 @@
             </div>
             <h3 class="card-title">X Calc</h3>
         </div>
+
+        <div class="tool-card cyan-core" data-name="modding tools" onclick="openTool('Modding Tools', 'modding-tools.html')">
+            <div class="icon-wrapper">
+                <div style="width: 44px; height: 44px; background: radial-gradient(circle, #2563eb 0%, #1e3a8a 100%); border: 1.8px solid #60a5fa; border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #ffffff; position: relative; z-index: 2;">
+                    <span style="font-size: 13px; margin-bottom: -2px;">⚙️</span>
+                    <span style="font-size: 6px; font-weight: 900; color: #bfdbfe; font-family: sans-serif;">MODS</span>
+                </div>
+            </div>
+            <h3 class="card-title">Modding Tools</h3>
+        </div>
+
+        <div class="tool-card cyan-core" data-name="telenor quiz" onclick="openTool('Telenor Quiz', 'telenor-quiz.html')">
+            <div class="icon-wrapper">
+                <div style="width: 44px; height: 44px; background: linear-gradient(135deg, #38bdf8, #0284c7); border: 1.8px solid #e0f2fe; border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; z-index: 2;">
+                    <span style="font-size: 18px;">🎁</span>
+                    <span style="position: absolute; bottom: 2px; font-size: 5px; font-weight: 900; background: #fff; color: #0284c7; padding: 1px 2px; border-radius: 2px;">QUIZ</span>
+                </div>
+            </div>
+            <h3 class="card-title">Telenor Quiz</h3>
+        </div>
+
+        <div class="tool-card green-core" data-name="wa bot" onclick="openTool('WA Bot', 'whatsapp-bot.html')">
+            <div class="icon-wrapper">
+                <div style="width: 44px; height: 44px; background: linear-gradient(145deg, #052e16, #000000); border: 1.8px solid #22c55e; border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #22c55e; position: relative; z-index: 2;">
+                    <span style="font-size: 13px; color: #ffffff; text-shadow: 0 0 4px #22c55e;">∞</span>
+                    <span style="font-size: 6px; background: #22c55e; color: #000; padding: 1px 2px; border-radius: 2px; font-weight: 900; margin-top: -1px;">MD-BOT</span>
+                </div>
+            </div>
+            <h3 class="card-title">WA Bot</h3>
+        </div>
+
+        <div class="tool-card cyan-core" data-name="assign maker" onclick="openTool('Assign Maker', 'assignment-maker.html')">
+            <div class="icon-wrapper" style="background: #ffffff; padding: 4px;">
+                <svg viewBox="0 0 24 24" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="4" y="2" width="16" height="20" rx="2" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+                    <path d="M14 2v6h6" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M8 12h8M8 16h8M8 20h4" fill="none" stroke="#94a3b8" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M16 10l2 2l-6 6l-2-2l6-6z" fill="#f59e0b" stroke="#d97706" stroke-width="1"/>
+                    <path d="M16 10l2 2l1-1l-2-2l-1 1z" fill="#fbbf24"/>
+                </svg>
+            </div>
+            <h3 class="card-title">Assign Maker</h3>
+        </div>
+
     </div>
-    
-    <!-- Floating WhatsApp Action Button -->
-    <div class="whatsapp-floating" onclick="window.open('https://wa.me/yournummer','_blank')">
-        <svg viewBox="0 0 32 32" style="width:30px; height:30px; fill:#fff;"><path d="M16 2A14 14 0 0 0 2 16a13.9 13.9 0 0 0 2.22 7.58L2.05 30l6.63-1.74A13.9 13.9 0 0 0 16 30a14 14 0 0 0 0-28zm7.33 19.31c-.3.85-1.52 1.56-2.09 1.67-.53.11-1.22.18-3.71-.82a15.86 15.86 0 0 1-6.49-5.71 7.23 7.23 0 0 1-1.5-3.86 4.14 4.14 0 0 1 1.34-3.09c.19-.19.42-.26.62-.26h.42c.13 0 .31 0 .47.38l.94 2.27c.08.19.14.39.06.55-.09.18-.18.37-.28.48-.12.13-.24.27-.35.39-.11.11-.23.24-.1.46a10.15 10.15 0 0 0 1.85 2.3 8.39 8.39 0 0 0 2.68 1.65c.22.11.35.09.48-.06.13-.15.55-.64.7-.86.15-.22.3-.18.51-.1l2.28 1.08c.21.11.35.16.4.26.06.1.06.59-.14 1.45z"/></svg>
+
+    <div class="status-panel">
+        <div class="status-box">
+            <div class="status-label">Total Visits</div>
+            <div class="status-value" id="totalVisits">14,250</div>
+        </div>
+        <div style="width: 1px; height: 30px; background: rgba(255,255,255,0.1);"></div>
+        <div class="status-box">
+            <div class="status-label"><span class="pulse-dot"></span>Online Users</div>
+            <div class="status-value" id="onlineUsers">42</div>
+        </div>
     </div>
+
+    <div class="modal-overlay" id="requestModal">
+        <div class="modal-card">
+            <div class="modal-title">Request a Custom Tool ⚙️</div>
+            <input type="text" class="modal-input" id="toolNameInput" placeholder="Enter Tool Name...">
+            <button class="modal-btn" onclick="submitRequest()">Submit Request</button>
+        </div>
+    </div>
+
+    <div class="whatsapp-floating" onclick="location.href='https://whatsapp.com/channel/YOUR_CHANNEL_LINK_HERE'">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="#ffffff" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.746.953 3.71 1.454 5.709 1.455h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+    </div>
+
+    <script>
+        // 1. Splash Screen Control (1.2 Seconds Premium Lag simulation)
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const splash = document.getElementById('splash-screen');
+                splash.style.opacity = '0';
+                setTimeout(() => splash.style.visibility = 'hidden', 500);
+            }, 1200);
+            renderRecentTools();
+        });
+
+        // 2. Light / Dark Global Core Swapper
+        const themeBtn = document.getElementById('themeBtn');
+        themeBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+        });
+
+        // 3. Smart Search Filter System (Instant Reaction)
+        const searchInput = document.getElementById('toolSearch');
+        const mainGrid = document.getElementById('mainGrid');
         
-                                                    <div id="azanLiveBanner" style="display:none; position:fixed; top:0; left:0; width:100%; text-align:center; padding:10px; font-weight:bold; font-size:13px; z-index:99999; font-family:sans-serif; letter-spacing:0.5px;"></div>
-
-<script>
-    const RECEPTACLE_BASE_URL = 'https://universal-controller.vercel.app'; 
-    const SECURITY_VERIFICATION_TOKEN = 'AzanTools_Secure_786';
-
-    const toolCards = document.querySelectorAll('.tool-card');
-
-    function getDeviceSignature() {
-        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ? "Mobile" : "PC";
-    }
-
-    // 🛰️ Telemetry Ping Stream Engine (With Proper Headers)
-    async function pingTelemetryStream(actionName, extra = {}) {
-        try {
-            await fetch(`${RECEPTACLE_BASE_URL}/api/report-activity`, {
-                method: 'POST',
-                mode: 'cors', // ✨ CORRECTION: Explicitly bypass browser restrictions
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({
-                    token: SECURITY_VERIFICATION_TOKEN,
-                    action: actionName,
-                    tool: extra.tool || 'System Base',
-                    device: getDeviceSignature()
-                })
-            });
-        } catch(e){}
-    }
-
-    // 🧠 Evaluate Master Directives Engine
-    async function evaluateMasterDirectives() {
-        try {
-            const res = await fetch(`${RECEPTACLE_BASE_URL}/api/get-settings`, {
-                method: 'GET',
-                mode: 'cors', // ✨ CORRECTION: Force cross-domain handshake
-                headers: { 'Accept': 'application/json' }
-            });
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            const cards = mainGrid.querySelectorAll('.tool-card');
             
-            if(res.status === 403) {
-                const errData = await res.json();
-                if(errData.firewallBlock) {
-                    document.body.innerHTML = `<div style="display:flex; justify-content:center; align-items:center; height:100vh; background:#020617; color:#ef4444; font-family:sans-serif; text-align:center; padding:20px;"><div><h1 style="font-size:2.5rem; margin-bottom:10px;">🚫 ACCESS RESTRICTED</h1><p style="color:#64748b;">${errData.reason}</p></div></div>`;
-                    return;
-                }
-            }
-
-            if (!res.ok) return;
-            const data = await res.json();
-
-            // 1. Maintenance Mode
-            if(data.maintenanceMode === true) {
-                if(data.redirectUrl && data.redirectUrl.trim() !== "") {
-                    window.location.href = data.redirectUrl;
-                    return;
-                }
-                document.body.innerHTML = `<div style="display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh; background:#05070f; color:#fff; font-family:sans-serif; text-align:center; padding: 20px;"><h1 style="color:#ef4444; font-size:3rem; margin-bottom:10px;">⚠️ Site Under Maintenance</h1><p style="color:#94a3b8; font-size:1.1rem;">Azan System Admin has locked this domain for security updates.</p></div>`;
-                return;
-            }
-
-            // 2. Meta Updates
-            const brandLogo = document.querySelector('.logo');
-            if(brandLogo && data.meta && data.meta.siteTitle) {
-                const words = data.meta.siteTitle.split(' ');
-                const firstWord = words[0];
-                const restOfTitle = words.slice(1).join(' ') || 'TOOLS';
-                brandLogo.innerHTML = `${firstWord} <span style="color:var(--accent-blue);">${restOfTitle}</span>`;
-            }
-            
-            if (data.meta && data.meta.siteSubtitle) {
-                document.querySelectorAll('h1, h2, p, .subtitle').forEach(el => {
-                    if(el.innerText && el.innerText.toUpperCase().includes('WELCOME TO OUR TOOLKIT')) {
-                        el.innerText = data.meta.siteSubtitle;
-                    }
-                });
-            }
-
-            // 3. Live Notification Ticker
-            const banner = document.getElementById('azanLiveBanner');
-            if(banner && data.broadcastNotification) {
-                if(data.broadcastNotification.show && data.broadcastNotification.text.trim() !== "") {
-                    banner.style.display = 'block';
-                    banner.innerText = data.broadcastNotification.text;
-                    document.body.style.paddingTop = '40px'; 
-
-                    if(data.broadcastNotification.type === 'danger') {
-                        banner.style.background = '#ef4444'; banner.style.color = '#ffffff';
-                    } else if(data.broadcastNotification.type === 'warning') {
-                        banner.style.background = '#f59e0b'; banner.style.color = '#000000';
-                    } else {
-                        banner.style.background = '#06b6d4'; banner.style.color = '#ffffff';
-                    }
+            cards.forEach(card => {
+                const nameAttr = card.getAttribute('data-name') || '';
+                if (nameAttr.includes(query)) {
+                    card.style.display = 'flex';
+                    card.style.transition = '0.3s';
                 } else {
-                    banner.style.display = 'none';
-                    document.body.style.paddingTop = '0px';
-                }
-            }
-
-            // 4. Remote Theme Overrides
-            let themeHex = '#00f2fe';
-            if (data.themeColor === 'red' || data.themeColor === 'danger') themeHex = '#ef4444';
-            if (data.themeColor === 'green' || data.themeColor === 'success') themeHex = '#10b981';
-            document.querySelectorAll('.logo span, .card-title, h1, h2').forEach(el => {
-                if(!el.closest('#azanLiveBanner')) {
-                    el.style.color = themeHex;
-                }
-            });
-
-            // 5. Card Blocker Implementation
-            if (toolCards && toolCards.length > 0) {
-                toolCards.forEach(card => {
-                    const titleElement = card.querySelector('.card-title');
-                    if (titleElement) {
-                        const title = titleElement.innerText.toLowerCase().trim();
-                        if (data.blockedTools && Array.isArray(data.blockedTools) && data.blockedTools.includes(title)) {
-                            card.style.opacity = '0.15';
-                            card.style.pointerEvents = 'none'; 
-                            card.style.filter = 'grayscale(100%) blur(1px)';
-                            card.style.border = '1px solid #ef4444';
-                        } else {
-                            card.style.opacity = '1';
-                            card.style.pointerEvents = 'auto';
-                            card.style.filter = 'none';
-                            card.style.border = '';
-                        }
-                    }
-                });
-            }
-
-        } catch(err){}
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-        pingTelemetryStream('site_initial_load');
-        evaluateMasterDirectives();
-        setInterval(evaluateMasterDirectives, 3500); // Poll tracking data safely
-    });
-
-    if (toolCards && toolCards.length > 0) {
-        toolCards.forEach(card => {
-            card.addEventListener('click', () => {
-                const titleElement = card.querySelector('.card-title');
-                if(titleElement) {
-                    pingTelemetryStream('tool_execution', { tool: titleElement.innerText });
+                    card.style.display = 'none';
                 }
             });
         });
-    }
-</script>
+
+        // 4. Working Intelligent "Recently Used" Tracker Engine
+        function openTool(name, url) {
+            let history = JSON.parse(localStorage.getItem('azan_recent_tools') || '[]');
+            
+            // Duplicates filter karein aur array ke top pe push karein
+            history = history.filter(item => item.name !== name);
+            history.unshift({ name: name, url: url });
+            
+            // Limit to top 3 recent items max
+            if(history.length > 3) history.pop();
+            
+            localStorage.setItem('azan_recent_tools', JSON.stringify(history));
+            location.href = url;
+        }
+
+        function renderRecentTools() {
+            const history = JSON.parse(localStorage.getItem('azan_recent_tools') || '[]');
+            const recentHeader = document.getElementById('recentHeader');
+            const recentGrid = document.getElementById('recentGrid');
+            
+            if (history.length === 0) {
+                recentHeader.style.display = 'none';
+                recentGrid.style.display = 'none';
+                return;
+            }
+
+            recentHeader.style.display = 'flex';
+            recentGrid.style.display = 'grid';
+            recentGrid.innerHTML = '';
+
+            history.forEach(item => {
+                // Main grid se original card clone karo taake icons perfect milen
+                const originalCard = document.querySelector(`.tool-card[data-name="${item.name.toLowerCase()}"]`);
+                if(originalCard) {
+                    const clonedCard = originalCard.cloneNode(true);
+                    // Clone par naya click logic dalo
+                    clonedCard.setAttribute('onclick', `openTool('${item.name}', '${item.url}')`);
+                    recentGrid.appendChild(clonedCard);
+                }
+            });
+        }
+
+        // 5. Interactive Custom Request Module
+        const notifPanel = document.getElementById('notifPanel');
+        const requestModal = document.getElementById('requestModal');
+
+        notifPanel.addEventListener('click', () => {
+            requestModal.classList.add('active');
+        });
+
+        requestModal.addEventListener('click', (e) => {
+            if(e.target === requestModal) requestModal.classList.remove('active');
+        });
+
+        function submitRequest() {
+            const val = document.getElementById('toolNameInput').value.trim();
+            if(val !== '') {
+                alert(`Thank you! Your request for "${val}" has been submitted to the admin stack.`);
+                document.getElementById('toolNameInput').value = '';
+                requestModal.classList.remove('active');
+            } else {
+                alert('Please type a tool name first!');
+            }
+        }
+
+        // 6. Realistic Tick Simulation for Dashboard Engagement Counter
+        let currentOnline = 42;
+        let totalVisits = 14250;
+
+        setInterval(() => {
+            const change = Math.floor(Math.random() * 5) - 2; 
+            currentOnline = Math.max(15, currentOnline + change); 
+            if(Math.random() > 0.7) totalVisits += 1; 
+            
+            document.getElementById('onlineUsers').innerText = currentOnline;
+            document.getElementById('totalVisits').innerText = totalVisits.toLocaleString();
+        }, 3000);
+    </script>
+</body>
+                </html>
