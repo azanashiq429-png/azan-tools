@@ -998,7 +998,6 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, doc, runTransaction } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    // Aapke Azan Studio Panel ka original Firebase config
     const firebaseConfig = {
         apiKey: "AIzaSyCKF9bml5kKPIbsZD9fdanAZd1xfA48f-s",
         authDomain: "azan-studio-panel.firebaseapp.com",
@@ -1012,25 +1011,25 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // Jab bhi koi user Vercel link open karega, counter +1 ho jayega
     async function trackVisitor() {
         const analyticsRef = doc(db, "system", "analytics");
         try {
             await runTransaction(db, async (transaction) => {
                 const sfDoc = await transaction.get(analyticsRef);
                 if (!sfDoc.exists()) {
-                    transaction.set(analyticsRef, { totalVisitors: 1, newSignups: 0, activeTools: 30 });
+                    transaction.set(analyticsRef, { totalVisitors: 1, newSignups: 0, activeTools: 21 });
                 } else {
                     const newCount = (sfDoc.data().totalVisitors || 0) + 1;
                     transaction.update(analyticsRef, { totalVisitors: newCount });
                 }
             });
-            console.log("Vercel Visitor Tracked!");
+            console.log("Vercel Visitor Tracked Successfully!");
         } catch (e) {
             console.error("Tracking failed: ", e);
         }
     }
 
+    // Execute traffic tracker
     trackVisitor();
     </script>
     
