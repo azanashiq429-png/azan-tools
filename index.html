@@ -994,5 +994,45 @@
             document.getElementById('totalVisits').innerText = totalVisits.toLocaleString();
         }, 3000);
     </script>
+    <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, doc, runTransaction } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    // Aapke Azan Studio Panel ka original Firebase config
+    const firebaseConfig = {
+        apiKey: "AIzaSyCKF9bml5kKPIbsZD9fdanAZd1xfA48f-s",
+        authDomain: "azan-studio-panel.firebaseapp.com",
+        projectId: "azan-studio-panel",
+        storageBucket: "azan-studio-panel.firebasestorage.app",
+        messagingSenderId: "967418066872",
+        appId: "1:967418066872:web:fccd8238d5cc566316414d",
+        measurementId: "G-P10YD75CYW"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Jab bhi koi user Vercel link open karega, counter +1 ho jayega
+    async function trackVisitor() {
+        const analyticsRef = doc(db, "system", "analytics");
+        try {
+            await runTransaction(db, async (transaction) => {
+                const sfDoc = await transaction.get(analyticsRef);
+                if (!sfDoc.exists()) {
+                    transaction.set(analyticsRef, { totalVisitors: 1, newSignups: 0, activeTools: 30 });
+                } else {
+                    const newCount = (sfDoc.data().totalVisitors || 0) + 1;
+                    transaction.update(analyticsRef, { totalVisitors: newCount });
+                }
+            });
+            console.log("Vercel Visitor Tracked!");
+        } catch (e) {
+            console.error("Tracking failed: ", e);
+        }
+    }
+
+    trackVisitor();
+    </script>
+    
 </body>
                 </html>
