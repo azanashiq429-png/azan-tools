@@ -524,15 +524,15 @@
         <div class="notif-arrow">&gt;</div>
     </div>
 
-        <!-- Sponsored Features Section (Exact Section-Header Style) -->
+            <!-- Sponsored Features Section (Exact Section-Header Style) -->
     <div class="section-header">Sponsored Features</div>
     <div class="premium-ad-block" style="width: 100%; max-width: 440px; background: var(--panel-bg); border: 1.5px solid rgba(0, 242, 254, 0.25); border-radius: 16px; padding: 12px; text-align: center; margin-bottom: 20px; box-shadow: 0 6px 15px rgba(0,0,0,0.4);">
         <span style="color: #64748b; font-size: 0.72rem; display: block; margin-bottom: 8px; letter-spacing: 1px; font-weight: bold;">ADVERTISEMENT</span>
         <!-- 👇 Monetag / Adsterra Banner Script Code Yahan Paste Hoga -->
-        <div id="monetag-ad-container">
-            <p style="color: rgba(255,255,255,0.3); font-size: 0.8rem; padding: 15px 0;">Ads Section Connected Successfully</p>
-        </div>
-    </div>
+<div id="monetag-ad-container">
+
+      <script>(function(s){s.dataset.zone='11278535',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+</div>
     
     <div class="section-header" id="recentHeader" style="display:none;">Recently Used</div>
     <div class="tools-grid" id="recentGrid" style="margin-bottom: 20px;"></div>
@@ -981,17 +981,21 @@
             if(e.target === requestModal) requestModal.classList.remove('active');
         });
 
+        // 👇 UPDATED WITH AD TRIGGER
         function submitRequest() {
             const val = document.getElementById('toolNameInput').value.trim();
             if(val !== '') {
                 alert(`Thank you! Your request for "${val}" has been submitted to the admin stack.`);
                 document.getElementById('toolNameInput').value = '';
                 requestModal.classList.remove('active');
+                
+                // 💰 Earning Trigger: Yahan apni Monetag ya Adsterra ki Direct/SmartLink paste kar dena
+            window.open('https://omg10.com/4/11278524', '_blank');
+
             } else {
                 alert('Please type a tool name first!');
             }
         }
-
         // 6. Realistic Tick Simulation for Dashboard Engagement Counter
         let currentOnline = 42;
         let totalVisits = 14250;
