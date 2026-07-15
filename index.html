@@ -891,187 +891,116 @@
         </svg>
     </div>
 
-    <script>
-        // 1. Splash Screen Control (1.2 Seconds Premium Lag simulation)
-        window.addEventListener('DOMContentLoaded', () => {
-            setTimeout(() => {
-                const splash = document.getElementById('splash-screen');
+        <script>
+    // 1. Splash Screen Control
+    window.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => {
+            const splash = document.getElementById('splash-screen');
+            if(splash) {
                 splash.style.opacity = '0';
                 setTimeout(() => splash.style.visibility = 'hidden', 500);
-            }, 1200);
-            renderRecentTools();
-        });
+            }
+        }, 1200);
+        renderRecentTools();
+    });
 
-        // 2. Light / Dark Global Core Swapper
-        const themeBtn = document.getElementById('themeBtn');
+    // 2. Light / Dark Global Core Swapper
+    const themeBtn = document.getElementById('themeBtn');
+    if(themeBtn) {
         themeBtn.addEventListener('click', () => {
             document.body.classList.toggle('light-mode');
         });
+    }
 
-        // 3. Smart Search Filter System (Instant Reaction)
-        const searchInput = document.getElementById('toolSearch');
-        const mainGrid = document.getElementById('mainGrid');
-        
+    // 3. Smart Search Filter System
+    const searchInput = document.getElementById('toolSearch');
+    const mainGrid = document.getElementById('mainGrid');
+    if(searchInput && mainGrid) {
         searchInput.addEventListener('input', (e) => {
             const query = e.target.value.toLowerCase().trim();
             const cards = mainGrid.querySelectorAll('.tool-card');
-            
             cards.forEach(card => {
                 const nameAttr = card.getAttribute('data-name') || '';
-                if (nameAttr.includes(query)) {
-                    card.style.display = 'flex';
-                    card.style.transition = '0.3s';
-                } else {
-                    card.style.display = 'none';
-                }
+                card.style.display = nameAttr.includes(query) ? 'flex' : 'none';
             });
         });
+    }
 
-        // 4. Working Intelligent "Recently Used" Tracker Engine
-        function openTool(name, url) {
-            let history = JSON.parse(localStorage.getItem('azan_recent_tools') || '[]');
-            
-            // Duplicates filter karein aur array ke top pe push karein
-            history = history.filter(item => item.name !== name);
-            history.unshift({ name: name, url: url });
-            
-            // Limit to top 3 recent items max
-            if(history.length > 3) history.pop();
-            
-            localStorage.setItem('azan_recent_tools', JSON.stringify(history));
-            location.href = url;
-        }
+    // 4. Working Intelligent "Recently Used" Tracker Engine
+    function openTool(name, url) {
+        let history = JSON.parse(localStorage.getItem('azan_recent_tools') || '[]');
+        history = history.filter(item => item.name !== name);
+        history.unshift({ name: name, url: url });
+        if(history.length > 3) history.pop();
+        localStorage.setItem('azan_recent_tools', JSON.stringify(history));
+        location.href = url;
+    }
 
-        function renderRecentTools() {
-            const history = JSON.parse(localStorage.getItem('azan_recent_tools') || '[]');
-            const recentHeader = document.getElementById('recentHeader');
-            const recentGrid = document.getElementById('recentGrid');
-            
-            if (history.length === 0) {
-                recentHeader.style.display = 'none';
-                recentGrid.style.display = 'none';
-                return;
+    function renderRecentTools() {
+        const history = JSON.parse(localStorage.getItem('azan_recent_tools') || '[]');
+        const recentHeader = document.getElementById('recentHeader');
+        const recentGrid = document.getElementById('recentGrid');
+        if (!recentHeader || !recentGrid || history.length === 0) return;
+
+        recentHeader.style.display = 'flex';
+        recentGrid.style.display = 'grid';
+        recentGrid.innerHTML = '';
+        history.forEach(item => {
+            const originalCard = document.querySelector(`.tool-card[data-name="${item.name.toLowerCase()}"]`);
+            if(originalCard) {
+                const clonedCard = originalCard.cloneNode(true);
+                clonedCard.setAttribute('onclick', `openTool('${item.name}', '${item.url}')`);
+                recentGrid.appendChild(clonedCard);
             }
+        });
+    }
 
-            recentHeader.style.display = 'flex';
-            recentGrid.style.display = 'grid';
-            recentGrid.innerHTML = '';
+    // 5. Interactive Custom Request Module
+    const notifPanel = document.getElementById('notifPanel');
+    const requestModal = document.getElementById('requestModal');
+    if(notifPanel) {
+        notifPanel.addEventListener('click', () => requestModal.classList.add('active'));
+    }
+    if(requestModal) {
+        requestModal.addEventListener('click', (e) => {
+            if(e.target === requestModal) requestModal.classList.remove('active');
+        });
+    }
 
-            history.forEach(item => {
-                // Main grid se original card clone karo taake icons perfect milen
-                const originalCard = document.querySelector(`.tool-card[data-name="${item.name.toLowerCase()}"]`);
-                if(originalCard) {
-                    const clonedCard = originalCard.cloneNode(true);
-                    // Clone par naya click logic dalo
-                    clonedCard.setAttribute('onclick', `openTool('${item.name}', '${item.url}')`);
-                    recentGrid.appendChild(clonedCard);
-                }
-            });
-        }
+    async function submitRequest() {
+        const val = document.getElementById('toolNameInput').value.trim();
+        if(val === '') { alert('Please type a tool name first!'); return; }
 
-        // --- 5. Interactive Custom Request Module (UPDATED) ---
-const notifPanel = document.getElementById('notifPanel');
-const requestModal = document.getElementById('requestModal');
+        // Ad pehle open karein taake block na ho
+        const adWindow = window.open('https://omg10.com/4/11278524', '_blank');
 
-notifPanel.addEventListener('click', () => {
-    requestModal.classList.add('active');
-});
-
-requestModal.addEventListener('click', (e) => {
-    if(e.target === requestModal) requestModal.classList.remove('active');
-});
-
-// 👇 Firebase integration wala updated function
-async function submitRequest() {
-    const val = document.getElementById('toolNameInput').value.trim();
-    
-    if(val !== '') {
         try {
-            // Firebase ka 'collection' aur 'addDoc' import karna hoga
             const { collection, addDoc } = window.firebaseFunctions; 
-            
-            // Database mein request save karein
             await addDoc(collection(window.db, "user_requests"), {
                 toolName: val,
                 username: "Azan User",
                 timestamp: new Date().toISOString()
             });
-            
-            alert(`Thank you! Request for "${val}" saved.`);
+            alert("Request Submitted!");
             document.getElementById('toolNameInput').value = '';
             requestModal.classList.remove('active');
-            
-            // Ad Trigger
-            window.open('https://omg10.com/4/11278524', '_blank');
-            
         } catch (error) {
-            console.error("Error saving request: ", error);
-            alert("Error: Request nahi ho payi. Firebase check karein.");
-        }
-    } else {
-        alert('Please type a tool name first!');
-    }
-        }
-        
-        // 6. Realistic Tick Simulation for Dashboard Engagement Counter
-        let currentOnline = 42;
-        let totalVisits = 14250;
-
-        setInterval(() => {
-            const change = Math.floor(Math.random() * 5) - 2; 
-            currentOnline = Math.max(15, currentOnline + change); 
-            if(Math.random() > 0.7) totalVisits += 1; 
-            
-            document.getElementById('onlineUsers').innerText = currentOnline;
-            document.getElementById('totalVisits').innerText = totalVisits.toLocaleString();
-        }, 3000);
-    </script>
-    <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getFirestore, doc, runTransaction } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-        apiKey: "AIzaSyCKF9bml5kKPIbsZD9fdanAZd1xfA48f-s",
-        authDomain: "azan-studio-panel.firebaseapp.com",
-        projectId: "azan-studio-panel",
-        storageBucket: "azan-studio-panel.firebasestorage.app",
-        messagingSenderId: "967418066872",
-        appId: "1:967418066872:web:fccd8238d5cc566316414d",
-        measurementId: "G-P10YD75CYW"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    async function trackVisitor() {
-        const analyticsRef = doc(db, "system", "analytics");
-        try {
-            await runTransaction(db, async (transaction) => {
-                const sfDoc = await transaction.get(analyticsRef);
-                if (!sfDoc.exists()) {
-                    transaction.set(analyticsRef, { totalVisitors: 1, newSignups: 0, activeTools: 21 });
-                } else {
-                    const newCount = (sfDoc.data().totalVisitors || 0) + 1;
-                    transaction.update(analyticsRef, { totalVisitors: newCount });
-                }
-            });
-            console.log("Vercel Visitor Tracked Successfully!");
-        } catch (e) {
-            console.error("Tracking failed: ", e);
+            console.error("Firebase error:", error);
         }
     }
 
-    // Execute traffic tracker
-    trackVisitor();
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
-<script>eruda.init();</script>
+    // 6. Realistic Counter
+    setInterval(() => {
+        let online = parseInt(document.getElementById('onlineUsers').innerText);
+        document.getElementById('onlineUsers').innerText = Math.max(15, online + (Math.floor(Math.random() * 5) - 2));
+    }, 3000);
+</script>
 
-        <script type="module">
+<script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, doc, runTransaction, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    const firebaseConfig = {
+    const app = initializeApp({
         apiKey: "AIzaSyCKF9bml5kKPIbsZD9fdanAZd1xfA48f-s",
         authDomain: "azan-studio-panel.firebaseapp.com",
         projectId: "azan-studio-panel",
@@ -1079,34 +1008,19 @@ async function submitRequest() {
         messagingSenderId: "967418066872",
         appId: "1:967418066872:web:fccd8238d5cc566316414d",
         measurementId: "G-P10YD75CYW"
-    };
+    });
 
-    const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-
-    // Yahan hum database aur functions ko window par set kar rahe hain
     window.db = db;
     window.firebaseFunctions = { collection, addDoc };
 
-    async function trackVisitor() {
-        const analyticsRef = doc(db, "system", "analytics");
-        try {
-            await runTransaction(db, async (transaction) => {
-                const sfDoc = await transaction.get(analyticsRef);
-                if (!sfDoc.exists()) {
-                    transaction.set(analyticsRef, { totalVisitors: 1, newSignups: 0, activeTools: 21 });
-                } else {
-                    const newCount = (sfDoc.data().totalVisitors || 0) + 1;
-                    transaction.update(analyticsRef, { totalVisitors: newCount });
-                }
-            });
-        } catch (e) {
-            console.error("Tracking failed: ", e);
-        }
-    }
-
-    trackVisitor();
-        </script>
+    // Analytics Tracker
+    const analyticsRef = doc(db, "system", "analytics");
+    runTransaction(db, async (t) => {
+        const d = await t.get(analyticsRef);
+        t.update(analyticsRef, { totalVisitors: (d.exists() ? d.data().totalVisitors : 0) + 1 });
+    }).catch(e => console.log("Tracking Error:", e));
+</script>
         
 </body>
                 </html>
