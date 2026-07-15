@@ -969,33 +969,50 @@
             });
         }
 
-        // 5. Interactive Custom Request Module
-        const notifPanel = document.getElementById('notifPanel');
-        const requestModal = document.getElementById('requestModal');
+        // --- 5. Interactive Custom Request Module (UPDATED) ---
+const notifPanel = document.getElementById('notifPanel');
+const requestModal = document.getElementById('requestModal');
 
-        notifPanel.addEventListener('click', () => {
-            requestModal.classList.add('active');
-        });
+notifPanel.addEventListener('click', () => {
+    requestModal.classList.add('active');
+});
 
-        requestModal.addEventListener('click', (e) => {
-            if(e.target === requestModal) requestModal.classList.remove('active');
-        });
+requestModal.addEventListener('click', (e) => {
+    if(e.target === requestModal) requestModal.classList.remove('active');
+});
 
-        // 👇 UPDATED WITH AD TRIGGER
-        function submitRequest() {
-            const val = document.getElementById('toolNameInput').value.trim();
-            if(val !== '') {
-                alert(`Thank you! Your request for "${val}" has been submitted to the admin stack.`);
-                document.getElementById('toolNameInput').value = '';
-                requestModal.classList.remove('active');
-                
-                // 💰 Earning Trigger: Yahan apni Monetag ya Adsterra ki Direct/SmartLink paste kar dena
+// 👇 Firebase integration wala updated function
+async function submitRequest() {
+    const val = document.getElementById('toolNameInput').value.trim();
+    
+    if(val !== '') {
+        try {
+            // Firebase ka 'collection' aur 'addDoc' import karna hoga
+            const { collection, addDoc } = window.firebaseFunctions; 
+            
+            // Database mein request save karein
+            await addDoc(collection(window.db, "user_requests"), {
+                toolName: val,
+                username: "Azan User",
+                timestamp: new Date().toISOString()
+            });
+            
+            alert(`Thank you! Request for "${val}" saved.`);
+            document.getElementById('toolNameInput').value = '';
+            requestModal.classList.remove('active');
+            
+            // Ad Trigger
             window.open('https://omg10.com/4/11278524', '_blank');
-
-            } else {
-                alert('Please type a tool name first!');
-            }
+            
+        } catch (error) {
+            console.error("Error saving request: ", error);
+            alert("Error: Request nahi ho payi. Firebase check karein.");
         }
+    } else {
+        alert('Please type a tool name first!');
+    }
+        }
+        
         // 6. Realistic Tick Simulation for Dashboard Engagement Counter
         let currentOnline = 42;
         let totalVisits = 14250;
