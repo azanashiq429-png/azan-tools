@@ -891,7 +891,7 @@
         </svg>
     </div>
 
-                    <script>
+    <script>
     // 1. Splash Screen
     window.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
@@ -954,7 +954,7 @@
         });
     }
 
-    // 5. Request Module (Optimized for App/Web)
+    // 5. Intelligent Request Module (App/Web Split Logic)
     const notifPanel = document.getElementById('notifPanel');
     const requestModal = document.getElementById('requestModal');
     if(notifPanel) notifPanel.addEventListener('click', () => requestModal.classList.add('active'));
@@ -975,15 +975,25 @@
             document.getElementById('toolNameInput').value = '';
             requestModal.classList.remove('active');
             
-            // WebView friendly redirect (Ad open karega)
-            window.location.href = 'https://omg10.com/4/11278524';
+            // --- SMART REDIRECT LOGIC ---
+            const adUrl = 'https://omg10.com/4/11278524';
+            const isApp = navigator.userAgent.includes("wv") || navigator.userAgent.includes("Android");
+            
+            if (isApp) {
+                // App mein isi screen par load karega
+                window.location.href = adUrl;
+            } else {
+                // Browser mein naya tab khulega
+                window.open(adUrl, '_blank');
+            }
+            
         } catch (error) {
             console.error("Firebase error:", error);
-            alert("Request failed. Please try again.");
+            alert("Request failed.");
         }
     }
 
-    // 6. Online Counter
+    // 6. Realistic Counter
     setInterval(() => {
         const el = document.getElementById('onlineUsers');
         if(el) {
@@ -1016,7 +1026,6 @@
         const d = await t.get(analyticsRef);
         t.update(analyticsRef, { totalVisitors: (d.exists() ? d.data().totalVisitors : 0) + 1 });
     }).catch(e => console.log("Tracking Error:", e));
-</script>     
-        
+    </script>
 </body>
-                </html>
+</html>
