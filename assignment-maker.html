@@ -1,1 +1,830 @@
 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScholarCraft Production Suite - Professional Assignment Maker</title>
+    
+    <!-- Robust PDF Export Compilation Engine -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
+    <!-- External Modular Key Database Registry Link -->
+    <script src="keys.js"></script>
+    
+    <!-- High-Fidelity Typography Repositories (12 Fonts Loaded Dynamically) -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu&family=Orbitron:wght@500;700;900&family=Poppins:wght@300;400;500;600;700&family=Courier+Prime&family=Caveat:wght@600;700&family=Architects+Daughter&family=Sacramento&family=Pacifico&family=Shadows+Into+Light&family=Dancing+Script&family=Patrick+Hand&family=Amatic+SC:wght@700&family=Permanent+Marker&display=swap" rel="stylesheet">
+
+    <!-- GOOGLE ADSENSE VERIFICATION SCRIPT (Apni publisher ID yahan replace karein ca-pub-XXXXXXXXXXXXXXXX) -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+
+    <style>
+        /* HEAVY GLOW DESIGN SYSTEM - CYBERPUNK CONFIGURATION */
+        :root {
+            --bg-dark-void: #030014;
+            --bg-glass-panel: rgba(15, 23, 42, 0.85);
+            --border-neon-purple: #a855f7;
+            --border-neon-cyan: #06b6d4;
+            --border-neon-pink: #ff007f;
+            --border-neon-green: #10b981;
+            
+            --glow-purple: 0 0 20px rgba(168, 85, 247, 0.6);
+            --glow-cyan: 0 0 20px rgba(6, 182, 212, 0.6);
+            --glow-pink: 0 0 25px rgba(255, 0, 127, 0.7);
+            --glow-green: 0 0 20px rgba(16, 185, 129, 0.6);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-dark-void);
+            color: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Top System Bar Layout */
+        .system-top-bar {
+            background: rgba(9, 9, 11, 0.9);
+            backdrop-filter: blur(12px);
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid var(--border-neon-purple);
+            box-shadow: 0 4px 25px rgba(168, 85, 247, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .system-logo-zone {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-glyph-glow {
+            background: linear-gradient(135deg, var(--border-neon-purple), var(--border-neon-cyan));
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--glow-purple);
+        }
+
+        .logo-glyph-glow svg { width: 22px; height: 22px; fill: white; }
+
+        .logo-text-glow {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 18px;
+            font-weight: 900;
+            text-shadow: 0 0 8px rgba(168, 85, 247, 0.4);
+        }
+        .logo-text-glow span { color: var(--border-neon-cyan); }
+
+        .status-badge-node {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 11px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .status-badge-free {
+            background: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+            border: 1px solid #f59e0b;
+        }
+        .status-badge-pro {
+            background: rgba(255, 0, 127, 0.1);
+            color: var(--border-neon-pink);
+            border: 1px solid var(--border-neon-pink);
+            box-shadow: var(--glow-pink);
+        }
+
+        /* Persistent Inline Advertisement Streamers / AdSense Slot */
+        .inline-ad-streamer {
+            background: linear-gradient(90deg, rgba(168,85,247,0.05) 0%, rgba(6,182,212,0.05) 100%);
+            border: 1px dashed rgba(255,255,255,0.1);
+            padding: 12px;
+            text-align: center;
+            font-size: 11px;
+            color: #64748b;
+            letter-spacing: 1px;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        /* Structural Tab Content Panels */
+        .app-view-panel {
+            display: none;
+            flex-direction: column;
+            flex: 1;
+            width: 100%;
+        }
+        .app-view-panel.active-panel { display: flex; }
+
+        /* HOME TAB VIEW COMPONENTS */
+        .control-ribbon-deck {
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ribbon-data-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 16px;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+        .ribbon-data-row::-webkit-scrollbar { display: none; }
+
+        .ribbon-select-node {
+            background: #1e293b;
+            color: white;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .ribbon-counter-node {
+            display: flex;
+            align-items: center;
+            background: #1e293b;
+            border-radius: 20px;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            overflow: hidden;
+        }
+        .counter-action-btn { background: none; border: none; color: white; width: 34px; height: 34px; cursor: pointer; font-size: 16px; }
+        .counter-value-label { padding: 0 10px; font-size: 13px; font-weight: 600; font-family: 'Orbitron', sans-serif; }
+
+        .formatting-action-btn {
+            background: #1e293b;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            color: white; width: 36px; height: 36px; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: 600;
+        }
+        .formatting-action-btn svg { width: 16px; height: 16px; fill: white; }
+        
+        .mic-active-glow {
+            background: rgba(255, 0, 127, 0.2) !important;
+            border-color: var(--border-neon-pink) !important;
+            box-shadow: var(--glow-pink);
+            animation: pulseMic 1.5s infinite;
+        }
+        @keyframes pulseMic { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
+
+        /* Document Blueprint Architecture */
+        .workspace-sanctuary {
+            flex: 1; padding: 20px 12px; display: flex; flex-direction: column; align-items: center; margin-bottom: 85px;
+        }
+
+        .assignment-identity-input {
+            width: 100%; max-width: 800px;
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-bottom: 2px solid var(--border-neon-cyan);
+            padding: 12px 16px; border-radius: 8px 8px 0 0;
+            color: white; font-size: 15px; font-weight: 600; outline: none; margin-bottom: 4px;
+        }
+
+        .document-canvas-sheet {
+            width: 100%; max-width: 800px; min-height: 800px;
+            background: #ffffff; color: #0f172a; padding: 40px; border-radius: 0 0 12px 12px;
+            outline: none; word-wrap: break-word; position: relative;
+        }
+
+        .sheet-ruled { background-image: linear-gradient(#e2e8f0 1px, transparent 1px); }
+        .sheet-grid { background-image: linear-gradient(#e2e8f0 1px, transparent 1px), linear-gradient(90deg, #e2e8f0 1px, transparent 1px); background-size: 25px 25px; }
+        .sheet-blank { background-image: none; }
+
+        .brd-clean { border: 1px solid #cbd5e1; }
+        .brd-cyber-premium { border: 4px solid var(--border-neon-purple); box-shadow: var(--glow-purple); }
+        .brd-matrix-premium { border: 4px solid var(--border-neon-green); box-shadow: var(--glow-green); }
+        .brd-neon-premium { border: 4px solid var(--border-neon-pink); box-shadow: var(--glow-pink); }
+
+        .premium-lock-indicator { color: var(--border-neon-pink) !important; font-weight: bold; }
+
+        .giant-export-trigger {
+            width: 100%; max-width: 800px; background: linear-gradient(135deg, #7c3aed, #6d28d9);
+            color: white; border: none; padding: 14px; border-radius: 10px; font-weight: 700;
+            font-family: 'Orbitron', sans-serif; cursor: pointer; letter-spacing: 1px;
+            box-shadow: var(--glow-purple); margin-top: 15px; text-align: center;
+        }
+
+        /* SETTINGS & UNIFIED LEGAL FILE MODAL */
+        .settings-modal-overlay {
+            position: fixed; top:0; left:0; right:0; bottom:0; background: rgba(0, 0, 0, 0.85);
+            z-index: 4000; display: none; align-items: center; justify-content: center; padding: 15px;
+            backdrop-filter: blur(8px);
+        }
+        .settings-modal-container {
+            width: 100%; max-width: 750px; max-height: 85vh; background: var(--bg-glass-panel);
+            border: 2px solid var(--border-neon-cyan); border-radius: 16px; display: flex;
+            flex-direction: column; overflow: hidden; box-shadow: var(--glow-cyan);
+        }
+        .settings-modal-header {
+            background: rgba(6, 182, 212, 0.1); padding: 16px 20px; display: flex;
+            align-items: center; justify-content: between; border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        .settings-nav-tabs { display: flex; gap: 8px; overflow-x: auto; }
+        .settings-tab-btn {
+            background: #1e293b; border: 1px solid rgba(255,255,255,0.1); color: #94a3b8;
+            padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer;
+            font-family: 'Orbitron', sans-serif; white-space: nowrap;
+        }
+        .settings-tab-btn.active-tab {
+            background: var(--border-neon-cyan); color: #030014; border-color: var(--border-neon-cyan); font-weight: 700;
+        }
+        .settings-close-btn {
+            background: none; border: none; color: white; font-size: 20px; cursor: pointer; padding: 0 8px;
+        }
+        .settings-modal-body {
+            padding: 24px; overflow-y: auto; flex: 1; line-height: 1.7;
+        }
+        .legal-doc-section { display: none; }
+        .legal-doc-section.active-doc { display: block; }
+        .legal-doc-section h2 { color: var(--border-neon-cyan); margin-bottom: 15px; font-family: 'Orbitron', sans-serif; font-size: 18px; }
+        .legal-doc-section h3 { color: #f8fafc; margin: 18px 0 8px 0; font-size: 15px; }
+        .legal-doc-section p, .legal-doc-section li { color: #cbd5e1; font-size: 13px; margin-bottom: 10px; }
+        .legal-doc-section ul { padding-left: 20px; }
+
+        /* VIDEO STREAMING VIEW COMPONENTS */
+        .video-grid-container { padding: 20px; display: flex; flex-direction: column; gap: 18px; margin-bottom: 90px; }
+        .video-card-glow {
+            background: var(--bg-glass-panel); border: 1px solid rgba(6, 182, 212, 0.2);
+            border-radius: 14px; overflow: hidden; box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            cursor: pointer; transition: transform 0.3s;
+        }
+        .thumbnail-wrapper { width: 100%; height: 180px; background-size: cover; background-position: center; position: relative; }
+        .play-overlay-icon {
+            position: absolute; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.4);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .play-overlay-icon svg { width: 50px; height: 50px; fill: var(--border-neon-cyan); filter: drop-shadow(var(--glow-cyan)); }
+        .video-details-area { padding: 14px; }
+        .video-title-text { font-size: 14px; font-weight: 600; color: #f1f5f9; }
+
+        /* PRO ACTIVATION DASHBOARD */
+        .pro-dashboard-deck { padding: 20px; display: flex; flex-direction: column; gap: 20px; align-items: center; margin-bottom: 90px; }
+        .pricing-grid-matrix { width: 100%; max-width: 500px; border-collapse: collapse; background: var(--bg-glass-panel); border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); }
+        .pricing-grid-matrix th { background: rgba(168, 85, 247, 0.2); padding: 12px; text-align: left; font-family: 'Orbitron', sans-serif; font-size: 13px; color: var(--border-neon-cyan); }
+        .pricing-grid-matrix td { padding: 14px 12px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 14px; }
+        
+        .licensing-portal-card {
+            width: 100%; max-width: 500px; background: rgba(9, 9, 11, 0.8);
+            border: 2px solid var(--border-neon-pink); border-radius: 16px; padding: 24px;
+            box-shadow: var(--glow-pink); text-align: center;
+        }
+        .license-input-node {
+            width: 100%; background: #1e293b; border: 1px solid var(--border-neon-pink);
+            padding: 12px; border-radius: 8px; color: white; text-align: center;
+            font-size: 18px; font-family: 'Orbitron', sans-serif; letter-spacing: 4px; outline: none; margin: 15px 0;
+        }
+        .license-activation-trigger {
+            background: linear-gradient(135deg, #ff007f, #d9046c); color: white; border: none;
+            padding: 12px 24px; border-radius: 8px; font-family: 'Orbitron', sans-serif; font-weight: 700; cursor: pointer; width: 100%;
+        }
+
+        /* DYNAMIC BOTTOM NAVIGATION BAR */
+        .system-navigation-dock {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: rgba(3, 0, 20, 0.95); backdrop-filter: blur(20px);
+            border-top: 2px solid var(--border-neon-purple); box-shadow: 0 -8px 30px rgba(168,85,247,0.3);
+            display: flex; justify-content: space-around; padding: 10px 0 14px 0; z-index: 2000;
+        }
+        .nav-anchor-node {
+            display: flex; flex-direction: column; align-items: center; background: none; border: none;
+            color: #64748b; font-size: 11px; font-weight: 700; font-family: 'Orbitron', sans-serif;
+            cursor: pointer; gap: 4px; transition: all 0.2s; width: 65px;
+        }
+        .nav-anchor-node svg { width: 20px; height: 20px; fill: #64748b; }
+        .nav-anchor-node.active-anchor { color: var(--border-neon-cyan); text-shadow: 0 0 8px rgba(6,182,212,0.5); }
+        .nav-anchor-node.active-anchor svg { fill: var(--border-neon-cyan); filter: drop-shadow(0 0 5px var(--border-neon-cyan)); }
+        .nav-anchor-node.node-premium-style { color: var(--border-neon-pink); }
+        .nav-anchor-node.node-premium-style svg { fill: var(--border-neon-pink); }
+
+        /* INTERSTITIAL COUNTERFEIT AD MODAL */
+        .ad-interstitial-overlay {
+            position: fixed; top:0; left:0; right:0; bottom:0; background: #000000;
+            z-index: 5000; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 20px;
+        }
+        .ad-video-box-simulation {
+            width: 100%; max-width: 500px; height: 280px; background: #111; border: 2px solid #333;
+            border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative;
+        }
+        .ad-ticker-countdown {
+            position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.8);
+            padding: 6px 12px; border-radius: 20px; font-size: 12px; font-family: 'Orbitron', sans-serif; color: var(--border-neon-cyan);
+        }
+    </style>
+</head>
+<body>
+      
+    <!-- Top Architecture Bar -->
+    <div class="system-top-bar">
+        <div class="system-logo-zone">
+            <div class="logo-glyph-glow">
+                <svg viewBox="0 0 24 24"><path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/></svg>
+            </div>
+            <div class="logo-text-glow">SCHOLARCRAFT <span>PRO</span></div>
+        </div>
+        <div class="status-badge-node status-badge-free" id="licenseStateBadge">FREE PLAN</div>
+    </div>
+
+    <!-- Inline Banner Ads / Google AdSense Slot -->
+    <div class="inline-ad-streamer" id="topInlineAd">
+        SPONSORED ADVERTISEMENT: ScholarCraft Educational Tools Suite
+    </div>
+
+    <!-- PANEL 1: DASHBOARD / EDITING CENTER -->
+    <div id="panelHome" class="app-view-panel active-panel">
+        <div class="control-ribbon-deck">
+            <div class="ribbon-data-row">
+                <select id="fontSelector" class="ribbon-select-node" onchange="DocumentEngine.setFont(this.value)">
+                    <option value="Poppins">Standard English Font</option>
+                    <option value="Noto Nastaliq Urdu">Urdu Font Set (Nastaliq)</option>
+                    <option value="Courier Prime">Classic Typewriter Font</option>
+                    
+                    <option value="Caveat" class="premium-lock-indicator font-pro-item">Luxury Handwriting [🔒 PRO]</option>
+                    <option value="Architects Daughter" class="premium-lock-indicator font-pro-item">Sharp Casual Handwriting [🔒 PRO]</option>
+                    <option value="Sacramento" class="premium-lock-indicator font-pro-item">Elegant Cursive Handwriting [🔒 PRO]</option>
+                    <option value="Pacifico" class="premium-lock-indicator font-pro-item">Retro Brush Script [🔒 PRO]</option>
+                    <option value="Shadows Into Light" class="premium-lock-indicator font-pro-item">Clean Handwriting [🔒 PRO]</option>
+                    <option value="Dancing Script" class="premium-lock-indicator font-pro-item">Artistic Cursive [🔒 PRO]</option>
+                    <option value="Patrick Hand" class="premium-lock-indicator font-pro-item">Neat School Script [🔒 PRO]</option>
+                    <option value="Amatic SC" class="premium-lock-indicator font-pro-item">Tall Quirky Print [🔒 PRO]</option>
+                    <option value="Permanent Marker" class="premium-lock-indicator font-pro-item">Bold Street Marker [🔒 PRO]</option>
+                </select>
+
+                <div class="ribbon-counter-node">
+                    <button class="counter-action-btn" onclick="DocumentEngine.modifySize(-2)">-</button>
+                    <div class="counter-value-label" id="fontSizeView">18px</div>
+                    <button class="counter-action-btn" onclick="DocumentEngine.modifySize(2)">+</button>
+                </div>
+
+                <select id="templateSelector" class="ribbon-select-node" onchange="DocumentEngine.setTemplate(this.value)">
+                    <option value="sheet-ruled">Notebook Grid Lines</option>
+                    <option value="sheet-blank">Plain Blank Page</option>
+                    <option value="sheet-grid" id="optGrid" class="premium-lock-indicator">Matrix Mathematics Grid [🔒 PRO]</option>
+                </select>
+
+                <select id="borderSelector" class="ribbon-select-node" onchange="DocumentEngine.setBorder(this.value)">
+                    <option value="brd-clean">Default Minimal Line</option>
+                    <option value="brd-cyber-premium" id="optBrdCyber" class="premium-lock-indicator">Cyber Neon Purple [🔒 PRO]</option>
+                    <option value="brd-matrix-premium" id="optBrdMatrix" class="premium-lock-indicator">Cryptic Cyber Green [🔒 PRO]</option>
+                    <option value="brd-neon-premium" id="optBrdNeon" class="premium-lock-indicator">Acid Shock Pink [🔒 PRO]</option>
+                </select>
+             </div>
+            
+            <div class="ribbon-data-row" style="background: rgba(0,0,0,0.3); border-top: 1px solid rgba(255,255,255,0.03);">
+                <button class="formatting-action-btn" onclick="DocumentEngine.execTextCmd('bold')">B</button>
+                <button class="formatting-action-btn" onclick="DocumentEngine.execTextCmd('italic')">I</button>
+                <button class="formatting-action-btn" onclick="DocumentEngine.execTextCmd('underline')">U</button>
+                <div style="width: 1px; height: 24px; background: #334155;"></div>
+                <button class="formatting-action-btn" onclick="DocumentEngine.execTextCmd('justifyLeft')">←</button>
+                <button class="formatting-action-btn" onclick="DocumentEngine.execTextCmd('justifyCenter')">↔</button>
+                <button class="formatting-action-btn" onclick="DocumentEngine.execTextCmd('justifyRight')">→</button>
+                <button class="formatting-action-btn" onclick="DocumentEngine.execTextCmd('justifyFull')">≡</button>
+                <div style="width: 1px; height: 24px; background: #334155;"></div>
+                <button id="micBtnTrigger" class="formatting-action-btn" onclick="DocumentEngine.triggerVoiceDictation()" style="color: var(--border-neon-pink); font-size: 14px; width: auto; padding: 0 10px;">🎤 Mic</button>
+            </div>
+        </div>
+
+        <div class="workspace-sanctuary">
+            <input type="text" id="assignmentTitleField" class="assignment-identity-input" placeholder="Type Assignment Title Here...">
+            <div id="editableSheetNode" class="document-canvas-sheet sheet-ruled brd-clean" contenteditable="true" spellcheck="false" style="font-size: 18px; line-height: 34px; background-size: 100% 34px;">
+                <div>Welcome to ScholarCraft Production Suite. Type your academic notes or assignments here and export them directly to PDF format...</div>
+            </div>
+            
+            <button class="giant-export-trigger" onclick="DocumentEngine.processExportRequest()">PRODUCE PDF DOCUMENT</button>
+        </div>
+    </div>
+
+    <!-- PANEL 2: VIDEO HUB STREAMING LAYER -->
+    <div id="panelVideo" class="app-view-panel">
+        <div class="video-grid-container">
+            <div class="video-card-glow" onclick="window.open('https://www.youtube.com', '_blank')">
+                <div class="thumbnail-wrapper" style="background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500');">
+                    <div class="play-overlay-icon">
+                        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    </div>
+                </div>
+                <div class="video-details-area">
+                    <div class="video-title-text">Tutorial: How to Format Clean Academic Assignments Online</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PANEL 3: PRO STRATEGIC VERIFICATION CENTRE -->
+    <div id="panelPro" class="app-view-panel">
+        <div class="pro-dashboard-deck">
+            <table class="pricing-grid-matrix">
+                <thead>
+                    <tr><th>TIER SUBSCRIPTION ARCHITECTURE</th><th>VALUATION RATIO</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>1 Month High-Rank Pass</td><td style="color:var(--border-neon-pink); font-weight:bold;">300 PKR</td></tr>
+                    <tr><td>3 Month High-Rank Pass</td><td style="color:var(--border-neon-pink); font-weight:bold;">1000 PKR</td></tr>
+                    <tr><td>1 Year Full Structural Access</td><td style="color:var(--border-neon-pink); font-weight:bold;">3000 PKR</td></tr>
+                </tbody>
+            </table>
+
+            <div class="licensing-portal-card">
+                <h3 style="font-family:'Orbitron'; font-size:15px; color:white;">ENTER LICENSE KEY STRUCTURE</h3>
+                <p style="font-size:12px; color:#94a3b8; margin-top:5px;">Input your exact 7-character subscription token passphrase below.</p>
+                <input type="text" id="licenseTokenInputField" class="license-input-node" maxlength="7" placeholder="XXXXXXX">
+                <button class="license-activation-trigger" onclick="LicensingSystem.verifyTokenInput()">VERIFY LICENSE PASS</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- UNIFIED SETTINGS / LEGAL MODAL FILE (Privacy, Terms, Guide combined in one icon) -->
+    <div id="settingsModalOverlay" class="settings-modal-overlay">
+        <div class="settings-modal-container">
+            <div class="settings-modal-header">
+                <div class="settings-nav-tabs">
+                    <button class="settings-tab-btn active-tab" id="tabBtnGuide" onclick="SettingsModalManager.switchDoc('guide')">📖 Guide</button>
+                    <button class="settings-tab-btn" id="tabBtnPrivacy" onclick="SettingsModalManager.switchDoc('privacy')">🔒 Privacy Policy</button>
+                    <button class="settings-tab-btn" id="tabBtnTerms" onclick="SettingsModalManager.switchDoc('terms')">📄 Terms & Conditions</button>
+                </div>
+                <button class="settings-close-btn" onclick="SettingsModalManager.closeModal()">✕</button>
+            </div>
+            
+            <div class="settings-modal-body">
+                <!-- Guide Document -->
+                <div id="docGuide" class="legal-doc-section active-doc">
+                    <h2>ScholarCraft User & AdSense Compliance Guide</h2>
+                    <p>Welcome to ScholarCraft Production Suite. This guide explains how to effectively utilize our assignment and academic note generator tool.</p>
+                    <h3>How to Create & Export Assignments</h3>
+                    <p>1. Type or dictate your homework/notes directly into the digital workspace sheet.</p>
+                    <p>2. Customize styling options including font styles, row templates, and page border outlines.</p>
+                    <p>3. Click the **PRODUCE PDF DOCUMENT** button to instantly compile and download your clean printable PDF document.</p>
+                </div>
+
+                <!-- Privacy Policy Document -->
+                <div id="docPrivacy" class="legal-doc-section">
+                    <h2>Privacy Policy for ScholarCraft</h2>
+                    <p>Effective Date: July 2026</p>
+                    <h3>1. Information We Collect</h3>
+                    <p>ScholarCraft is designed with privacy in mind. We do not store your typed assignment notes on external servers; all text editing happens locally in your browser session memory (LocalStorage).</p>
+                    <h3>2. Google AdSense & Cookies</h3>
+                    <p>We use third-party vendors, including Google, to serve ads when you visit our website. Google's use of advertising cookies enables it and its partners to serve ads to our users based on their visits to our site.</p>
+                    <ul>
+                        <li>Users may opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" style="color:var(--border-neon-cyan);">Ads Settings</a>.</li>
+                    </ul>
+                </div>
+
+                <!-- Terms Document -->
+                <div id="docTerms" class="legal-doc-section">
+                    <h2>Terms and Conditions</h2>
+                    <p>Welcome to ScholarCraft! By accessing our web application, you agree to comply with and be bound by the following terms.</p>
+                    <h3>1. Use License</h3>
+                    <p>Permission is granted to use ScholarCraft's assignment production tools for personal, educational, and non-commercial utility purposes.</p>
+                    <h3>2. Pro Licences & Verification</h3>
+                    <p>Pro feature tiers are unlocked using valid subscription token keys. Unauthorized distribution or cracking of validation passes is strictly prohibited.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- INTERSTITIAL AD OVERLAY DOM MATRIX -->
+    <div id="adInterstitialOverlayNode" class="ad-interstitial-overlay">
+        <div class="ad-video-box-simulation">
+            <div class="ad-ticker-countdown" id="adTimerTickerDisplay">Advertisement: 5s</div>
+            <p style="font-family:'Orbitron'; font-size:14px; color:var(--border-neon-pink); font-weight:bold; letter-spacing:1px; margin-bottom:10px;">SPONSORED NETWORK STREAMING</p>
+            <p style="font-size:12px; color:#64748b; text-align:center; padding:0 30px;">Processing data configurations... High-fidelity secure data save arrays will synchronize automatically upon ad stream finalization.</p>
+        </div>
+    </div>
+
+    <!-- Bottom Interface Anchors Navigation (Settings Icon includes Privacy, Terms, Guide) -->
+    <div class="system-navigation-dock">
+        <button class="nav-anchor-node active-anchor" id="anchorHome" onclick="NavigationOrchestrator.navigate('home')">
+            <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Home
+        </button>
+        <button class="nav-anchor-node" id="anchorVideo" onclick="NavigationOrchestrator.navigate('video')">
+            <svg viewBox="0 0 24 24"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55 0 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg>Video
+        </button>
+        <button class="nav-anchor-node" onclick="SettingsModalManager.openModal()">
+            <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>Settings
+        </button>
+        <button class="nav-anchor-node node-premium-style" id="anchorPro" onclick="NavigationOrchestrator.navigate('pro')">
+            <svg viewBox="0 0 24 24"><path d="M12 2L1 21h22L12 2zm0 4l6.83 11H5.17L12 6z"/></svg>Pro
+        </button>
+    </div>
+
+    <!-- CENTRAL ENGINES SYSTEM ARCHITECTURE SCRIPT -->
+    <script>
+        let SYSTEM_STATE = {
+            isProActivated: false,
+            activeTierName: "FREE PLAN",
+            allottedFreeCounter: 0,
+            activeFontSize: 18,
+            adHookCallbackAction: null,
+            speechRecognitionEngine: null
+        };
+
+        const NavigationOrchestrator = {
+            navigate(targetViewKey) {
+                document.querySelectorAll('.app-view-panel').forEach(p => p.classList.remove('active-panel'));
+                document.querySelectorAll('.nav-anchor-node').forEach(a => a.classList.remove('active-anchor'));
+                
+                if(targetViewKey === 'home') {
+                    document.getElementById('panelHome').classList.add('active-panel');
+                    document.getElementById('anchorHome').classList.add('active-anchor');
+                } else if(targetViewKey === 'video') {
+                    document.getElementById('panelVideo').classList.add('active-panel');
+                    document.getElementById('anchorVideo').classList.add('active-anchor');
+                } else if(targetViewKey === 'pro') {
+                    document.getElementById('panelPro').classList.add('active-panel');
+                    document.getElementById('anchorPro').classList.add('active-anchor');
+                }
+            }
+        };
+                      // SETTINGS MODAL MANAGER FOR GUIDE, PRIVACY, AND TERMS
+        const SettingsModalManager = {
+            openModal() {
+                document.getElementById('settingsModalOverlay').style.display = 'flex';
+                this.switchDoc('guide');
+            },
+            closeModal() {
+                document.getElementById('settingsModalOverlay').style.display = 'none';
+            },
+            switchDoc(docKey) {
+                document.querySelectorAll('.legal-doc-section').forEach(d => d.classList.remove('active-doc'));
+                document.querySelectorAll('.settings-tab-btn').forEach(b => b.classList.remove('active-tab'));
+
+                if(docKey === 'guide') {
+                    document.getElementById('docGuide').classList.add('active-doc');
+                    document.getElementById('tabBtnGuide').classList.add('active-tab');
+                } else if(docKey === 'privacy') {
+                    document.getElementById('docPrivacy').classList.add('active-doc');
+                    document.getElementById('tabBtnPrivacy').classList.add('active-tab');
+                } else if(docKey === 'terms') {
+                    document.getElementById('docTerms').classList.add('active-doc');
+                    document.getElementById('tabBtnTerms').classList.add('active-tab');
+                }
+            }
+        };
+
+        const DocumentEngine = {
+            execTextCmd(actionToken, argument = null) {
+                document.execCommand(actionToken, false, argument);
+                document.getElementById('editableSheetNode').focus();
+            },
+            setFont(fontFaceString) {
+                const freeFonts = ['Poppins', 'Noto Nastaliq Urdu', 'Courier Prime'];
+                if (!freeFonts.includes(fontFaceString) && !SYSTEM_STATE.isProActivated) {
+                    document.getElementById('fontSelector').value = 'Poppins';
+                    AdSystemEngine.deployInterstitialAd(() => {
+                        document.getElementById('fontSelector').value = fontFaceString;
+                        document.getElementById('editableSheetNode').style.fontFamily = fontFaceString;
+                    });
+                    return;
+                }
+                document.getElementById('editableSheetNode').style.fontFamily = fontFaceString;
+            },
+            modifySize(scalingDelta) {
+                SYSTEM_STATE.activeFontSize += scalingDelta;
+                if(SYSTEM_STATE.activeFontSize < 12) SYSTEM_STATE.activeFontSize = 12;
+                if(SYSTEM_STATE.activeFontSize > 46) SYSTEM_STATE.activeFontSize = 46;
+                
+                let dynamicCalculatedLineHeight = Math.round(SYSTEM_STATE.activeFontSize * 1.88);
+                const targetedSheet = document.getElementById('editableSheetNode');
+                
+                targetedSheet.style.fontSize = SYSTEM_STATE.activeFontSize + 'px';
+                targetedSheet.style.lineHeight = dynamicCalculatedLineHeight + 'px';
+                targetedSheet.style.backgroundSize = `100% ${dynamicCalculatedLineHeight}px`;
+
+         document.getElementById('fontSizeView').innerText = SYSTEM_STATE.activeFontSize + 'px';
+            },
+            setTemplate(chosenTemplateClass) {
+                if(chosenTemplateClass === 'sheet-grid' && !SYSTEM_STATE.isProActivated) {
+                    document.getElementById('templateSelector').value = 'sheet-ruled';
+                    AdSystemEngine.deployInterstitialAd(() => {
+                        document.getElementById('templateSelector').value = 'sheet-grid';
+                        this.applyTemplateStyle('sheet-grid');
+                    });
+                    return;
+                }
+                this.applyTemplateStyle(chosenTemplateClass);
+            },
+            applyTemplateStyle(styleClass) {
+                const node = document.getElementById('editableSheetNode');
+                node.classList.remove('sheet-ruled', 'sheet-grid', 'sheet-blank');
+                node.classList.add(styleClass);
+            },
+            setBorder(chosenBorderClass) {
+                if(chosenBorderClass !== 'brd-clean' && !SYSTEM_STATE.isProActivated) {
+                    document.getElementById('borderSelector').value = 'brd-clean';
+                    AdSystemEngine.deployInterstitialAd(() => {
+                        document.getElementById('borderSelector').value = chosenBorderClass;
+                        this.applyBorderStyle(chosenBorderClass);
+                    });
+                    return;
+                }
+                this.applyBorderStyle(chosenBorderClass);
+            },
+            applyBorderStyle(styleClass) {
+                const node = document.getElementById('editableSheetNode');
+                node.classList.remove('brd-clean', 'brd-cyber-premium', 'brd-matrix-premium', 'brd-neon-premium');
+                node.classList.add(styleClass);
+            },
+            triggerVoiceDictation() {
+                if(!SYSTEM_STATE.isProActivated) {
+                    AdSystemEngine.deployInterstitialAd(() => { this.activateNativeSpeechStream(); });
+                } else {
+                    this.activateNativeSpeechStream();
+                }
+            },
+            activateNativeSpeechStream() {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                if (!SpeechRecognition) {
+                    alert("Web Speech API is not supported in this browser platform module.");
+                    return;
+                }
+                if(SYSTEM_STATE.speechRecognitionEngine) {
+                    SYSTEM_STATE.speechRecognitionEngine.stop();
+                    return;
+                }
+                const recognizer = new SpeechRecognition();
+                recognizer.continuous = false;
+                recognizer.interimResults = false;
+                recognizer.lang = 'en-US';
+
+                recognizer.onstart = () => {
+                    document.getElementById('micBtnTrigger').classList.add('mic-active-glow');
+                    document.getElementById('micBtnTrigger').innerText = "🛑 Listening";
+                };
+                recognizer.onerror = () => { this.deactivateSpeechUI(); };
+                recognizer.onend = () => { this.deactivateSpeechUI(); };
+                recognizer.onresult = (event) => {
+                    const spokenWordsText = event.results[0][0].transcript;
+                    document.getElementById('editableSheetNode').focus();
+                    this.execTextCmd('insertHTML', " " + spokenWordsText);
+                };
+                SYSTEM_STATE.speechRecognitionEngine = recognizer;
+                recognizer.start();
+            },
+            deactivateSpeechUI() {
+                document.getElementById('micBtnTrigger').classList.remove('mic-active-glow');
+                document.getElementById('micBtnTrigger').innerText = "🎤 Mic";
+                SYSTEM_STATE.speechRecognitionEngine = null;
+            },
+            processExportRequest() {
+                if(!SYSTEM_STATE.isProActivated && SYSTEM_STATE.allottedFreeCounter >= 5) {
+                    alert("Free Creation limit reached! Please verify a license passcode key in the Pro interface menu.");
+                    NavigationOrchestrator.navigate('pro');
+                    return;
+                }
+                if(!SYSTEM_STATE.isProActivated) {
+                    AdSystemEngine.deployInterstitialAd(() => { this.executeCompilationBlueprint(); });
+                } else {
+                    this.executeCompilationBlueprint();
+                }
+            },
+            executeCompilationBlueprint() {
+                const sheetTarget = document.getElementById('editableSheetNode');
+                const namingInputText = document.getElementById('assignmentTitleField').value.trim();
+                const cleanFileName = namingInputText ? namingInputText.replace(/[^a-zA-Z0-9]/g, "_") + ".pdf" : "ScholarCraft_Document.pdf";
+                
+                const renderingBlueprintConfig = {
+                    margin: [0.4, 0.4, 0.4, 0.4],
+                    filename: cleanFileName,
+                    image: { type: 'jpeg', quality: 1.0 },
+                    html2canvas: { scale: 3, useCORS: true, letterRendering: true },
+                    jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+                };
+
+                html2pdf().set(renderingBlueprintConfig).from(sheetTarget).save().then(() => {
+                    if(!SYSTEM_STATE.isProActivated) {
+                        SYSTEM_STATE.allottedFreeCounter++;
+                        localStorage.setItem('sys_free_allocation_count', SYSTEM_STATE.allottedFreeCounter);
+                    }
+                });
+            }
+        };
+
+        const AdSystemEngine = {
+            deployInterstitialAd(completionCallbackFunction) {
+                SYSTEM_STATE.adHookCallbackAction = completionCallbackFunction;
+                const modalNode = document.getElementById('adInterstitialOverlayNode');
+                const tickerLabel = document.getElementById('adTimerTickerDisplay');
+                
+                modalNode.style.display = 'flex';
+                let remainingTicks = 5;
+                tickerLabel.innerText = `Advertisement: ${remainingTicks}s`;
+                
+                const timingTickerLoop = setInterval(() => {
+                    remainingTicks--;
+                    tickerLabel.innerText = `Advertisement: ${remainingTicks}s`;
+                    if(remainingTicks <= 0) {
+                        clearInterval(timingTickerLoop);
+                        modalNode.style.display = 'none';
+                        if(SYSTEM_STATE.adHookCallbackAction) SYSTEM_STATE.adHookCallbackAction();
+                    }
+                }, 1000);
+            }
+        };
+
+        const LicensingSystem = {
+            verifyTokenInput() {
+                const tokenInputString = document.getElementById('licenseTokenInputField').value.trim().toUpperCase();
+                if(tokenInputString.length !== 7) {
+                    alert("Invalid Syntax Error: Pro key chalane ke liye poore 7 lafzo ka hona zaroori hai!");
+                    return;
+                }
+                let identifiedTier = null;
+                if (KEY_DATABASE_REGISTRY.tierOneMonth.includes(tokenInputString)) {
+                    identifiedTier = "PRO: 1 MONTH PASS";
+                } else if (KEY_DATABASE_REGISTRY.tierThreeMonth.includes(tokenInputString)) {
+                    identifiedTier = "PRO: 3 MONTH PASS";
+                } else if (KEY_DATABASE_REGISTRY.tierOneYear.includes(tokenInputString)) {
+                    identifiedTier = "PRO: 1 YEAR PASS";
+                }
+
+                if(identifiedTier) {
+                    SYSTEM_STATE.isProActivated = true;
+                    SYSTEM_STATE.activeTierName = identifiedTier;
+                    localStorage.setItem('sys_licensing_state_flag', 'unlocked_pro');
+                    localStorage.setItem('sys_active_tier_name', identifiedTier);
+                    this.applyProUpgradesToDOM(identifiedTier);
+                    alert(`ACCESS GRANTED: Mubarak ho! Aap ka "${identifiedTier}" activate ho gaya hai.`);
+                    NavigationOrchestrator.navigate('home');
+                } else {
+                    alert("VERIFICATION FAILED: Input token ghalat hai ya database registry mein majood nahi hai!");
+                }
+            },
+            applyProUpgradesToDOM(tierName) {
+                const badge = document.getElementById('licenseStateBadge');
+                badge.className = "status-badge-node status-badge-pro";
+                badge.innerText = tierName;
+                document.getElementById('topInlineAd').style.display = 'none';
+                
+                const premiumFontFriendlyNames = {
+                    'Caveat': 'Premium Luxury Handwriting', 'Architects Daughter': 'Sharp Casual Handwriting',
+                    'Sacramento': 'Elegant Cursive Handwriting', 'Pacifico': 'Retro Brush Script',
+                    'Shadows Into Light': 'Clean Handwriting', 'Dancing Script': 'Artistic Cursive',
+                    'Patrick Hand': 'Neat School Script', 'Amatic SC': 'Tall Quirky Print',
+                    'Permanent Marker': 'Bold Street Marker'
+                };
+                document.querySelectorAll('.font-pro-item').forEach(opt => {
+                    opt.classList.remove('premium-lock-indicator');
+                    if (premiumFontFriendlyNames[opt.value]) opt.innerText = premiumFontFriendlyNames[opt.value];
+                });
+                document.getElementById('optGrid').innerText = "Matrix Mathematics Grid";
+                document.getElementById('optGrid').classList.remove('premium-lock-indicator');
+                document.getElementById('optBrdCyber').innerText = "Cyber Neon Purple";
+                document.getElementById('optBrdCyber').classList.remove('premium-lock-indicator');
+                document.getElementById('optBrdMatrix').innerText = "Cryptic Cyber Green";
+                document.getElementById('optBrdMatrix').classList.remove('premium-lock-indicator');
+                document.getElementById('optBrdNeon').innerText = "Acid Shock Pink";
+                document.getElementById('optBrdNeon').classList.remove('premium-lock-indicator');
+            }
+        };
+
+        document.getElementById('editableSheetNode').addEventListener('input', () => {
+            localStorage.setItem('sys_editor_session_cache', document.getElementById('editableSheetNode').innerHTML);
+        });
+        document.getElementById('assignmentTitleField').addEventListener('input', () => {
+            localStorage.setItem('sys_title_session_cache', document.getElementById('assignmentTitleField').value);
+        });
+
+        window.onload = () => {
+            const cachedSheetData = localStorage.getItem('sys_editor_session_cache');
+            if (cachedSheetData) document.getElementById('editableSheetNode').innerHTML = cachedSheetData;
+            const cachedTitleData = localStorage.getItem('sys_title_session_cache');
+            if (cachedTitleData) document.getElementById('assignmentTitleField').value = cachedTitleData;
+
+            const storedFreeCount = localStorage.getItem('sys_free_allocation_count');
+            if(storedFreeCount) SYSTEM_STATE.allottedFreeCounter = parseInt(storedFreeCount, 10);
+
+            const verifiedLicenseFlag = localStorage.getItem('sys_licensing_state_flag');
+            const savedTierName = localStorage.getItem('sys_active_tier_name');
+            if(verifiedLicenseFlag === 'unlocked_pro' && savedTierName) {
+                SYSTEM_STATE.isProActivated = true;
+                SYSTEM_STATE.activeTierName = savedTierName;
+                LicensingSystem.applyProUpgradesToDOM(savedTierName);
+            }
+            DocumentEngine.modifySize(0);
+        };
+    </script>
+</body>
+</html>
