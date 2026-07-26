@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AZAN Wallpapers - Live VIP Engine</title>
+    <!-- FontAwesome Icons for modern UI look -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Mobile-friendly Premium Dark Blue/Black Theme */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background-color: #0b0d17;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        /* Branding Headers - AZAN Wallpapers VIP styling */
+        .brand-container {
+            text-align: center;
+            margin-top: 25px;
+            margin-bottom: 25px;
+        }
+
+        .brand-title {
+            font-size: 3.5rem;
+            font-weight: 900;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #ffffff;
+            margin: 0;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+
+        .brand-subtitle {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #ff3344;
+            margin-top: -10px;
+            text-shadow: 0 0 20px rgba(255, 51, 68, 0.6);
+        }
+
+        /* Premium Search Bar Container with glow effect */
+        .search-container {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+
+        .search-box {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            background: #161826;
+            border-radius: 20px;
+            padding: 6px 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .search-box:focus-within {
+            border-color: #ff3344;
+            box-shadow: 0 0 15px rgba(255, 51, 68, 0.3);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 14px 15px;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .search-input::placeholder {
+            color: #4e566d;
+        }
+
+        .search-btn {
+            background: #ff3344;
+            border: none;
+            outline: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            color: #ffffff;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search-btn:hover {
+            background: #e02435;
+            transform: scale(1.08);
+        }
+
+        /* Custom Alert Notification Design instead of browser Alert */
+        .alert-message {
+            display: none;
+            background: rgba(255, 51, 68, 0.15);
+            border: 1px solid #ff3344;
+            color: #ffb3b8;
+            padding: 12px 18px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        /* Responsive 2-Column Grid on mobile, more on desktop */
+        .wallpaper-grid {
+            width: 100%;
+            max-width: 1200px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            padding: 5px;
+        }
+
+        @media (min-width: 768px) {
+            .wallpaper-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 20px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .wallpaper-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 25px;
+            }
+        }
+
+        /* Premium Wallpaper Card design with smooth zoom on hover */
+        .wallpaper-card {
+            background: #111322;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .wallpaper-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(255, 51, 68, 0.15);
+        }
+
+        .img-container {
+            width: 100%;
+            aspect-ratio: 9 / 16;
+            background-color: #161826;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: opacity 0.4s ease;
+        }
+
+        .download-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.04);
+            color: #94a3b8;
+            text-decoration: none;
+            padding: 15px;
+            font-size: 14px;
+            font-weight: 700;
+            border-top: 1px solid rgba(255, 255, 255, 0.02);
+            transition: all 0.25s ease;
+            cursor: pointer;
+        }
+
+        .download-btn:hover {
+            background: #ff3344;
+            color: #ffffff;
+        }
+
+        /* VIP Glowing Spinner Loader */
+        .loader {
+            grid-column: 1 / -1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 90px 20px;
+            font-size: 16px;
+            color: #ff3344;
+            gap: 18px;
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(255, 51, 68, 0.2);
+        }
+
+        .loader i {
+            font-size: 50px;
+        }
+
+        /* Back Navigation Link */
+        .back-link {
+            margin-top: 50px;
+            margin-bottom: 30px;
+            color: #4b5563;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: color 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-link:hover {
+            color: #ff3344;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- BRANDING HEADERS -->
+    <div class="brand-container">
+        <h1 class="brand-title">AZAN</h1>
+        <div class="brand-subtitle">Wallpapers</div>
+    </div>
+
+    <!-- SEARCH PANEL -->
+    <div class="search-container">
+        <div class="search-box">
+            <input type="text" id="searchInput" class="search-input" placeholder="Type game, car, pubg, free fire..." value="Cars">
+            <button class="search-btn" onclick="renderWallpapers()">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+        </div>
+        <!-- Alert Notification Panel -->
+        <div id="alertBox" class="alert-message"></div>
+    </div>
+
+    <!-- MAIN DISPLAY ENGINE GRID -->
+    <div class="wallpaper-grid" id="wallpaperEngine">
+        <div class="loader" style="color: #4b5563;">
+            Bhai, search bar me kuch bhi type karke 20 live images load karein...
+        </div>
+    </div>
+
+    <!-- BOTTOM NAVIGATION LINK -->
+    <a href="index.html" class="back-link">
+        <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+    </a>
+
+    <!-- ENGINE JAVASCRIPT SYSTEM -->
+    <script>
+        // Keyboard Enter key press validator
+        document.getElementById('searchInput').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                renderWallpapers();
+            }
+        });
+
+        async function renderWallpapers() {
+            let query = document.getElementById('searchInput').value.trim();
+            let engine = document.getElementById('wallpaperEngine');
+            let alertBox = document.getElementById('alertBox');
+            
+            // Validation Check
+            if(!query) {
+                alertBox.textContent = 'Bhai, pehle search bar me kuch type karein!';
+                alertBox.style.display = 'block';
+                setTimeout(() => { alertBox.style.display = 'none'; }, 3000);
+                return;
+            }
+            
+            alertBox.style.display = 'none';
+            
+            // Showing live VIP loader animation
+            engine.innerHTML = `
+                <div class="loader">
+                    <i class="fa-solid fa-circle-notch fa-spin"></i> 
+                    Bhai, 20 Live HD Wallpapers Load ho rahe hain...
+                </div>`;
+            
+            let cardsHtml = '';
+            
+            // Generating exactly 20 unique keyword matched elements using premium LoremFlickr VIP Engine
+            for (let i = 1; i <= 20; i++) {
+                // High speed live keyword resolver link (Unique lock and signature implementation for perfect loading)
+                let finalPic = 'https://loremflickr.com/500/700/' + encodeURIComponent(query) + '?lock=' + i + '&sig=' + Math.floor(Math.random() * 10000);
+                
+                cardsHtml += `
+                    <div class="wallpaper-card">
+                        <div class="img-container" style="background-image: url('${finalPic}')"></div>
+                        <a href="${finalPic}" target="_blank" download="AZAN_WP_${i}.jpg" class="download-btn">
+                            <i class="fa-solid fa-download"></i> Download
+                        </a>
+                    </div>`;
+            }
+            
+            // Append processed cards to engine grid
+            engine.innerHTML = cardsHtml;
+        }
+
+        // Auto load first search with "Cars" on page startup
+        window.onload = function() {
+            renderWallpapers();
+        };
+    </script>
+</body>
+          </html>
+  
