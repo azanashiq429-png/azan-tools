@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X Calculator - Cyber Vault</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        body {
+            background-color: #040914;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #fff;
+            padding: 10px;
+        }
+
+        /* --- CALCULATOR INTERFACE --- */
+        .calc-container {
+            width: 100%;
+            max-width: 380px;
+            background-color: #071224;
+            border: 2px solid #00d2ff;
+            box-shadow: inset 0 0 15px rgba(0, 210, 255, 0.2), 0 0 20px rgba(0, 210, 255, 0.4);
+            border-radius: 30px;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .vault-title {
+            color: #00d2ff;
+            font-size: 1.5rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-bottom: 25px;
+            text-shadow: 0 0 10px rgba(0, 210, 255, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .calc-screen {
+            width: 100%;
+            background-color: #020611;
+            border: 1px solid #00d2ff;
+            border-radius: 12px;
+            height: 75px;
+            padding: 15px 20px;
+            font-size: 2.2rem;
+            color: #00d2ff;
+            text-align: right;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            margin-bottom: 25px;
+            overflow: hidden;
+            text-shadow: 0 0 5px rgba(0, 210, 255, 0.5);
+        }
+
+        .calc-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            background-color: #051021;
+            border: 1px solid #005f73;
+            border-radius: 12px;
+            color: #00d2ff;
+            font-size: 1.4rem;
+            padding: 18px 0;
+            cursor: pointer;
+            transition: all 0.1s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .btn:active {
+            background-color: #00d2ff;
+            color: #000;
+            box-shadow: 0 0 10px #00d2ff;
+        }
+
+        .btn.clear {
+            color: #ff2d55;
+            border-color: #5a1223;
+        }
+        .btn.clear:active {
+            background-color: #ff2d55;
+            color: #fff;
+        }
+
+        .btn.equals {
+            background-color: #00d2ff;
+            color: #000;
+            border: none;
+            font-weight: bold;
+            box-shadow: 0 0 12px rgba(0, 210, 255, 0.5);
+        }
+
+        .security-status {
+            color: #ff2d55;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            margin-top: 15px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .back-link {
+            color: #8fa0ba;
+            text-decoration: none;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        /* --- PREMIUM FULL WIDTH DASHBOARD INTERFACE --- */
+        .vault-dashboard {
+            display: none;
+            width: 100%;
+            max-width: 480px; 
+            background-color: #071224;
+            border: 2px solid #00d2ff;
+            box-shadow: inset 0 0 15px rgba(0, 210, 255, 0.2), 0 0 20px rgba(0, 210, 255, 0.4);
+            border-radius: 24px;
+            padding: 25px 20px;
+        }
+
+        .dash-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #005f73;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .dash-header h2 {
+            color: #00d2ff;
+            font-size: 1.4rem;
+            font-weight: bold;
+            letter-spacing: 1.5px;
+            text-shadow: 0 0 8px rgba(0, 210, 255, 0.5);
+        }
+
+        .lock-vault-btn {
+            background: #ff2d55;
+            border: none;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.85rem;
+            box-shadow: 0 0 10px rgba(255, 45, 85, 0.4);
+        }
+
+        /* Folder Container View */
+        .folder-container-view {
+            display: block;
+        }
+
+        .folder-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .folder-row {
+            background: #051021;
+            border: 1px solid #005f73;
+            border-radius: 15px;
+            padding: 18px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .folder-row:hover {
+            border-color: #00d2ff;
+            background: #091f3d;
+            transform: translateY(-2px);
+        }
+
+        .folder-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .folder-main-icon {
+            font-size: 2.2rem;
+        }
+
+        .folder-info h4 {
+            color: #00d2ff;
+            font-size: 1.1rem;
+            margin-bottom: 2px;
+        }
+
+        .folder-info p {
+            color: #8fa0ba;
+            font-size: 0.8rem;
+        }
+
+        .chevron-right {
+            color: #005f73;
+            font-size: 1.1rem;
+        }
+
+        /* --- INSIDE FOLDER SCREEN --- */
+        .inside-folder-view {
+            display: none;
+        }
+
+        .folder-back-nav {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #00d2ff;
+            cursor: pointer;
+            margin-bottom: 20px;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .upload-zone {
+            background: #020611;
+            border: 2px dashed #005f73;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            margin-bottom: 20px;
+            color: #8fa0ba;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .upload-zone:hover {
+            border-color: #00d2ff;
+            color: #00d2ff;
+        }
+
+        .file-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            max-height: 350px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .file-card {
+            background: #020611;
+            border: 1px solid #005f73;
+            border-radius: 10px;
+            padding: 5px;
+            position: relative;
+            aspect-ratio: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .file-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        /* FIXED VIDEO CONTROLS FOR MOBILE DEVICES */
+        .file-card video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 6px;
+            outline: none;
+        }
+
+        /* Hide specific browser context overlays from leaking */
+        video::-webkit-media-controls-panel {
+            background-image: linear-gradient(transparent, rgba(0,0,0,0.7)) !important;
+        }
+        
+        video::-webkit-media-controls-context-menu-button {
+            display: none !important;
+        }
+
+        .doc-item-view {
+            text-align: center;
+            padding: 5px;
+            cursor: pointer;
+        }
+
+        .doc-item-view i {
+            font-size: 2.2rem;
+            color: #00d2ff;
+            margin-bottom: 5px;
+        }
+
+        .doc-item-view span {
+            font-size: 0.65rem;
+            display: block;
+            word-break: break-all;
+            color: #8fa0ba;
+        }
+
+        .del-btn {
+            position: absolute;
+            top: 3px;
+            right: 3px;
+            background: rgba(255, 45, 85, 0.9);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            z-index: 10; /* Brought forward so delete option remains unblocked */
+        }
+
+        .hidden-input {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+  <div class="calc-container" id="calcBox">
+        <div class="vault-title">🔒 X CALCULATOR PRO</div>
+        <div class="calc-screen" id="display">0</div>
+        
+        <div class="calc-grid">
+            <button class="btn" onclick="press('7')">7</button>
+            <button class="btn" onclick="press('8')">8</button>
+            <button class="btn" onclick="press('9')">9</button>
+            <button class="btn" onclick="press('/')">/</button>
+            
+            <button class="btn" onclick="press('4')">4</button>
+            <button class="btn" onclick="press('5')">5</button>
+            <button class="btn" onclick="press('6')">6</button>
+            <button class="btn" onclick="press('*')">×</button>
+            
+            <button class="btn" onclick="press('1')">1</button>
+            <button class="btn" onclick="press('2')">2</button>
+            <button class="btn" onclick="press('3')">3</button>
+            <button class="btn" onclick="press('-')">-</button>
+            
+            <button class="btn clear" onclick="clearDisplay()">C</button>
+            <button class="btn" onclick="press('0')">0</button>
+            <button class="btn equals" onclick="executeEval()">=</button>
+            <button class="btn" onclick="press('+')">+</button>
+        </div>
+        
+        <div class="security-status" id="lockStatus">Checking...</div>
+        <div class="back-link" onclick="history.back()">← Back to Dashboard</div>
+    </div>
+
+    <div class="vault-dashboard" id="vaultBox">
+        <div class="dash-header">
+            <h2><i class="fa-solid fa-user-shield" style="color:#00d2ff; margin-right: 5px;"></i> AZAN LOCKED</h2>
+            <button class="lock-vault-btn" onclick="closeVault()">Lock</button>
+        </div>
+
+        <div class="folder-container-view" id="folderContainer">
+            <div class="folder-list">
+                <div class="folder-row" onclick="enterFolder('photos')">
+                    <div class="folder-left">
+                        <span class="folder-main-icon">📂</span>
+                        <div class="folder-info">
+                            <h4>Pictures</h4>
+                            <p id="count-photos">0 items</p>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right chevron-right"></i>
+                </div>
+
+                <div class="folder-row" onclick="enterFolder('videos')">
+                    <div class="folder-left">
+                        <span class="folder-main-icon">🎬</span>
+                        <div class="folder-info">
+                            <h4>Videos</h4>
+                            <p id="count-videos">0 items</p>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right chevron-right"></i>
+                </div>
+
+                <div class="folder-row" onclick="enterFolder('docs')">
+                    <div class="folder-left">
+                        <span class="folder-main-icon">📄</span>
+                        <div class="folder-info">
+                            <h4>Documents</h4>
+                            <p id="count-docs">0 items</p>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right chevron-right"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="inside-folder-view" id="insideFolderPanel">
+            <div class="folder-back-nav" onclick="exitToFolders()">
+                <i class="fa-solid fa-arrow-left"></i> <span id="currentFolderName">Folder Name</span>
+            </div>
+
+            <div class="upload-zone" onclick="triggerFilePicker()">
+                <i class="fa-solid fa-arrow-up-from-bracket" style="font-size: 1.4rem; margin-bottom: 8px; color: #00d2ff;"></i>
+                <p id="uploadPrompt">Add Secret File</p>
+                <input type="file" id="actualInput" class="hidden-input" multiple onchange="saveFileToDatabase(event)">
+            </div>
+
+            <div class="file-grid" id="gridViewer"></div>
+        </div>
+    </div>
+
+    <script>
+        let expr = '';
+        let activeFolder = 'photos';
+        let setupRequired = false;
+        let db;
+        let activeObjectUrls = [];
+
+        // Initialize Professional IndexedDB Database
+        const request = indexedDB.open("PremiumVaultDB", 2); 
+        request.onupgradeneeded = function(e) {
+            db = e.target.result;
+            if(db.objectStoreNames.contains("files")) {
+                db.deleteObjectStore("files");
+            }
+            db.createObjectStore("files", { keyPath: "id" });
+        };
+        request.onsuccess = function(e) {
+            db = e.target.result;
+            updateItemCounts();
+        };
+
+        function refreshStatus() {
+            let savedPin = localStorage.getItem('vault_pin');
+            if(!savedPin) {
+                setupRequired = true;
+                document.getElementById('lockStatus').innerText = "SETUP: TYPE A 4-DIGIT PIN & PRESS (=)";
+                document.getElementById('lockStatus').style.color = "#00d2ff";
+            } else {
+                setupRequired = false;
+                document.getElementById('lockStatus').innerText = "SECURITY SYSTEM: LOCKED 🔒";
+                document.getElementById('lockStatus').style.color = "#ff2d55";
+            }
+        }
+        
+        refreshStatus();
+
+        function press(val) {
+            if(document.getElementById('display').innerText === '0') expr = '';
+            expr += val;
+            document.getElementById('display').innerText = expr;
+        }
+
+        function clearDisplay() {
+            expr = '';
+            document.getElementById('display').innerText = '0';
+            refreshStatus();
+        }
+
+        function executeEval() {
+            if(setupRequired) {
+                if(expr.length >= 4 && !isNaN(expr)) {
+                    localStorage.setItem('vault_pin', expr);
+                    alert('PIN Set Successfully: ' + expr);
+                    setupRequired = false;
+                    openVault();
+                    clearDisplay();
+                } else {
+                    alert('Please type a valid numeric 4-digit PIN.');
+                }
+                return;
+            }
+
+            if(expr === '9999') {
+                localStorage.removeItem('vault_pin');
+                alert('PIN Reset Triggered! Set a new password now.');
+                clearDisplay();
+                return;
+            }
+
+            if(expr === localStorage.getItem('vault_pin')) {
+                openVault();
+                clearDisplay();
+                return;
+            }
+
+            try {
+                let res = eval(expr);
+                document.getElementById('display').innerText = res;
+                expr = res.toString();
+            } catch(e) {
+                document.getElementById('display').innerText = 'Error';
+                expr = '';
+            }
+        }
+
+        function openVault() {
+            document.getElementById('calcBox').style.display = 'none';
+            document.getElementById('vaultBox').style.display = 'block';
+            exitToFolders();
+        }
+
+        function closeVault() {
+            document.getElementById('vaultBox').style.display = 'none';
+            document.getElementById('calcBox').style.display = 'block';
+            clearDisplay();
+        }
+
+        function enterFolder(type) {
+            activeFolder = type;
+            document.getElementById('folderContainer').style.display = 'none';
+            document.getElementById('insideFolderPanel').style.display = 'block';
+            
+            let titles = { 'photos': 'Pictures Folder', 'videos': 'Videos Folder', 'docs': 'Documents Folder' };
+            let prompts = { 'photos': 'Import Private Images', 'videos': 'Import Private Videos', 'docs': 'Import Confidential Docs' };
+            
+            document.getElementById('currentFolderName').innerText = titles[type];
+            document.getElementById('uploadPrompt').innerText = prompts[type];
+            
+            renderFiles();
+        }
+
+        function exitToFolders() {
+            activeObjectUrls.forEach(url => URL.revokeObjectURL(url));
+            activeObjectUrls = [];
+            
+            document.getElementById('insideFolderPanel').style.display = 'none';
+            document.getElementById('folderContainer').style.display = 'block';
+            updateItemCounts();
+        }
+
+        function triggerFilePicker() {
+            let p = document.getElementById('actualInput');
+            if(activeFolder === 'photos') p.accept = "image/*";
+            else if(activeFolder === 'videos') p.accept = "video/*";
+            else p.accept = ".pdf,.doc,.docx,.txt";
+            p.click();
+        }
+
+        function saveFileToDatabase(e) {
+            let files = e.target.files;
+            if(!db || files.length === 0) return;
+
+            let tx = db.transaction("files", "readwrite");
+            let store = tx.objectStore("files");
+
+            for(let f of files) {
+                store.add({
+                    id: String(Date.now() + Math.random()),
+                    folder: activeFolder,
+                    fileName: f.name,
+                    binaryData: f 
+                });
+            }
+
+            tx.oncomplete = function() {
+                renderFiles();
+                document.getElementById('actualInput').value = ''; 
+            };
+        }
+          function renderFiles() {
+            let grid = document.getElementById('gridViewer');
+            grid.innerHTML = '';
+            if(!db) return;
+
+            activeObjectUrls.forEach(url => URL.revokeObjectURL(url));
+            activeObjectUrls = [];
+
+            let tx = db.transaction("files", "readonly");
+            let store = tx.objectStore("files");
+            let request = store.getAll();
+
+            request.onsuccess = function() {
+                let allFiles = request.result;
+                let filtered = allFiles.filter(item => item.folder === activeFolder);
+
+                if(filtered.length === 0) {
+                    grid.innerHTML = `<p style="grid-column: span 3; font-size:0.85rem; color:#8fa0ba; text-align:center; padding: 20px 0;">Folder is Empty</p>`;
+                    return;
+                }
+
+                filtered.forEach(item => {
+                    let card = document.createElement('div');
+                    card.className = 'file-card';
+                    
+                    let blobUrl = URL.createObjectURL(item.binaryData);
+                    activeObjectUrls.push(blobUrl);
+                    
+                    let structure = '';
+                    if(item.folder === 'photos') {
+                     structure = `<img src="${blobUrl}" onclick="window.open('${blobUrl}" controls playsinline webkit-playsinline></video>`;
+                    } else {
+                        structure = `<div class="doc-item-view" onclick="window.open('${blobUrl}', '_blank')"><i class="fa-solid fa-file-shield"></i><span>${item.fileName}</span></div>`;
+                    }
+
+                    card.innerHTML = `${structure}<button class="del-btn" onclick="deleteItem('${item.id}')">×</button>`;
+                    grid.appendChild(card);
+                });
+            };
+        }
+
+        function deleteItem(id) {
+            if(!db) return;
+            let tx = db.transaction("files", "readwrite");
+            let store = tx.objectStore("files");
+            store.delete(id);
+            tx.oncomplete = function() {
+                renderFiles();
+            };
+        }
+
+        function updateItemCounts() {
+            if(!db) return;
+            let tx = db.transaction("files", "readonly");
+            let store = tx.objectStore("files");
+            let request = store.getAll();
+
+            request.onsuccess = function() {
+                let allFiles = request.result;
+                let pCount = allFiles.filter(i => i.folder === 'photos').length;
+                let vCount = allFiles.filter(i => i.folder === 'videos').length;
+                let dCount = allFiles.filter(i => i.folder === 'docs').length;
+
+                document.getElementById('count-photos').innerText = pCount + (pCount === 1 ? " item" : " items");
+                document.getElementById('count-videos').innerText = vCount + (vCount === 1 ? " item" : " items");
+                document.getElementById('count-docs').innerText = dCount + (dCount === 1 ? " item" : " items");
+            };
+        }
+    </script>
+</body>
+</html>
